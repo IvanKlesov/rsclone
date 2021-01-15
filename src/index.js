@@ -30,8 +30,12 @@ ws.onopen = function () {
 };
 
 ws.onmessage = (event) => {
-  console.log("get info from server");
-  acceptMessege(event.data);
+  if (event.data === "p") {
+    ws.send("");
+  } else {
+    console.log("get info from server");
+    acceptMessege(event.data);
+  }
 };
 
 sendBtn.onclick = function () {

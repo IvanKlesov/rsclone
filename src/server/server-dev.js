@@ -14,6 +14,7 @@ const compiler = webpack(config)
 console.log(HTML_FILE);
 
 const PORT = process.env.PORT || 3000;
+const intervalValueForPing = 5000;
 
 const server = express()
   .use(webpackDevMiddleware(compiler, {
@@ -32,16 +33,38 @@ const server = express()
   })
   .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
+function heartbeat(ws) {
+  ws.isAlive = true;
+}
+
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
   logMessage("new user");
+  heartbeat(ws)
   ws.on('message', function incoming(data) {
     logMessage(data);
-    wss.clients.forEach((client) => {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(data);
-      }
-    });
+    heartbeat(ws);
+    if (data !== "") {
+      wss.clients.forEach((client) => {
+        if (client !== ws && client.readyState === WebSocket.OPEN) {
+          client.send(data);
+        }
+      });
+    }
   });
+});
+
+const pingInterval = setInterval(() => {
+  wss.clients.forEach((client) => {
+    if (client.isAlive === false) {
+      return ws.close();
+    }
+    client.isAlive = false;
+    client.send("p");
+  });
+}, intervalValueForPing);
+
+wss.on('close', () => {
+  clearInterval(pingInterval);
 });
