@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/vetaniExist/rsclone#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "ws": "^7.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

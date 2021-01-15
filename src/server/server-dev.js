@@ -1,41 +1,47 @@
-import path from 'path'
-import express from 'express'
-import webpack from 'webpack'
-import webpackDevMiddleware from 'webpack-dev-middleware'
-import webpackHotMiddleware from 'webpack-hot-middleware'
-import config from '../../webpack.dev.config.js'
+import path from "path";
+import express from "express";
+import webpack from "webpack";
+import WebSocket from "ws";
 
-const app = express(),
-  DIST_DIR = __dirname,
-  HTML_FILE = path.join(DIST_DIR, 'index.html'),
-  compiler = webpack(config)
+import webpackDevMiddleware from "webpack-dev-middleware";
+import webpackHotMiddleware from "webpack-hot-middleware";
+import config from "../../webpack.dev.config.js";
+import logMessage from "../js/logger.js";
 
-app.use(webpackDevMiddleware(compiler, {
-  publicPath: config.output.publicPath
-}))
+const DIST_DIR = __dirname;
+const HTML_FILE = path.join(DIST_DIR, 'index.html');
+const compiler = webpack(config)
+console.log(HTML_FILE);
 
-app.use(webpackHotMiddleware(compiler))
+const PORT = process.env.PORT || 3000;
 
-// app.use(express.static(DIST_DIR))
-
-app.get('*', (req, res, next) => {
-  compiler.outputFileSystem.readFile(HTML_FILE, (err, result) => {
-    if (err) {
-      return next(err)
-    }
-    res.set('content-type', 'text/html')
-    res.send(result)
-    res.end()
+const server = express()
+  .use(webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath
+  }))
+  .use(webpackHotMiddleware(compiler))
+  .use((req, res, next) => {
+    compiler.outputFileSystem.readFile(HTML_FILE, (err, result) => {
+      if (err) {
+        return next(err)
+      }
+      res.set('content-type', 'text/html')
+      res.send(result)
+      res.end()
+    });
   })
-})
+  .listen(PORT, () => console.log(`Listening on ${PORT}`));
 
-/* app.get('*', (req, res) => {
-  res.sendFile(HTML_FILE)
-}) */
+const wss = new WebSocket.Server({ server });
 
-const PORT = process.env.PORT || 8080;
-
-app.listen(PORT, () => {
-  console.log(`App listening to ${PORT}....`)
-  console.log('Press Ctrl+C to quit.')
-})
+wss.on('connection', (ws) => {
+  logMessage("new user");
+  ws.on('message', function incoming(data) {
+    logMessage(data);
+    wss.clients.forEach((client) => {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(data);
+      }
+    });
+  });
+});
