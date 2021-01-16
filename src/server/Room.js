@@ -26,6 +26,10 @@ export class Room {
   getRoomID() {
     return this.id;
   }
+  
+  setOwner(userOwner) {
+    this.owner = userOwner;
+  }
 }
 
 export default Room;

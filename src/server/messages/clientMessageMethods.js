@@ -36,4 +36,13 @@ clientMessageMethods.getOutRoom = (webSocket, id) => {
   webSocket.send(JSON.stringify(clientMessage));
 };
 
+clientMessageMethods.createRoom = (webSocket, roomName) => {
+  console.log("createRoom method");
+  const clientMessage = {
+    method: "createRoom",
+    content: roomName,
+  };
+  webSocket.send(JSON.stringify(clientMessage));
+};
+
 export default clientMessageMethods;

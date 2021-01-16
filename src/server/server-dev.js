@@ -96,6 +96,13 @@ function parseRequestFromClient(data, ws) {
         serverMessageMethods.getOutRoomAccept(ws);
         break;
       }
+      case "createRoom": {
+        const newRoom = new Room(jsonData.content);
+        rooms.push(newRoom);
+        newRoom.setOwner(ws);
+        serverMessageMethods.createRoomAccept(ws, newRoom);
+        break;
+      }
     }
   }
 }

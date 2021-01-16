@@ -19,10 +19,14 @@ const getOutRoomBtn = document.getElementById("getOutRoomBtn");
 const messages = document.getElementById("messages");
 const messageBox = document.getElementById("messageBox");
 
+const createRoomInput = document.getElementById("createRoomInput");
+const createRoomBtn = document.getElementById("createRoomBtn");
+
 let chatRooms = document.getElementById("chatRooms");
 const chatRoomsId = [];
 
 let roomID;
+let ownRoomID;
 
 function changeHttpUrlOnWs(url) {
   return url.replace(/^http([s])?/, `ws$1`);
@@ -39,6 +43,9 @@ function acceptMessege(newMessage) {
 
 function configurateChatRoomButtons(rooms) {
   unhideElement(chatRooms);
+  unhideElement(createRoomInput);
+  unhideElement(createRoomBtn);
+
   logMessage(chatRooms);
   rooms.forEach(room => {
     const name = room.split("__id")[0];
@@ -62,6 +69,8 @@ function enterChat() {
   unhideElement(sendBtn);
   unhideElement(getOutRoomBtn);
   hideElement(chatRoomsBtn);
+  hideElement(createRoomInput);
+  hideElement(createRoomBtn);
 }
 
 function outChat() {
@@ -70,6 +79,8 @@ function outChat() {
   hideElement(sendBtn);
   hideElement(getOutRoomBtn);
   unhideElement(chatRoomsBtn);
+  unhideElement(createRoomInput);
+  unhideElement(createRoomBtn);
 }
 
 ws.onopen = function () {
@@ -105,6 +116,10 @@ ws.onmessage = (event) => {
         outChat();
         break;
       }
+      case "createRoomAccept": {
+        logMessage(jsonData.content);
+        break;
+      }
     }
   }
 };
@@ -131,4 +146,9 @@ chatRoomsBtn.onclick = () => {
 
 getOutRoomBtn.onclick = () => {
   clientMessageMethods.getOutRoom(ws, roomID);
+};
+
+createRoomBtn.onclick = () => {
+  logMessage(createRoomInput.value);
+  clientMessageMethods.createRoom(ws, createRoomInput.value);
 };

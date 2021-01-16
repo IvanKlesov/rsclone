@@ -42,4 +42,12 @@ serverMessageMethods.getOutRoomAccept = (webSocket) => {
   webSocket.send(JSON.stringify(serverGetOutRoomAccept));
 }
 
+serverMessageMethods.createRoomAccept = (webSocket, newRoom) => {
+  const serverCreateRoomAccept = {
+    method: "createRoomAccept",
+    content: newRoom.name.concat(`__id${newRoom.id}`),
+  };
+  webSocket.send(JSON.stringify(serverCreateRoomAccept));
+}
+
 export default serverMessageMethods;
