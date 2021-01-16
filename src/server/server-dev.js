@@ -3,6 +3,7 @@ import express from "express";
 import webpack from "webpack";
 import WebSocket from "ws";
 import Room from "./Room";
+import User from "./User";
 import serverMessageMethods from "./messages/serverMessageMethods";
 
 import webpackDevMiddleware from "webpack-dev-middleware";
@@ -18,6 +19,8 @@ console.log(HTML_FILE);
 const PORT = process.env.PORT || 3000;
 const intervalValueForPing = 5000;
 const rooms = [];
+const users = [];
+
 
 const server = express()
   .use(webpackDevMiddleware(compiler, {
@@ -49,6 +52,15 @@ rooms.push(room3);
 
 const wss = new WebSocket.Server({ server });
 
+function findCurrentUserByWebsocket(ws) {
+  return users.find(user => user.ws === ws);
+}
+
+function setCurrentUserRoom(ws, id) {
+  const currentUser = findCurrentUserByWebsocket(ws);
+  currentUser.setRoomID(id);
+}
+
 function parseRequestFromClient(data, ws) {
   if (data !== "") {
     const jsonData = JSON.parse(data);
@@ -71,12 +83,16 @@ function parseRequestFromClient(data, ws) {
       case "setRoom": {
         const curRoom = rooms.filter(room => room.id === jsonData.content)[0];
         curRoom.addUser(ws);
+        if (curRoom.getRoomID()) {
+          setCurrentUserRoom(ws, curRoom.getRoomID());
+        }
         serverMessageMethods.userRoomAccept(ws, jsonData.content);
         break;
       }
       case "getOutRoom": {
         const curRoom = rooms.filter(room => room.id === jsonData.content)[0];
         curRoom.removeUser(ws);
+        setCurrentUserRoom(ws, undefined);
         serverMessageMethods.getOutRoomAccept(ws);
         break;
       }
@@ -86,7 +102,8 @@ function parseRequestFromClient(data, ws) {
 
 wss.on('connection', (ws) => {
   logMessage("new user");
-  heartbeat(ws)
+  heartbeat(ws);
+  users.push(new User(ws));
   ws.on('message', function incoming(data) {
     heartbeat(ws);
     parseRequestFromClient(data, ws);

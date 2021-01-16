@@ -22,6 +22,10 @@ export class Room {
     }
     user.roomID = undefined;
   }
+
+  getRoomID() {
+    return this.id;
+  }
 }
 
 export default Room;
