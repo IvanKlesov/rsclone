@@ -1,5 +1,5 @@
 import path from "path";
-import express, { json } from "express";
+import express from "express";
 import webpack from "webpack";
 import WebSocket from "ws";
 import Room from "./Room";
@@ -74,6 +74,12 @@ function parseRequestFromClient(data, ws) {
         serverMessageMethods.userRoomAccept(ws, jsonData.content);
         break;
       }
+      case "getOutRoom": {
+        const curRoom = rooms.filter(room => room.id === jsonData.content)[0];
+        curRoom.removeUser(ws);
+        serverMessageMethods.getOutRoomAccept(ws);
+        break;
+      }
     }
   }
 }
@@ -90,7 +96,11 @@ wss.on('connection', (ws) => {
 const pingInterval = setInterval(() => {
   wss.clients.forEach((client) => {
     if (client.isAlive === false) {
-      return ws.close();
+      if (client.roomID) {
+        const curRoom = rooms.filter(room => room.id === client.roomID)[0];
+        curRoom.removeUser(ws);
+      }
+      return client.close();
     }
     client.isAlive = false;
     client.send("p");

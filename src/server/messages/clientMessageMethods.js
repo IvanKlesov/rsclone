@@ -1,9 +1,4 @@
-export const clientMessageMethods = {
-  // "message": "clientMessage",
-  // "getRooms": "getRooms",
-  // "setRoom": "setRoom",
-
-};
+export const clientMessageMethods = {};
 
 clientMessageMethods.sendMessage = (webSocket, message, roomID) => {
   console.log("sentMessageMethod");
@@ -19,7 +14,7 @@ clientMessageMethods.getRooms = (webSocket) => {
   console.log("getRoomsMethod");
   const getRoomsMsg = {
     "method": "getRooms",
-  }
+  };
   webSocket.send(JSON.stringify(getRoomsMsg));
 };
 
@@ -28,7 +23,16 @@ clientMessageMethods.setRoom = (webSocket, id) => {
   const clientMessage = {
     "method": "setRoom",
     "content": id,
-  }
+  };
+  webSocket.send(JSON.stringify(clientMessage));
+};
+
+clientMessageMethods.getOutRoom = (webSocket, id) => {
+  console.log("get out room method");
+  const clientMessage = {
+    method: "getOutRoom",
+    content: id,
+  };
   webSocket.send(JSON.stringify(clientMessage));
 };
 

@@ -12,6 +12,7 @@ export class Room {
   }
 
   addUser(newUser) {
+    newUser.roomID = this.id;
     this.users.push(newUser);
   }
   removeUser(user) {
@@ -19,6 +20,7 @@ export class Room {
     if (userIndex > -1) {
       this.users.splice(userIndex, 1);
     }
+    user.roomID = undefined;
   }
 }
 

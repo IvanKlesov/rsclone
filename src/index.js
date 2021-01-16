@@ -12,11 +12,15 @@ if (typeof (module.hot) !== "undefined") {
   module.hot.accept(); // eslint-disable-line no-undef
 }
 
-const sendBtn = document.querySelector("#send");
-const chatRoomsBtn = document.querySelector("#chatRoomsBtn");
-const messages = document.querySelector("#messages");
-const messageBox = document.querySelector("#messageBox");
-const chatRooms = document.getElementById("chatRooms");
+const sendBtn = document.getElementById("send");
+const chatRoomsBtn = document.getElementById("chatRoomsBtn");
+const getOutRoomBtn = document.getElementById("getOutRoomBtn");
+
+const messages = document.getElementById("messages");
+const messageBox = document.getElementById("messageBox");
+
+let chatRooms = document.getElementById("chatRooms");
+const chatRoomsId = [];
 
 let roomID;
 
@@ -34,24 +38,38 @@ function acceptMessege(newMessage) {
 }
 
 function configurateChatRoomButtons(rooms) {
+  unhideElement(chatRooms);
   logMessage(chatRooms);
   rooms.forEach(room => {
     const name = room.split("__id")[0];
     const id = room.split("__id")[1];
-    logMessage(room);
-    const button = configurateButton(name, "", id, chatRooms);
-    button.addEventListener("click", () => {
-      clientMessageMethods.setRoom(ws, id);
-      hideElement(chatRooms);
-    });
+    if (chatRoomsId.indexOf(id) === -1) {
+      chatRoomsId.push(id);
+      logMessage(room);
+      const button = configurateButton(name, "", id, chatRooms);
+      button.addEventListener("click", () => {
+        clientMessageMethods.setRoom(ws, id);
+        hideElement(chatRooms);
+      });
+    }
   });
 }
 
+// rewrite to toogle
 function enterChat() {
   unhideElement(messages);
   unhideElement(messageBox);
   unhideElement(sendBtn);
+  unhideElement(getOutRoomBtn);
   hideElement(chatRoomsBtn);
+}
+
+function outChat() {
+  hideElement(messages);
+  hideElement(messageBox);
+  hideElement(sendBtn);
+  hideElement(getOutRoomBtn);
+  unhideElement(chatRoomsBtn);
 }
 
 ws.onopen = function () {
@@ -82,6 +100,11 @@ ws.onmessage = (event) => {
         enterChat();
         break;
       }
+      case "getOutRoomAccept": {
+        roomID = undefined;
+        outChat();
+        break;
+      }
     }
   }
 };
@@ -95,7 +118,7 @@ sendBtn.onclick = function () {
   if (roomID) {
     clientMessageMethods.sendMessage(ws, messageBox.value, roomID);
     acceptMessege(messageBox.value);
-    messageBox.value = '';
+    messageBox.value = "";
   } else {
     console.error("no room");
   }
@@ -104,4 +127,8 @@ sendBtn.onclick = function () {
 chatRoomsBtn.onclick = () => {
   console.log("chat rooms btn");
   clientMessageMethods.getRooms(ws);
-}
+};
+
+getOutRoomBtn.onclick = () => {
+  clientMessageMethods.getOutRoom(ws, roomID);
+};

@@ -1,7 +1,4 @@
-export const serverMessageMethods = {
-  // "message": "serverMessage",
-  // "rooms": "rooms",
-};
+export const serverMessageMethods = {};
 
 serverMessageMethods.sendRooms = (webSocket, roomsArray) => {
   console.log("serverMessageMethods.sendRooms:");
@@ -20,18 +17,29 @@ serverMessageMethods.sendMessage = (curRoom, webSocket, jsonFromClient, webSocke
     "content": jsonFromClient.content,
   };
   curRoom.clients().forEach((client) => {
-    if (client !== webSocket && client.readyState === webSocketOpetState) {
-      client.send(JSON.stringify(serverMessage));
+    if (client !== webSocket) {
+      if (client.readyState === webSocketOpetState) {
+        client.send(JSON.stringify(serverMessage));
+      } else {
+        curRoom.removeUser(client);
+      }
     }
   });
 };
 
-serverMessageMethods.userRoomAccept = (webSocket, room) => {
+serverMessageMethods.userRoomAccept = (webSocket, roomID) => {
   const serverAcceptUserRoomMessage = {
     method: "userRoomAccept",
-    content: room,
+    content: roomID,
   };
   webSocket.send(JSON.stringify(serverAcceptUserRoomMessage));
 };
+
+serverMessageMethods.getOutRoomAccept = (webSocket) => {
+  const serverGetOutRoomAccept = {
+    method: "getOutRoomAccept",
+  };
+  webSocket.send(JSON.stringify(serverGetOutRoomAccept));
+}
 
 export default serverMessageMethods;
