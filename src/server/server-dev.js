@@ -1,7 +1,9 @@
 import path from "path";
-import express from "express";
+import express, { json } from "express";
 import webpack from "webpack";
 import WebSocket from "ws";
+import Room from "./Room";
+import serverMessageMethods from "./messages/serverMessageMethods";
 
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
@@ -15,6 +17,7 @@ console.log(HTML_FILE);
 
 const PORT = process.env.PORT || 3000;
 const intervalValueForPing = 5000;
+const rooms = [];
 
 const server = express()
   .use(webpackDevMiddleware(compiler, {
@@ -37,21 +40,50 @@ function heartbeat(ws) {
   ws.isAlive = true;
 }
 
+const room1 = new Room("first room");
+const room2 = new Room("second room");
+const room3 = new Room("third room");
+rooms.push(room1);
+rooms.push(room2);
+rooms.push(room3);
+
 const wss = new WebSocket.Server({ server });
+
+function parseRequestFromClient(data, ws) {
+  if (data !== "") {
+    const jsonData = JSON.parse(data);
+    logMessage(jsonData);
+    switch (jsonData.method) {
+      case "message": {
+        const roomID = jsonData.roomID;
+        console.log(roomID);
+        const curRoom = rooms.filter(room => room.id === jsonData.roomID)[0];
+        serverMessageMethods.sendMessage(curRoom, ws, jsonData, WebSocket.OPEN);
+        break;
+      }
+      case "getRooms": {
+        logMessage("getRoomsMethod from client");
+        logMessage("rooms: ");
+        logMessage(rooms);
+        serverMessageMethods.sendRooms(ws, rooms);
+        break;
+      }
+      case "setRoom": {
+        const curRoom = rooms.filter(room => room.id === jsonData.content)[0];
+        curRoom.addUser(ws);
+        serverMessageMethods.userRoomAccept(ws, jsonData.content);
+        break;
+      }
+    }
+  }
+}
 
 wss.on('connection', (ws) => {
   logMessage("new user");
   heartbeat(ws)
   ws.on('message', function incoming(data) {
-    logMessage(data);
     heartbeat(ws);
-    if (data !== "") {
-      wss.clients.forEach((client) => {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          client.send(data);
-        }
-      });
-    }
+    parseRequestFromClient(data, ws);
   });
 });
 
