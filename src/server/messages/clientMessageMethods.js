@@ -1,34 +1,36 @@
+import logMessage from "../../js/logger";
+
 export const clientMessageMethods = {};
 
 clientMessageMethods.sendMessage = (webSocket, message, roomID) => {
-  console.log("sentMessageMethod");
+  logMessage("sentMessageMethod");
   const clientMessage = {
-    "method": "message",
-    "content": message,
-    roomID: roomID,
-  }
+    method: "message",
+    content: message,
+    roomID,
+  };
   webSocket.send(JSON.stringify(clientMessage));
 };
 
 clientMessageMethods.getRooms = (webSocket) => {
-  console.log("getRoomsMethod");
+  logMessage("getRoomsMethod");
   const getRoomsMsg = {
-    "method": "getRooms",
+    method: "getRooms",
   };
   webSocket.send(JSON.stringify(getRoomsMsg));
 };
 
 clientMessageMethods.setRoom = (webSocket, id) => {
-  console.log("setRoomMethod");
+  logMessage("setRoomMethod");
   const clientMessage = {
-    "method": "setRoom",
-    "content": id,
+    method: "setRoom",
+    content: id,
   };
   webSocket.send(JSON.stringify(clientMessage));
 };
 
 clientMessageMethods.getOutRoom = (webSocket, id) => {
-  console.log("get out room method");
+  logMessage("get out room method");
   const clientMessage = {
     method: "getOutRoom",
     content: id,
@@ -37,7 +39,7 @@ clientMessageMethods.getOutRoom = (webSocket, id) => {
 };
 
 clientMessageMethods.createRoom = (webSocket, roomName) => {
-  console.log("createRoom method");
+  logMessage("createRoom method");
   const clientMessage = {
     method: "createRoom",
     content: roomName,

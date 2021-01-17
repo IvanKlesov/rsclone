@@ -1,6 +1,6 @@
 import logMessage from "./js/logger";
 import "./css/style.css";
-import clientMessageMethods from "./server/messages/clientMessageMethods";
+import { clientMessageMethods } from "./server/messages/clientMessageMethods";
 
 import { configurateButton, hideElement, unhideElement } from "./js/createEl";
 
@@ -22,18 +22,18 @@ const messageBox = document.getElementById("messageBox");
 const createRoomInput = document.getElementById("createRoomInput");
 const createRoomBtn = document.getElementById("createRoomBtn");
 
-let chatRooms = document.getElementById("chatRooms");
+const chatRooms = document.getElementById("chatRooms");
 const chatRoomsId = [];
 
 let roomID;
-let ownRoomID;
+// let ownRoomID;
 
 function changeHttpUrlOnWs(url) {
-  return url.replace(/^http([s])?/, `ws$1`);
+  return url.replace(/^http([s])?/, "ws$1");
 }
 
 const HOST = changeHttpUrlOnWs(window.location.href);
-console.log(HOST);
+logMessage(HOST);
 const ws = new WebSocket(HOST);
 
 function acceptMessege(newMessage) {
@@ -47,7 +47,7 @@ function configurateChatRoomButtons(rooms) {
   unhideElement(createRoomBtn);
 
   logMessage(chatRooms);
-  rooms.forEach(room => {
+  rooms.forEach((room) => {
     const name = room.split("__id")[0];
     const id = room.split("__id")[1];
     if (chatRoomsId.indexOf(id) === -1) {
@@ -83,7 +83,7 @@ function outChat() {
   unhideElement(createRoomBtn);
 }
 
-ws.onopen = function () {
+ws.onopen = () => {
   logMessage("websocket start");
 };
 
@@ -92,11 +92,14 @@ ws.onmessage = (event) => {
     ws.send("");
   } else {
     const jsonData = JSON.parse(event.data);
-    console.log("JSON DATA");
-    console.log(jsonData);
+    logMessage("JSON DATA");
+    logMessage(jsonData);
     switch (jsonData.method) {
+      default: {
+        break;
+      }
       case "message": {
-        console.log("get info from server");
+        logMessage("get info from server");
         acceptMessege(jsonData.content);
         break;
       }
@@ -107,7 +110,7 @@ ws.onmessage = (event) => {
       }
       case "userRoomAccept": {
         roomID = jsonData.content;
-        console.log("roomID", roomID);
+        logMessage("roomID", roomID);
         enterChat();
         break;
       }
@@ -122,7 +125,7 @@ ws.onmessage = (event) => {
       }
       case "createRoomAccept": {
         hideElement(chatRooms);
-        const name = jsonData.content.split("__id")[0];
+        // const name = jsonData.content.split("__id")[0];
         const id = jsonData.content.split("__id")[1];
         roomID = id;
         enterChat();
@@ -132,7 +135,7 @@ ws.onmessage = (event) => {
   }
 };
 
-sendBtn.onclick = function () {
+sendBtn.onclick = () => {
   if (!ws) {
     logMessage("No WebSocket connection :(");
     return;
@@ -143,12 +146,12 @@ sendBtn.onclick = function () {
     acceptMessege(messageBox.value);
     messageBox.value = "";
   } else {
-    console.error("no room");
+    logMessage("no room");
   }
-}
+};
 
 chatRoomsBtn.onclick = () => {
-  console.log("chat rooms btn");
+  logMessage("chat rooms btn");
   clientMessageMethods.getRooms(ws);
 };
 

@@ -19,7 +19,6 @@ export default function createEl(elName, classes = "", id = "", parent = null) {
 }
 
 export function configurateButton(newInnnerText, classes = "", id, parent = null) {
-  console.log("configurateButton func");
   const newButton = createEl("button", "basic_button ".concat(classes), id, parent);
   newButton.innerText = newInnnerText;
   return newButton;
