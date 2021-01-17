@@ -117,7 +117,11 @@ ws.onmessage = (event) => {
         break;
       }
       case "createRoomAccept": {
-        logMessage(jsonData.content);
+        hideElement(chatRooms);
+        const name = jsonData.content.split("__id")[0];
+        const id = jsonData.content.split("__id")[1];
+        roomID = id;
+        enterChat();
         break;
       }
     }

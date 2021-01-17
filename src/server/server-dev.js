@@ -61,6 +61,23 @@ function setCurrentUserRoom(ws, id) {
   currentUser.setRoomID(id);
 }
 
+function destroyRoom(roomWillDestoroy) {
+  roomWillDestoroy.removeAllUsers(serverMessageMethods.getOutRoomAccept);
+  const destroyIndex = rooms.indexOf(roomWillDestoroy);
+  if (destroyIndex > -1) {
+    rooms.splice(destroyIndex, 1); 
+  }
+}
+
+function findRoomLinkByRoomID(needRoomID) {
+  for (let i = 0; i < rooms.length; i += 1) {
+    if (needRoomID === rooms[i].id) {
+      return rooms[i];
+    }
+  }
+  return -1;
+}
+
 function parseRequestFromClient(data, ws) {
   if (data !== "") {
     const jsonData = JSON.parse(data);
@@ -81,7 +98,7 @@ function parseRequestFromClient(data, ws) {
         break;
       }
       case "setRoom": {
-        const curRoom = rooms.filter(room => room.id === jsonData.content)[0];
+        const curRoom = findRoomLinkByRoomID(jsonData.content);
         curRoom.addUser(ws);
         if (curRoom.getRoomID()) {
           setCurrentUserRoom(ws, curRoom.getRoomID());
@@ -90,8 +107,11 @@ function parseRequestFromClient(data, ws) {
         break;
       }
       case "getOutRoom": {
-        const curRoom = rooms.filter(room => room.id === jsonData.content)[0];
-        curRoom.removeUser(ws);
+        const curRoom = findRoomLinkByRoomID(jsonData.content);
+        const itWasRoomOwner = curRoom.removeUser(ws);
+        if (!itWasRoomOwner) {
+          destroyRoom(curRoom);
+        }
         setCurrentUserRoom(ws, undefined);
         serverMessageMethods.getOutRoomAccept(ws);
         break;
