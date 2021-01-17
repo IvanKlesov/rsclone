@@ -1,18 +1,18 @@
-import path from 'path'
-import express from 'express'
+import path from 'path';
+import express from 'express';
+import { WebSocketServer } from "./WebSocketServer";
+import logMessage from "../js/logger.js";
 
-const app = express(),
-  DIST_DIR = __dirname,
-  HTML_FILE = path.join(DIST_DIR, 'index.html')
 
-app.use(express.static(DIST_DIR))
+const DIST_DIR = __dirname;
+const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
-app.get('*', (req, res) => {
-  res.sendFile(HTML_FILE)
-})
+const PORT = process.env.PORT || 3000;
 
-const PORT = process.env.PORT || 8080
-app.listen(PORT, () => {
-  console.log(`App listening to ${PORT}....`)
-  console.log('Press Ctrl+C to quit.')
-})
+const server = express()
+  .use(express.static(DIST_DIR))
+  .use((req, res) => res.sendFile(HTML_FILE))
+  .listen(PORT, () => logMessage(`Listening on ${PORT}`));
+
+const wss = new WebSocketServer(server);
+wss.init();
