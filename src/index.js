@@ -111,6 +111,10 @@ ws.onmessage = (event) => {
         enterChat();
         break;
       }
+      case "userRoomReject": {
+        logMessage("acces to room denied");
+        break;
+      }
       case "getOutRoomAccept": {
         roomID = undefined;
         outChat();

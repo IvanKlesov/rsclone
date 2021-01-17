@@ -46,6 +46,7 @@ function heartbeat(ws) {
 const room1 = new Room("first room");
 const room2 = new Room("second room");
 const room3 = new Room("third room");
+room3.setMaxUsersCount(2);
 rooms.push(room1);
 rooms.push(room2);
 rooms.push(room3);
@@ -99,7 +100,10 @@ function parseRequestFromClient(data, ws) {
       }
       case "setRoom": {
         const curRoom = findRoomLinkByRoomID(jsonData.content);
-        curRoom.addUser(ws);
+        const addUserIsSuccess = curRoom.addUser(ws);
+        if (!addUserIsSuccess) {
+          return serverMessageMethods.userRoomReject(ws, jsonData.content);
+        }
         if (curRoom.getRoomID()) {
           setCurrentUserRoom(ws, curRoom.getRoomID());
         }

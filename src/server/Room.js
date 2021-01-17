@@ -1,11 +1,11 @@
 import { v4 as uuid } from "uuid";
-import clientMessageMethods from "./messages/clientMessageMethods";
 
 export class Room {
   constructor(name) {
     this.id = uuid();
     this.name = name;
     this.users = [];
+    this.maxUsersCount = 5;
   }
 
   clients() {
@@ -13,8 +13,12 @@ export class Room {
   }
 
   addUser(newUser) {
+    if (this.users.length >= this.maxUsersCount) {
+      return false;
+    }
     newUser.roomID = this.id;
     this.users.push(newUser);
+    return true;
   }
 
   removeAllUsers(clientsCallbackLogout) {
@@ -45,6 +49,14 @@ export class Room {
   setOwner(userOwner) {
     this.owner = userOwner;
     this.addUser(userOwner);
+  }
+
+  setMaxUsersCount(newMaxCount) {
+    this.maxUsersCount = newMaxCount;
+  }
+
+  getMaxUsersCount() {
+    return this.maxUsersCount;
   }
 }
 

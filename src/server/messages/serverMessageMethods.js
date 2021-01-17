@@ -35,6 +35,14 @@ serverMessageMethods.userRoomAccept = (webSocket, roomID) => {
   webSocket.send(JSON.stringify(serverAcceptUserRoomMessage));
 };
 
+serverMessageMethods.userRoomReject = (webSocket, roomID) => {
+  const serverRejectUserRoomMessage = {
+    method: "userRoomReject",
+    content: roomID,
+  };
+  webSocket.send(JSON.stringify(serverRejectUserRoomMessage));
+}
+
 serverMessageMethods.getOutRoomAccept = (webSocket) => {
   const serverGetOutRoomAccept = {
     method: "getOutRoomAccept",
