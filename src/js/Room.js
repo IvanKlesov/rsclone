@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import serverMessageMethods from "./messages/serverMessageMethods";
+import serverMessageMethods from "../server/messages/serverMessageMethods";
 
 export class Room {
   constructor(name) {

@@ -1,6 +1,6 @@
 import WebSocket from "ws";
-import Room from "./Room";
-import User from "./User";
+import Room from "../js/Room";
+import User from "../js/User";
 import serverMessageMethods from "./messages/serverMessageMethods";
 import logMessage from "../js/logger.js";
 
