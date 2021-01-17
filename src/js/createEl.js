@@ -42,8 +42,3 @@ export function hideElement(element) {
 export function unhideElement(element) {
   element.classList.remove("hide");
 }
-
-/* exports = {
-  createEl: createEl,
-  configurateButton: configurateButton,
-} */

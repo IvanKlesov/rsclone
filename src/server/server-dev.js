@@ -37,7 +37,7 @@ const server = express()
       res.end()
     });
   })
-  .listen(PORT, () => console.log(`Listening on ${PORT}`));
+  .listen(PORT, () => logMessage(`Listening on ${PORT}`));
 
 function heartbeat(ws) {
   ws.isAlive = true;
@@ -63,7 +63,7 @@ function setCurrentUserRoom(ws, id) {
 }
 
 function destroyRoom(roomWillDestoroy) {
-  roomWillDestoroy.removeAllUsers(serverMessageMethods.getOutRoomAccept);
+  roomWillDestoroy.removeAllUsers();
   const destroyIndex = rooms.indexOf(roomWillDestoroy);
   if (destroyIndex > -1) {
     rooms.splice(destroyIndex, 1); 
@@ -82,19 +82,13 @@ function findRoomLinkByRoomID(needRoomID) {
 function parseRequestFromClient(data, ws) {
   if (data !== "") {
     const jsonData = JSON.parse(data);
-    logMessage(jsonData);
     switch (jsonData.method) {
       case "message": {
-        const roomID = jsonData.roomID;
-        console.log(roomID);
-        const curRoom = rooms.filter(room => room.id === jsonData.roomID)[0];
+        const curRoom = findRoomLinkByRoomID(jsonData.roomID);
         serverMessageMethods.sendMessage(curRoom, ws, jsonData, WebSocket.OPEN);
         break;
       }
       case "getRooms": {
-        logMessage("getRoomsMethod from client");
-        logMessage("rooms: ");
-        logMessage(rooms);
         serverMessageMethods.sendRooms(ws, rooms);
         break;
       }
@@ -145,7 +139,7 @@ const pingInterval = setInterval(() => {
   wss.clients.forEach((client) => {
     if (client.isAlive === false) {
       if (client.roomID) {
-        const curRoom = rooms.filter(room => room.id === client.roomID)[0];
+        const curRoom = findRoomLinkByRoomID(client.roomID);
         curRoom.removeUser(ws);
       }
       return client.close();

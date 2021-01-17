@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid";
+import serverMessageMethods from "./messages/serverMessageMethods";
 
 export class Room {
   constructor(name) {
@@ -21,11 +22,9 @@ export class Room {
     return true;
   }
 
-  removeAllUsers(clientsCallbackLogout) {
-    console.log("callback");
-    console.log(clientsCallbackLogout);
+  removeAllUsers() {
     this.users.forEach(client => {
-      clientsCallbackLogout(client);
+      serverMessageMethods.getOutRoomAccept(client);
     });
     this.users.lenght = 0;
   }
