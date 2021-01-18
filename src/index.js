@@ -1,9 +1,9 @@
 import logMessage from "./js/logger";
 import "./css/style.css";
 import { clientMessageMethods } from "./server/messages/clientMessageMethods";
-import handleCliCommand from "./js/machiCoroGame/front/machiCoroClientLogic";
+import handleCliCommand, { handlerServerMachiCoroResponse } from "./js/machiCoroGame/front/machiCoroClientLogic";
 
-import { configurateButton, hideElement, unhideElement } from "./js/createEl";
+import createEl, { configurateButton, hideElement, unhideElement } from "./js/createEl";
 
 // Log message to console
 logMessage("Welcome to Expack!");
@@ -38,7 +38,16 @@ logMessage(HOST);
 const ws = new WebSocket(HOST);
 
 function acceptMessege(newMessage) {
-  messages.textContent += `\n\n${newMessage}`;
+  const p = createEl("p");
+  p.textContent += newMessage;
+  messages.appendChild(p);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function acceptErrorMessage(newMessage) {
+  const p = createEl("p", "red", "");
+  p.textContent += newMessage;
+  messages.appendChild(p);
   messages.scrollTop = messages.scrollHeight;
 }
 
@@ -105,9 +114,6 @@ ws.onmessage = (event) => {
     logMessage("JSON DATA");
     logMessage(jsonData);
     switch (jsonData.method) {
-      default: {
-        break;
-      }
       case "message": {
         logMessage("get info from server");
         acceptMessege(jsonData.content);
@@ -141,6 +147,11 @@ ws.onmessage = (event) => {
         enterChat();
         break;
       }
+      default: {
+        const response = handlerServerMachiCoroResponse(jsonData);
+        acceptErrorMessage(response);
+        break;
+      }
     }
   }
 };
@@ -152,7 +163,7 @@ sendBtn.onclick = () => {
   }
 
   if (isGameCliCommand(messageBox.value)) {
-    handleCliCommand(ws, messageBox.value);
+    handleCliCommand(ws, messageBox.value, roomID);
     acceptMessege(messageBox.value);
     messageBox.value = "";
     return;

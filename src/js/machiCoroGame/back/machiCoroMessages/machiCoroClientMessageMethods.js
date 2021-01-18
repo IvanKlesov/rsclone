@@ -3,9 +3,10 @@ export const machiCoroClientMessageMethods = {};
 export const messageMethodsName = [];
 
 messageMethodsName.push("startGame");
-machiCoroClientMessageMethods.startGame = (webSocket) => {
+machiCoroClientMessageMethods.startGame = (webSocket, roomID) => {
   const clientMessage = {
     method: "startGame",
+    roomID,
   };
   webSocket.send(JSON.stringify(clientMessage));
 };

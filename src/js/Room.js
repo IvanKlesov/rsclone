@@ -1,5 +1,6 @@
 import { v4 as uuid } from "uuid";
 import serverMessageMethods from "../server/messages/serverMessageMethods";
+import MachiCoroGame from "./machiCoroGame/back/MachiCoroGame";
 
 export class Room {
   constructor(name) {
@@ -7,10 +8,26 @@ export class Room {
     this.name = name;
     this.users = [];
     this.maxUsersCount = 5;
+    this.owner = undefined;
+  }
+
+  startMachiCoroGame() {
+    if (this.users.length > 1) {
+      this.MachiCoroGame = new MachiCoroGame(this.getUsers());
+      this.MachiCoroGame.start();
+    }
+  }
+
+  getMachiCoroGame() {
+    return this.MachiCoroGame;
+  }
+
+  getUsers() {
+    return this.users;
   }
 
   clients() {
-    return this.users;
+    return this.users.map((user) => user.getWs());
   }
 
   addUser(newUser) {
@@ -48,6 +65,10 @@ export class Room {
   setOwner(userOwner) {
     this.owner = userOwner;
     this.addUser(userOwner);
+  }
+
+  getOwner(){
+    return this.owner;
   }
 
   setMaxUsersCount(newMaxCount) {

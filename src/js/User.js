@@ -5,6 +5,10 @@ export class User {
     this.ws = webSocket;
   }
 
+  getWs(){
+    return this.ws;
+  }
+
   setRoomID(roomID) {
     this.roomID = roomID;
   }

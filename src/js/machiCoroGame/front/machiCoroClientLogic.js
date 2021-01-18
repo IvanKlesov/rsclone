@@ -1,15 +1,30 @@
 import logMessage from "../../logger";
-import { machiCoroClientMessageMethods } from "../../../server/messages/machiCoroMessages/machiCoroClientMessageMethods";
+import { machiCoroClientMessageMethods } from "../back/machiCoroMessages/machiCoroClientMessageMethods";
 
-function sendStartMessage(ws) {
-  machiCoroClientMessageMethods.startGame(ws);
+function sendStartMessage(ws, roomID) {
+  machiCoroClientMessageMethods.startGame(ws, roomID);
 }
 
 function sendBuyMessage(ws) {
   machiCoroClientMessageMethods.buy(ws);
 }
 
-export default function handleCliCommand(ws, command) {
+export function handlerServerMachiCoroResponse(jsonData) {
+  logMessage("handlerServerMachiCoroResponse");
+  logMessage(jsonData);
+  const method = jsonData.method;
+  switch (method) {
+    case "gameStarted": {
+      return "game was started";
+    }
+    case "startGameError": {
+      return "error with game start";
+    }
+  }
+  return "";
+}
+
+export default function handleCliCommand(ws, command, roomID) {
   let currectCommand = command;
   if (currectCommand[0] === "/") {
     currectCommand = currectCommand.slice(1);
@@ -17,7 +32,7 @@ export default function handleCliCommand(ws, command) {
   switch (currectCommand) {
     case "start": {
       logMessage("start game command from client");
-      sendStartMessage(ws);
+      sendStartMessage(ws, roomID);
       break;
     }
     case "buy": {
@@ -27,6 +42,7 @@ export default function handleCliCommand(ws, command) {
     }
     case "help": {
       logMessage("help command from client");
+      logMessage("start = will start Machi Coro Game");
       break;
     }
     default: {
