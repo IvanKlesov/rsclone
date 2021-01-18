@@ -2,6 +2,7 @@ import WebSocket from "ws";
 import Room from "../js/Room";
 import User from "../js/User";
 import serverMessageMethods from "./messages/serverMessageMethods";
+import { checkMethodExistence, machiCoroHandler } from "./machiCoroHandler";
 import logMessage from "../js/logger.js";
 
 const intervalValueForPing = 5000;
@@ -90,6 +91,15 @@ export class WebSocketServer {
           this.rooms.push(newRoom);
           newRoom.setOwner(ws);
           serverMessageMethods.createRoomAccept(ws, newRoom);
+          break;
+        }
+        default: {
+          logMessage(jsonData.method);
+          const isMachiCoroMessage = checkMethodExistence(jsonData.method);
+          if (isMachiCoroMessage) {
+            machiCoroHandler(jsonData.method, ws);
+          }
+          logMessage(isMachiCoroMessage);
           break;
         }
       }

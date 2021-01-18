@@ -1,6 +1,7 @@
 import logMessage from "./js/logger";
 import "./css/style.css";
 import { clientMessageMethods } from "./server/messages/clientMessageMethods";
+import handleCliCommand from "./js/machiCoroGame/front/machiCoroClientLogic";
 
 import { configurateButton, hideElement, unhideElement } from "./js/createEl";
 
@@ -83,6 +84,15 @@ function outChat() {
   unhideElement(createRoomBtn);
 }
 
+function isGameCliCommand(clientMessage) {
+  logMessage("isGameCliCommand method");
+  if (clientMessage[0] === "/") {
+    logMessage(true);
+    return true;
+  }
+  return false;
+}
+
 ws.onopen = () => {
   logMessage("websocket start");
 };
@@ -138,6 +148,13 @@ ws.onmessage = (event) => {
 sendBtn.onclick = () => {
   if (!ws) {
     logMessage("No WebSocket connection :(");
+    return;
+  }
+
+  if (isGameCliCommand(messageBox.value)) {
+    handleCliCommand(ws, messageBox.value);
+    acceptMessege(messageBox.value);
+    messageBox.value = "";
     return;
   }
 

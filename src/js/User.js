@@ -1,8 +1,7 @@
-// import { v4 as uuid } from "uuid";
+import { MachiCoroUser }  from "./machiCoroGame/back/MachiCoroUser";
 
 export class User {
   constructor(webSocket) {
-    // this.id = uuid();
     this.ws = webSocket;
   }
 
@@ -16,6 +15,14 @@ export class User {
 
   removeRoomID() {
     this.roomID = undefined;
+  }
+
+  createMachiCoroUser() {
+    this.machiCoroUser = new MachiCoroUser();
+  }
+
+  getMachiCoroUser() {
+    return this.machiCoroUser;
   }
 }
 
