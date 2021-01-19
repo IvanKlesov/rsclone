@@ -96,13 +96,13 @@ export class WebSocketServer {
         }
         default: {
           logMessage(jsonData.method);
-          const isMachiCoroMessage = checkMethodExistence(jsonData.method);
+          // const isMachiCoroMessage = checkMethodExistence(jsonData.method);
           const curRoom = this.findRoomLinkByRoomID(jsonData.roomID);
-          if (isMachiCoroMessage) {
-            logMessage("мы тута");
-            machiCoroHandler(jsonData.method, ws, curRoom, WebSocket.OPEN);
+          const itWasMachiCoroMessage = machiCoroHandler(jsonData.method, ws, curRoom, WebSocket.OPEN);
+          if (itWasMachiCoroMessage) {
+            logMessage("это была комнда machi Coro game");
           }
-          logMessage(isMachiCoroMessage);
+          logMessage(itWasMachiCoroMessage);
           break;
         }
       }

@@ -1,10 +1,10 @@
 import logMessage from "../../../logger";
-import { messageMethodsName } from "../machiCoroMessages/machiCoroClientMessageMethods";
+// import { messageMethodsName } from "../machiCoroMessages/machiCoroClientMessageMethods";
 import machiCoroServerMessageMethods from "../machiCoroMessages/machiCoroServerMessageMethods";
 
 const NEED_USERS_FOR_GAME_START = 1;
 
-export function checkMethodExistence(methodName) {
+/* export function checkMethodExistence(methodName) {
   logMessage("machiCoroServerMessageMethods checkMethodExistence. methodName = ".concat(methodName));
   if (messageMethodsName.indexOf(methodName) > -1) {
     logMessage("this method exist");
@@ -12,7 +12,7 @@ export function checkMethodExistence(methodName) {
   }
   logMessage("this method doesn't exist");
   return false;
-};
+}; */
 
 export function machiCoroHandler(command, ws, room, webSocketOpetState) {
   switch (command) {
@@ -30,5 +30,10 @@ export function machiCoroHandler(command, ws, room, webSocketOpetState) {
       logMessage("machiCoroHandler buy");
       break;
     }
+    default: {
+      return false;
+    }
   }
+
+  return true;
 }
