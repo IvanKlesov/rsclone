@@ -23,7 +23,8 @@ export function handlerServerMachiCoroResponse(jsonData) {
 
     case "userGameInfo": {
       const userGameInfo = `get Info about this user from server\n
-      User Money:${jsonData.money}`;
+      User Money:${jsonData.money}\n
+      Cards: ${jsonData.cards}`;
       return userGameInfo;
     }
   }

@@ -1,3 +1,6 @@
+import logMessage from "../logger";
+
+// add effect, effectValue, effectCondition as decorator
 class Card {
   // arrayOfActivationNumbers = (1-3) == [1,2,3]
   constructor(name, cost, type, color, arrayOfActivationNumbers, effect, effectValue, effectCondition = "") {
@@ -13,20 +16,18 @@ class Card {
 }
 
 const effects = {
-  getMoneyFromBank,
-  getMoneyForEachBuildingWithName,
-  getMoneyFromActiveUser
+  getMoneyFromBank: "getMoneyFromBank",
+  getMoneyForEachBuildingWithName: "getMoneyForEachBuildingWithName",
+  getMoneyFromActiveUser: "getMoneyFromActiveUser"
 };
 
 export const cardFactory = (cardName) => {
-  switch (cardName.toLowerCase()) {
-    default: {
-      return undefined;
-    }
+  switch (cardName) {
     // green
     // green crads wich owner turn give money to onwer
     // пекарня - начальная карта - bakery
     case "bakery": {
+      logMessage("cardFactory will create bakery");
       return new Card("bakery", 1, "shop", "green", [2, 3], effects.getMoneyFromBank, 1, "");
     }
 
@@ -46,6 +47,7 @@ export const cardFactory = (cardName) => {
     // blue cards wich turn give money to owner
     // пшеничное поле - начальная карта - wheat field
     case "wheatField": {
+      logMessage("cardFactory will create wheatField");
       return new Card("wheatField", 1, "agriculture", "blue", [1], effects.getMoneyFromBank, 1, "");
     }
 
@@ -73,6 +75,9 @@ export const cardFactory = (cardName) => {
     //purple
     // red cards give money to owner in owner turn from opponent cash
 
+    default: {
+      break;
+    }
   }
 }
 

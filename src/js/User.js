@@ -1,4 +1,5 @@
 import { MachiCoroUser }  from "./machiCoroGame/back/MachiCoroUser";
+import cardFactory from "./machiCoroGame/cards";
 
 export class User {
   constructor(webSocket) {
