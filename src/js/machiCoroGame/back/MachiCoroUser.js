@@ -1,6 +1,6 @@
 export class MachiCoroUser {
   constructor() {
-    this.money = 60;
+    this.money = 3;
     // cardsArray wich contain 2 basic card
     // array of great buildings 
   }
