@@ -12,4 +12,12 @@ export class MachiCoroUser {
   getMoney() {
     return this.money;
   }
+
+  getFullInfoAboutMachiCoroUser() {
+    const fullInfo = {
+      money: this.getMoney(),
+    }
+
+    return fullInfo;
+  }
 }

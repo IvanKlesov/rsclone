@@ -20,6 +20,12 @@ export function handlerServerMachiCoroResponse(jsonData) {
     case "startGameError": {
       return "error with game start";
     }
+
+    case "userGameInfo": {
+      const userGameInfo = `get Info about this user from server\n
+      User Money:${jsonData.money}`;
+      return userGameInfo;
+    }
   }
   return "";
 }

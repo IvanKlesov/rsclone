@@ -28,6 +28,10 @@ export class User {
   getMachiCoroUser() {
     return this.machiCoroUser;
   }
+
+  getGameInfo() {
+    return this.machiCoroUser.getFullInfoAboutMachiCoroUser();
+  }
 }
 
 export default User;

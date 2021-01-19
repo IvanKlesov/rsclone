@@ -11,10 +11,10 @@ export class Room {
     this.owner = undefined;
   }
 
-  startMachiCoroGame() {
-    if (this.users.length > 1) {
+  startMachiCoroGame(websocket, webSocketOpetState) {
+    if (this.users.length > 1 && this.MachiCoroGame === undefined) {
       this.MachiCoroGame = new MachiCoroGame(this.getUsers());
-      this.MachiCoroGame.start();
+      this.MachiCoroGame.start(websocket, webSocketOpetState);
     }
   }
 
@@ -67,7 +67,7 @@ export class Room {
     this.addUser(userOwner);
   }
 
-  getOwner(){
+  getOwner() {
     return this.owner;
   }
 
