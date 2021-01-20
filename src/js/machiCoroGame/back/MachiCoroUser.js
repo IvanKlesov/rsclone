@@ -35,6 +35,20 @@ export class MachiCoroUser {
     return fullInfo;
   }
 
+  addCard(cardName) {
+    const newCard = cardFactory(cardName);
+    logMessage("addCard func");
+    if (newCard) {
+      const cardCondition = newCard.cost <= this.getMoney();
+      if (cardCondition) {
+        this.userCards.push(newCard);
+        return true;
+      }
+    }
+    logMessage("addCard func return false");
+    return false;
+  }
+
   initBasicUserCards() {
     this.userCards.push(cardFactory("bakery"));
     this.userCards.push(cardFactory("wheatField"));

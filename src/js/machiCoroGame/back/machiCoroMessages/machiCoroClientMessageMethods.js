@@ -8,10 +8,11 @@ machiCoroClientMessageMethods.startGame = (webSocket, roomID) => {
   webSocket.send(JSON.stringify(clientMessage));
 };
 
-machiCoroClientMessageMethods.buy = (webSocket, roomID) => {
+machiCoroClientMessageMethods.buy = (webSocket, roomID, buyRequest) => {
   const clientMessage = {
     method: "buy",
     roomID,
+    buyRequest,
   };
   webSocket.send(JSON.stringify(clientMessage));
 };

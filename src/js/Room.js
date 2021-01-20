@@ -22,6 +22,12 @@ export class Room {
     return this.MachiCoroGame;
   }
 
+  machiCoroGameBuy(websocket, buyRequest) {
+    if (this.MachiCoroGame) {
+      this.MachiCoroGame.buy(websocket, buyRequest);
+    }
+  }
+
   machiCoroGameHold(websocket) {
     if (this.MachiCoroGame) {
       this.MachiCoroGame.hold(websocket);

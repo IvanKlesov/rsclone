@@ -8,6 +8,7 @@ export default class MachiCoroGame {
     this.userNumTurn = 0;
     this.resOfCubesThrow = -1;
     this.userThrowCube = false;
+    this.userMakeBuyInThisTurn = false;
   }
 
   start(ws, webSocketOpetState) {
@@ -65,14 +66,13 @@ export default class MachiCoroGame {
     // calculate from blue card
     this.users.forEach((user) => {
       this.calculateUserBlueCardsIncome(user, randNum);
+      // if it is this user turn
+      // calculate from green cars
+      // calculate from purple cards
       if (user === activeUser) {
         this.calculateUserGreenCardsIncome(user, randNum);
       }
     });
-
-    // if it is this user turn
-    // calculate from green cars
-    // calculate from purple cards
   }
 
   generateRandNumbers(maxNumber) {
@@ -95,9 +95,21 @@ export default class MachiCoroGame {
     return randNum;
   }
 
-  buy() {
-    if (this.userThrowCube) {
+  buy(ws, buyRequest) {
+    if (!this.userThrowCube || this.userMakeBuyInThisTurn) {
       return;
+    }
+    let curActiveUser = this.users[this.userNumTurn];
+    if (ws !== curActiveUser.getWs()) {
+      return;
+    }
+    const machiCoroUser = curActiveUser.getMachiCoroUser();
+    const isCardAdded = machiCoroUser.addCard(buyRequest);
+    if (isCardAdded) {
+      this.userMakeBuyInThisTurn = true;
+      logMessage("machiCoroServerMessageMethods.sendPurchaseInfo()");
+      machiCoroServerMessageMethods.sendPurchaseInfo(this.users, this.userNumTurn, buyRequest);
+      this.hold(ws);
     }
   }
 
@@ -120,6 +132,7 @@ export default class MachiCoroGame {
       this.userNumTurn += 1;
     }
     this.userThrowCube = false;
+    this.userMakeBuyInThisTurn = false;
     logMessage("this.userNumTurn now = ".concat(this.userNumTurn));
   }
 

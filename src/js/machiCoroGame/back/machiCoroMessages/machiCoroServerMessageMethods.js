@@ -58,4 +58,20 @@ machiCoroServerMessageMethods.sendResultOfThrowCube = (users, curActiveUserIndex
   });
 }
 
+machiCoroServerMessageMethods.sendPurchaseInfo = (users, curActiveUserIndex, buyResponse) => {
+  users.forEach((user, index) => {
+    const userWs = user.getWs();
+    const message = {
+      method: "purchaseInfo",
+      buyResponse,
+    };
+    if (curActiveUserIndex === index) {
+      message.turn = "you";
+    } else {
+      message.turn = curActiveUserIndex;
+    }
+    userWs.send(JSON.stringify(message));
+  });
+}
+
 export default machiCoroServerMessageMethods;

@@ -5,8 +5,8 @@ function sendStartMessage(ws, roomID) {
   machiCoroClientMessageMethods.startGame(ws, roomID);
 }
 
-function sendBuyMessage(ws, roomID) {
-  machiCoroClientMessageMethods.buy(ws, roomID);
+function sendBuyMessage(ws, roomID, willBuy) {
+  machiCoroClientMessageMethods.buy(ws, roomID, willBuy);
 }
 
 function sendHoldMessage(ws, roomID) {
@@ -51,7 +51,14 @@ export function handlerServerMachiCoroResponse(jsonData) {
         return `Player ${activePlayerNum} throw ${point}`;
       }
     }
+    case "purchaseInfo": {
+      const itIsYourTurn = jsonData.turn === "you";
+      if (itIsYourTurn) {
+        return `It is Your turn.You buy ${jsonData.buyResponse}`;
+      }
+      return `It is turn of player${jsonData.turn}. Player${jsonData.turn} buy ${jsonData.buyResponse}`;
 
+    }
   }
   return "";
 }
@@ -70,8 +77,9 @@ export default function handleCliCommand(ws, command, roomID) {
     }
     case "buy": {
       logMessage("buy command from client");
-      logMessage(currectCommand[1]);
-      sendBuyMessage(ws, roomID);
+      const userTryBuyThisThing = currectCommand[1];
+      logMessage(userTryBuyThisThing);
+      sendBuyMessage(ws, roomID, userTryBuyThisThing);
       break;
     }
     case "hold": {

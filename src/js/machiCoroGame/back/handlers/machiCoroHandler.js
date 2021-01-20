@@ -1,5 +1,4 @@
 import logMessage from "../../../logger";
-// import machiCoroServerMessageMethods from "../machiCoroMessages/machiCoroServerMessageMethods";
 
 const NEED_USERS_FOR_GAME_START = 2;
 
@@ -18,6 +17,8 @@ export function machiCoroHandler(data, ws, room, webSocketOpetState) {
     case "buy": {
       logMessage("machiCoroHandler buy");
       logMessage(room);
+      logMessage();
+      room.machiCoroGameBuy(ws, data.buyRequest)
       break;
     }
     case "hold": {
