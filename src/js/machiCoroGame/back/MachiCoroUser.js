@@ -41,4 +41,24 @@ export class MachiCoroUser {
     logMessage("initBasicUserCards end ");
     logMessage(this.userCards);
   }
+
+  getCardWithColor(color) {
+    return this.userCards.filter((card) => card.color === color);
+  }
+
+  getBlueCards() {
+    return this.getCardWithColor("blue");
+  }
+
+  getGreenCards() {
+    return this.getCardWithColor("green");
+  }
+
+  getRedCards() {
+    return this.getCardWithColor("red");
+  }
+
+  getPurpleCards() {
+    return this.getCardWithColor("purple");
+  }
 }
