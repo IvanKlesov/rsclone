@@ -24,11 +24,19 @@ machiCoroServerMessageMethods.gameStarted = (users, webSocket, webSocketOpetStat
   }
 };
 
-machiCoroServerMessageMethods.sendUserGameInfo = (users) => {
-  users.forEach((user) => {
+machiCoroServerMessageMethods.sendUserGameInfo = (users, curActiveUser) => {
+  const curActiveUserIndex = users.findIndex((user) => user === curActiveUser);
+  users.forEach((user, index) => {
     const userWs = user.getWs();
     const userGameData = user.getGameInfo();
     userGameData.method = "userGameInfo";
+    if (user === curActiveUser) {
+      userGameData.turn = "you";
+      userGameData.playerNum = curActiveUserIndex;
+    } else {
+      userGameData.turn = curActiveUserIndex;/* curActiveUser.getUserID() */;
+      userGameData.playerNum = index;
+    }
     userWs.send(JSON.stringify(userGameData));
   })
 };

@@ -18,6 +18,12 @@ export function machiCoroHandler(command, ws, room, webSocketOpetState) {
       logMessage("machiCoroHandler buy");
       break;
     }
+    case "hold": {
+      console.log(room);
+      logMessage("get hold message");
+      room.machiCoroGameHold(ws);
+      break;
+    }
     default: {
       return false;
     }

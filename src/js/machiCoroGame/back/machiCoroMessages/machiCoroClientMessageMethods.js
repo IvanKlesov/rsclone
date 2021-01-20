@@ -1,8 +1,5 @@
 export const machiCoroClientMessageMethods = {};
 
-export const messageMethodsName = [];
-
-messageMethodsName.push("startGame");
 machiCoroClientMessageMethods.startGame = (webSocket, roomID) => {
   const clientMessage = {
     method: "startGame",
@@ -11,12 +8,20 @@ machiCoroClientMessageMethods.startGame = (webSocket, roomID) => {
   webSocket.send(JSON.stringify(clientMessage));
 };
 
-messageMethodsName.push("buy");
-machiCoroClientMessageMethods.buy = (webSocket) => {
+machiCoroClientMessageMethods.buy = (webSocket, roomID) => {
   const clientMessage = {
     method: "buy",
+    roomID,
   };
   webSocket.send(JSON.stringify(clientMessage));
 };
+
+machiCoroClientMessageMethods.hold = (webSocket, roomID) => {
+  const clientMessage = {
+    method: "hold",
+    roomID,
+  };
+  webSocket.send(JSON.stringify(clientMessage));
+}
 
 export default machiCoroClientMessageMethods;

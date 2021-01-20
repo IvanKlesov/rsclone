@@ -5,8 +5,16 @@ function sendStartMessage(ws, roomID) {
   machiCoroClientMessageMethods.startGame(ws, roomID);
 }
 
-function sendBuyMessage(ws) {
-  machiCoroClientMessageMethods.buy(ws);
+function sendBuyMessage(ws, roomID) {
+  machiCoroClientMessageMethods.buy(ws, roomID);
+}
+
+function sendHoldMessage(ws, roomID) {
+  machiCoroClientMessageMethods.hold(ws, roomID);
+}
+
+function printInfoAboutBuyAction() {
+  return "it is your turn \n/buy name -> buy something;\n/hold - hold turn";
 }
 
 export function handlerServerMachiCoroResponse(jsonData) {
@@ -23,8 +31,10 @@ export function handlerServerMachiCoroResponse(jsonData) {
 
     case "userGameInfo": {
       const userGameInfo = `get Info about this user from server\n
+      You are Player ${jsonData.playerNum}
       User Money:${jsonData.money}\n
-      Cards: ${jsonData.cards}`;
+      Cards: ${jsonData.cards}
+      ${jsonData.turn === "you" ? printInfoAboutBuyAction() : "it is turn of ".concat(jsonData.turn)}`;
       return userGameInfo;
     }
   }
@@ -36,7 +46,8 @@ export default function handleCliCommand(ws, command, roomID) {
   if (currectCommand[0] === "/") {
     currectCommand = currectCommand.slice(1);
   }
-  switch (currectCommand) {
+  currectCommand = currectCommand.split(" ", 2);
+  switch (currectCommand[0]) {
     case "start": {
       logMessage("start game command from client");
       sendStartMessage(ws, roomID);
@@ -44,7 +55,12 @@ export default function handleCliCommand(ws, command, roomID) {
     }
     case "buy": {
       logMessage("buy command from client");
-      sendBuyMessage(ws);
+      logMessage(currectCommand[1]);
+      sendBuyMessage(ws, roomID);
+      break;
+    }
+    case "hold": {
+      sendHoldMessage(ws, roomID);
       break;
     }
     case "help": {

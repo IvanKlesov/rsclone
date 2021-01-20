@@ -22,6 +22,10 @@ export class Room {
     return this.MachiCoroGame;
   }
 
+  machiCoroGameHold(websocket) {
+    this.MachiCoroGame.hold(websocket);
+  }
+
   getUsers() {
     return this.users;
   }
