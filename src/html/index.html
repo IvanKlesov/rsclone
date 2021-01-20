@@ -1,25 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>Express and Webpack App</title>
-    <link rel="shortcut icon" href="#">
-</head>
+    <link rel="shortcut icon" href="#" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet" />
+  </head>
 
-<body>
+  <body>
+    <div class="popup">
+      <div class="main-menu">
+        <h2>Мачи Коро</h2>
+        <ul>
+          <li class="new-game">Новая игра</li>
+          <li class="cards">Карты</li>
+          <li class="rules">Правила Игры</li>
+          <li class="settings">Настройки</li>
+        </ul>
+      </div>
+      <div class="all-cards hidden">
+        <h2>Карты</h2>
+        <h4>Достопримечательности</h4>
+        <div class="attractions">
+          <img class="picture" src="../assets/images/Достопримечательности/Порт.png" alt="Порт" />
+          <img class="picture" src="../assets/images/Достопримечательности/вокзал.png" alt="Вокзал" />
+          <img class="picture" src="../assets/images/Достопримечательности/Торговый центр.png" alt="Торговый центр" />
+          <img
+            class="picture"
+            src="../assets/images/Достопримечательности/парк аттракционов.png"
+            alt="Парк аттракционов"
+          />
+          <img class="picture" src="../assets/images/Достопримечательности/Радиовышка.png" alt="Радиовышка" />
+          <img class="picture" src="../assets/images/Достопримечательности/аэропорт.png" alt="Аэропорт" />
+        </div>
+        <h4>Обычные постройки</h4>
+        <div class="ordinary-buildings slider">
+          <div class="slider-wrapper">
+            <div class="slider-item">
+              "<img class="" src="../assets/images/Обычные постройки/суши-бар.png" alt="Суши-бар" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/пшеничное поле.png" alt="Пшеничное поле" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/ферма.png" alt="Ферма" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/пекарня.png" alt="Пекарня" />
+            </div>
+            <div class="slider-item"><img class="" src="../assets/images/Обычные постройки/кафе.png" alt="Кафе" /></div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/Магазин.png" alt="Магазин" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/цветник.png" alt="Цветник" />
+            </div>
+            <div class="slider-item"><img class="" src="../assets/images/Обычные постройки/лес.png" alt="Лес" /></div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/цветочный магазин.png" alt="Цветочный магазин" />
+            </div>
+            <div class="slider-item">
+              <img class=" " src="../assets/images/Обычные постройки/пиццерия.png" alt="Пиццерия" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/сыроварня.png" alt="Сыроварня" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/мебельная фабрика.png" alt="Мебельная фабрика" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/баркас.png" alt="Баркас" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/закусочная.png" alt="Закусочная" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/шахта.png" alt="Шахта" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/ресторан.png" alt="Ресторан" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/яблоневый сад.png" alt="Яблоневый сад" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/овощной рынок.png" alt="Овощной рынок" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/продуктовый склад.png" alt="Продуктовый склад" />
+            </div>
+            <div class="slider-item">
+              <img class="" src="../assets/images/Обычные постройки/траулер.png" alt="Траулер" />
+            </div>
+          </div>
+
+          <a class="slider-control slider-control-left" href="#" role="button"> </a>
+          <a class="slider-control slider-control-right slider-control-show" href="#" role="button"> </a>
+        </div>
+        <h4>Стартовые карты</h4>
+        <div class="start-cards">
+          <img class="picture" src="../assets/images/Стартовые/мэрия.png" alt="Мэрия" />
+          <img class="picture" src="../assets/images/Стартовые/пшеничное поле.png" alt="Пшеничное поле" />
+          <img class="picture" src="../assets/images/Стартовые/пекарня.png" alt="Пекарня" />
+        </div>
+        <h4>Уникальные постройки</h4>
+        <div class="unique-buildings">
+          <img class="picture" src="../assets/images/Уникальные постройки/деловой центр.png" alt="Деловой центр" />
+          <img class="picture" src="../assets/images/Уникальные постройки/стадион.png" alt="Стадион" />
+          <img class="picture" src="../assets/images/Уникальные постройки/телецентр.png" alt="Телецентр" />
+          <img class="picture" src="../assets/images/Уникальные постройки/издательство.png" alt="Издательство" />
+          <img class="picture" src="../assets/images/Уникальные постройки/налоговая.png" alt="Налоговая" />
+        </div>
+        <button class="btn-back-cards">Назад</button>
+      </div>
+    </div>
     <h1>Real Time Messaging</h1>
     <div id="chatRooms">
-        <input type="text" id="createRoomInput" class="hide" placeholder="Type your new room name here" />
-        <button id = "createRoomBtn" class="hide">create room</button>
-        <br>
+      <input type="text" id="createRoomInput" class="hide" placeholder="Type your new room name here" />
+      <button id="createRoomBtn" class="hide">create room</button>
+      <br />
     </div>
     <pre id="messages" class="hide"></pre>
 
     <input type="text" id="messageBox" class="hide" placeholder="Type your message here" />
     <button id="send" class="hide" title="Send Message!">Send Message</button>
     <button id="chatRoomsBtn" title="get chat rooms">get chat rooms</button>
-    <button id="getOutRoomBtn" class="hide" title="get out from room"> get out from room</button>
-</body>
-
+    <button id="getOutRoomBtn" class="hide" title="get out from room">get out from room</button>
+  </body>
 </html>

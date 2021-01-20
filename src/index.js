@@ -1,5 +1,7 @@
 import logMessage from "./js/logger";
+import "./js/popup";
 import "./css/style.css";
+import "./css/popup.css";
 import { clientMessageMethods } from "./server/messages/clientMessageMethods";
 
 import { configurateButton, hideElement, unhideElement } from "./js/createEl";
@@ -8,7 +10,7 @@ import { configurateButton, hideElement, unhideElement } from "./js/createEl";
 logMessage("Welcome to Expack!");
 
 // Needed for Hot Module Replacement
-if (typeof (module.hot) !== "undefined") {
+if (typeof module.hot !== "undefined") {
   module.hot.accept(); // eslint-disable-line no-undef
 }
 
