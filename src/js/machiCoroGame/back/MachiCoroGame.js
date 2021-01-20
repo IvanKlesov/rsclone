@@ -43,12 +43,31 @@ export default class MachiCoroGame {
     logMessage("Пересчитаем");
     logMessage(user.getMachiCoroUser())
   }
+
+  calculateUserGreenCardsIncome(user, randNum) {
+    logMessage("смотрим зеленые карты игрока");
+    let getMoneyFromGreenCards = 0;
+    const userGreenCards = user.getMachiCoroUser().getGreenCards();
+    logMessage(userGreenCards);
+    userGreenCards.forEach((card) => {
+      if (card.effectCondition === "" && this.isNumberInArrayOFActivationNumbers(card, randNum)) {
+        getMoneyFromGreenCards += card.effectValue;
+      }
+    });
+    logMessage("насчитали столько новых денюшек из зеленых карт: " + getMoneyFromGreenCards);
+    this.updateUserMoney(user, getMoneyFromGreenCards);
+    logMessage("Пересчитаем");
+    logMessage(user.getMachiCoroUser())
+  }
+
   // should be calculated second
   calculateIncome(activeUser, randNum) {
     // calculate from blue card
     this.users.forEach((user) => {
-      /* if (user === activeUser){} */
       this.calculateUserBlueCardsIncome(user, randNum);
+      if (user === activeUser) {
+        this.calculateUserGreenCardsIncome(user, randNum);
+      }
     });
 
     // if it is this user turn
@@ -57,7 +76,7 @@ export default class MachiCoroGame {
   }
 
   generateRandNumbers(maxNumber) {
-    return Math.floor(Math.random() * Math.floor(maxNumber)) || 1;
+    return Math.floor(Math.random() * Math.floor(maxNumber + 1)) || this.generateRandNumbers(maxNumber);
   }
 
   throwCubes(ws, numberOfCubes = 1) {
