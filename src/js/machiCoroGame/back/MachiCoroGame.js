@@ -6,6 +6,8 @@ export default class MachiCoroGame {
   constructor(users) {
     this.users = users;
     this.userNumTurn = 0;
+    this.resOfCubesThrow = -1;
+    this.userThrowCube = false;
   }
 
   start(ws, webSocketOpetState) {
@@ -21,17 +23,41 @@ export default class MachiCoroGame {
     }); */
   }
 
-  buy() {
+  generateRandNumbers(maxNumber) {
+    return Math.floor(Math.random() * Math.floor(maxNumber)) || 1;
+  }
 
+  throwCubes(ws, numberOfCubes = 1) {
+    if (this.userThrowCube) {
+      return;
+    }
+    const curActiveUser = this.users[this.userNumTurn];
+    if (ws !== curActiveUser.getWs()) {
+      return;
+    }
+    const randNum = this.generateRandNumbers(6 * numberOfCubes);
+    machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, randNum);
+    logMessage("randNum = " + randNum);
+    this.userThrowCube = true;
+    return randNum;
+  }
+
+  buy() {
+    if (this.userThrowCube) {
+      return;
+    }
   }
 
   hold(ws) {
+    if (!this.userThrowCube) {
+      return;
+    }
     let curActiveUser = this.users[this.userNumTurn];
     if (curActiveUser.getWs() === ws) {
       this.getNextUser();
       curActiveUser = this.users[this.userNumTurn];
       machiCoroServerMessageMethods.sendUserGameInfo(this.users, curActiveUser);
-    } 
+    }
   }
 
   getNextUser() {
@@ -40,6 +66,7 @@ export default class MachiCoroGame {
     } else {
       this.userNumTurn += 1;
     }
+    this.userThrowCube = false;
     logMessage("this.userNumTurn now = ".concat(this.userNumTurn));
   }
 

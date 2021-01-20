@@ -98,7 +98,7 @@ export class WebSocketServer {
           logMessage(jsonData.method);
           // const isMachiCoroMessage = checkMethodExistence(jsonData.method);
           const curRoom = this.findRoomLinkByRoomID(jsonData.roomID);
-          const itWasMachiCoroMessage = machiCoroHandler(jsonData.method, ws, curRoom, WebSocket.OPEN);
+          const itWasMachiCoroMessage = machiCoroHandler(jsonData, ws, curRoom, WebSocket.OPEN);
           if (itWasMachiCoroMessage) {
             logMessage("это была комнда machi Coro game");
           }

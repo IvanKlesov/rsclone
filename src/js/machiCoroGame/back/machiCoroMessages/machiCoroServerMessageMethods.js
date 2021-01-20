@@ -24,6 +24,7 @@ machiCoroServerMessageMethods.gameStarted = (users, webSocket, webSocketOpetStat
   }
 };
 
+// refactor = > curActiveUser change to curActiveUserIndex
 machiCoroServerMessageMethods.sendUserGameInfo = (users, curActiveUser) => {
   const curActiveUserIndex = users.findIndex((user) => user === curActiveUser);
   users.forEach((user, index) => {
@@ -40,5 +41,21 @@ machiCoroServerMessageMethods.sendUserGameInfo = (users, curActiveUser) => {
     userWs.send(JSON.stringify(userGameData));
   })
 };
+
+machiCoroServerMessageMethods.sendResultOfThrowCube = (users, curActiveUserIndex, throwCubeResult) => {
+  users.forEach((user, index) => {
+    const userWs = user.getWs();
+    const message = {
+      method: "throwCube",
+      throwCubeResult
+    };
+    if (curActiveUserIndex === index) {
+      message.turn = "you";
+    } else {
+      message.turn = curActiveUserIndex;
+    }
+    userWs.send(JSON.stringify(message));
+  });
+}
 
 export default machiCoroServerMessageMethods;

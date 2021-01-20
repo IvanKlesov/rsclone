@@ -3,7 +3,8 @@ import logMessage from "../../../logger";
 
 const NEED_USERS_FOR_GAME_START = 2;
 
-export function machiCoroHandler(command, ws, room, webSocketOpetState) {
+export function machiCoroHandler(data, ws, room, webSocketOpetState) {
+  const command = data.method;
   switch (command) {
     case "startGame": {
       logMessage("machiCoroHandler startGame");
@@ -16,12 +17,19 @@ export function machiCoroHandler(command, ws, room, webSocketOpetState) {
     }
     case "buy": {
       logMessage("machiCoroHandler buy");
+      logMessage(room);
       break;
     }
     case "hold": {
       console.log(room);
       logMessage("get hold message");
       room.machiCoroGameHold(ws);
+      break;
+    }
+    case "throw": {
+      logMessage("get throwMessage");
+      logMessage(room);
+      room.machiCoroGameThrowCube(ws, data.cubeNumbers);
       break;
     }
     default: {

@@ -23,7 +23,15 @@ export class Room {
   }
 
   machiCoroGameHold(websocket) {
-    this.MachiCoroGame.hold(websocket);
+    if (this.MachiCoroGame) {
+      this.MachiCoroGame.hold(websocket);
+    }
+  }
+
+  machiCoroGameThrowCube(websocket, numberOfCubes = 1) {
+    if (this.MachiCoroGame) {
+      this.MachiCoroGame.throwCubes(websocket, numberOfCubes);
+    }
   }
 
   getUsers() {

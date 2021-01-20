@@ -13,6 +13,10 @@ function sendHoldMessage(ws, roomID) {
   machiCoroClientMessageMethods.hold(ws, roomID);
 }
 
+function sendThrowCubeMessage(ws, roomID, cubeNumbs) {
+  machiCoroClientMessageMethods.throw(ws, roomID, cubeNumbs);
+}
+
 function printInfoAboutBuyAction() {
   return "it is your turn \n/buy name -> buy something;\n/hold - hold turn";
 }
@@ -28,7 +32,6 @@ export function handlerServerMachiCoroResponse(jsonData) {
     case "startGameError": {
       return "error with game start";
     }
-
     case "userGameInfo": {
       const userGameInfo = `get Info about this user from server\n
       You are Player ${jsonData.playerNum}
@@ -37,6 +40,18 @@ export function handlerServerMachiCoroResponse(jsonData) {
       ${jsonData.turn === "you" ? printInfoAboutBuyAction() : "it is turn of ".concat(jsonData.turn)}`;
       return userGameInfo;
     }
+    case "throwCube": {
+      // const throwResult = "";
+      logMessage("throwCubeResult handled");
+      const point = jsonData.throwCubeResult;
+      if (jsonData.turn === "you") {
+        return `You throw ${point}`;
+      } else {
+        const activePlayerNum = jsonData.turn
+        return `Player ${activePlayerNum} throw ${point}`;
+      }
+    }
+
   }
   return "";
 }
@@ -66,6 +81,14 @@ export default function handleCliCommand(ws, command, roomID) {
     case "help": {
       logMessage("help command from client");
       logMessage("start = will start Machi Coro Game");
+      break;
+    }
+    case "throw": {
+      sendThrowCubeMessage(ws, roomID, 1);
+      break;
+    }
+    case "throw2": {
+      sendThrowCubeMessage(ws, roomID, 2);
       break;
     }
     default: {
