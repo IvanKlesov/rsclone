@@ -221,3 +221,249 @@ body {
 .slider-control-right::before {
   background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
 }
+
+/* Rules */
+
+.rules-categorie {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  background-color: #ffffff;
+  font-family: "Roboto", sans-serif;
+}
+
+.rules-categorie h4 {
+  font-family: "Oswald", sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  color: #000000;
+  text-transform: uppercase;
+  transition: 0.3s linear;
+  cursor: pointer;
+  text-align: center;
+}
+
+.rules-categorie p {
+  font-size: 20px;
+  text-align: justify;
+}
+
+.rules-categorie ul,
+ol {
+  max-width: 500px;
+  font-size: 17px;
+  line-height: 26px;
+  color: #3e3e3e;
+  font-weight: bold;
+  margin: 0;
+}
+
+.description-game {
+  max-width: 1200px;
+}
+
+.preparation-game-wrapper {
+  max-width: 1200px;
+  display: flex;
+}
+
+.preparation-game {
+  max-width: 50%;
+}
+
+.preparation-game ul {
+  padding-left: 0;
+  padding-right: 10px;
+}
+
+.preparation-game-img {
+  max-width: 50%;
+}
+
+.preparation-game-img img {
+  max-width: 500px;
+}
+
+.game-progress {
+  max-width: 1200px;
+}
+
+.enterprises {
+  max-width: 1200px;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  margin: 0 auto;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+}
+
+.enterprises-blue-header,
+.enterprises-green-header,
+.enterprises-red-header,
+.enterprises-purple-header {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.enterprises-blue-header {
+  background-color: #1766a4;
+}
+
+.enterprises-green-header {
+  background-color: #427830;
+}
+
+.enterprises-red-header {
+  background-color: #9e1f2b;
+}
+
+.enterprises-purple-header {
+  background-color: #762775;
+}
+
+.enterprises h4 {
+  margin: 0 auto;
+  color: #ffffff;
+  padding: 10px auto;
+}
+
+.enterprises-blue-card,
+.enterprises-green-card,
+.enterprises-red-card,
+.enterprises-purple-card {
+  display: flex;
+  padding-top: 10px;
+  border-left: 2px solid #b2b2b8;
+  border-right: 2px solid #b2b2b8;
+  border-bottom: 2px solid #b2b2b8;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.enterprises-card-img {
+  width: 40%;
+}
+
+.enterprises-card-img img {
+  max-width: 200px;
+  padding: 10px;
+}
+
+.enterprises-card-description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+}
+
+.enterprises-card-description p {
+  max-width: 400px;
+  text-align: center;
+  font-size: 32px;
+}
+
+.btn-back-rules {
+  width: 200px;
+  height: 60px;
+  padding: 10px;
+  margin: 0 auto 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #00acdc;
+  color: #ffffff;
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.btn-back-rules:hover {
+  background-color: rgba(218, 55, 58);
+}
+
+/* Media */
+
+@media (max-width: 1440px) {
+  .attractions {
+    max-width: 600px;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .ordinary-buildings {
+    max-width: 1000px;
+  }
+
+  .unique-buildings {
+    max-width: 600px;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .btn-back-cards {
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .attractions {
+    max-width: 600px;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ordinary-buildings {
+    max-width: 680px;
+  }
+
+  .slider-item img {
+    width: 250px;
+  }
+}
+
+@media (max-width: 740px) {
+  .attractions {
+    max-width: 200px;
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .ordinary-buildings {
+    max-width: 420px;
+  }
+
+  .slider-item img {
+    width: 180px;
+    padding: 0;
+  }
+
+  .slider-control {
+    width: 20px;
+    height: 25px;
+  }
+
+  .slider-control::before {
+    width: 10px;
+    height: 10px;
+  }
+
+  .start-cards {
+    max-width: 300px;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .unique-buildings {
+    max-width: 200px;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .picture {
+    width: 250px;
+  }
+}
