@@ -1,19 +1,14 @@
 import logMessage from "../logger";
 
-// add effect, effectValue, effectCondition as decorator
 class Card {
   // arrayOfActivationNumbers = (1-3) == [1,2,3]
-  constructor(name, cost, type, color, arrayOfActivationNumbers, income, /*  effect, , effectCondition = "" */) {
+  constructor(name, cost, type, color, arrayOfActivationNumbers, income) {
     this.name = name;
     this.cost = cost;
     this.type = type;
     this.color = color;
     this.arrayOfActivationNumbers = arrayOfActivationNumbers;
-    // this.effectValue = effectValue;
     this.income = income;
-    // this.effect = effect;
-
-    // this.effectCondition = effectCondition;
   }
 
   cardIncome() {
@@ -21,6 +16,7 @@ class Card {
   }
 }
 
+// blue cards
 class Longboat extends Card {
   constructor() {
     super("longboat", 2, "boat", "blue", [8], 3);
@@ -82,31 +78,77 @@ class AppleOrchard extends Card {
   }
 }
 
-
-
-
-
-/* class FlowerStore extends Card {
-  constructor()
+// green cards
+class Store extends Card {
+  constructor() {
+    super("store", 2, "shop", "green", [4], 3);
+  }
 }
- */
-const effects = {
-  getMoneyFromBank: "getMoneyFromBank",
-  getMoneyForEachBuildingWithName: "getMoneyForEachBuildingWithName",
-  getMoneyFromActiveUser: "getMoneyFromActiveUser",
-  getMoneyFromAllUsers: "getMoneyFromAllUsers",
-};
 
-effects.getMoneyFromBank = () => {
-  return effectValue;
+class FurnitureFactory extends Card {
+  constructor() {
+    super("furnitureFactory", 3, "production", "green", [8], 3);
+  }
+
+  cardIncome(userCards) {
+    const cardsWithTypeNature = userCards.filter((card) => card.type === "nature");
+    return cardsWithTypeNature.length * this.income;
+  }
+}
+
+class VegetableMarket extends Card {
+  constructor() {
+    super("vegetableMarket", 2, "market", "green", [11, 12], 2);
+  }
+
+  cardIncome(userCards) {
+    const agricultureCards = userCards.filter((card) => card.type === "agriculture");
+    return agricultureCards.length * this.income;
+  }
+}
+class Bakery extends Card {
+  constructor() {
+    super("bakery", 1, "shop", "green", [2, 3], 1);
+  }
+}
+
+// продуктовый склад
+class GroceryWarehouse extends Card {
+  constructor() {
+    super("groceryWarehouse", 2, "production", "green", [12, 13], 2);
+  }
+
+  cardIncome(userCards) {
+    // implement after red cards
+  }
+}
+
+class CheeseDairy extends Card {
+  constructor() {
+    super("cheeseDairy", 5, "production", "green". [7], 3);
+  }
+
+  cardIncome(userCards) {
+    const cardsWithTypeFarm = userCards.filter((card) => card.type === "farm");
+    return cardsWithTypeFarm.length * this.income;
+  }
+}
+
+class FlowerStore extends Card {
+  constructor() {
+    super("flowerStore", 1, "shop", "green", [6], 1);
+  }
+
+  cardIncome(userCards) {
+    const flowerGardenCards = userCards.filter((card) => card.name === "flowerGarden");
+    return flowerGardenCards.length * this.income;
+  }
 }
 
 export const cardFactory = (cardName) => {
   switch (cardName) {
-
     //blue
     // blue cards wich turn give money to owner
-
     case "longboat": {
       return new Longboat();
     }
@@ -143,24 +185,35 @@ export const cardFactory = (cardName) => {
     // green
     // green crads wich owner turn give money to onwer
     // пекарня - начальная карта - bakery
-    /* case "bakery": {
-      logMessage("cardFactory will create bakery");
-      return new Card("bakery", 1, "shop", "green", [2, 3], 1);
-    }
 
     case "store": {
-      return new Card("store", 2, "shop", "green", [4], 3);
-    } */
+      return new Store();
+    }
 
-    /* case "flowerStore": {
-      return new Card("flowerStore", 1, "shop", "green", [6], 1);
-    } */
+    case "furnitureFactory": {
+      return new FurnitureFactory();
+    }
 
-    /* case "vegetableMarket": {
-      return new Card("vegetableMarket", );
-    } */
+    case "vegetableMarket": {
+      return new VegetableMarket();
+    }
 
+    case "bakery": {
+      logMessage("cardFactory will create bakery");
+      return new Bakery();
+    }
 
+    case "groceryWarehouse": {
+      return new GroceryWarehouse();
+    }
+
+    case "cheeseDairy": {
+      return new CheeseDairy();
+    }
+
+    case "flowerStore": {
+      return new FlowerStore();
+    }
     //red
     // red cards give money to owner from opponent cash
 

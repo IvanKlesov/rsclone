@@ -35,9 +35,9 @@ export default class MachiCoroGame {
     const userBlueCards = user.getMachiCoroUser().getBlueCards()
     logMessage(userBlueCards);
     userBlueCards.forEach((card) => {
-      // if (card.effectCondition === "" && this.isNumberInArrayOFActivationNumbers(card, randNum)) {
-      getMoneyFromBlueCards += card.cardIncome(user.getMachiCoroUser().getAllUserCards(), randNum);
-      //}
+      if (this.isNumberInArrayOFActivationNumbers(card, randNum)) {
+        getMoneyFromBlueCards += card.cardIncome(user.getMachiCoroUser().getAllUserCards(), randNum);
+      }
     });
     logMessage("насчитали столько новых денюшек из синих карт: " + getMoneyFromBlueCards);
     this.updateUserMoney(user, getMoneyFromBlueCards);
@@ -45,22 +45,22 @@ export default class MachiCoroGame {
     logMessage(user.getMachiCoroUser())
   }
 
-  /*   calculateUserGreenCardsIncome(user, randNum) {
-      logMessage("смотрим зеленые карты игрока");
-      let getMoneyFromGreenCards = 0;
-      const userGreenCards = user.getMachiCoroUser().getGreenCards();
-      logMessage(userGreenCards);
-      userGreenCards.forEach((card) => {
-        if (card.effectCondition === "" && this.isNumberInArrayOFActivationNumbers(card, randNum)) {
-          getMoneyFromGreenCards += card.effectValue;
-        }
-      });
-      logMessage("насчитали столько новых денюшек из зеленых карт: " + getMoneyFromGreenCards);
-      this.updateUserMoney(user, getMoneyFromGreenCards);
-      logMessage("Пересчитаем");
-      logMessage(user.getMachiCoroUser())
-    }
-   */
+  calculateUserGreenCardsIncome(user, randNum) {
+    logMessage("смотрим зеленые карты игрока");
+    let getMoneyFromGreenCards = 0;
+    const userGreenCards = user.getMachiCoroUser().getGreenCards();
+    logMessage(userGreenCards);
+    userGreenCards.forEach((card) => {
+      if (this.isNumberInArrayOFActivationNumbers(card, randNum)) {
+        getMoneyFromGreenCards += card.cardIncome(user.getMachiCoroUser().getAllUserCards(), randNum);
+      }
+    });
+    logMessage("насчитали столько новых денюшек из зеленых карт: " + getMoneyFromGreenCards);
+    this.updateUserMoney(user, getMoneyFromGreenCards);
+    logMessage("Пересчитаем");
+    logMessage(user.getMachiCoroUser())
+  }
+
   /* calculateUserPurpleCardsIncome(curUser, randNum) {
     let money = 0;
     const userPurpleCards = curUser.getMachiCoroUser().getPurpleCards();
