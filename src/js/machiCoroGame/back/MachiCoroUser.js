@@ -1,4 +1,4 @@
-import cardFactory from "../cards";
+import cardFactory from "../cards/cardFactory";
 import logMessage from "../../../js/logger";
 
 export class MachiCoroUser {
