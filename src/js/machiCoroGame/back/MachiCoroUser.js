@@ -50,10 +50,14 @@ export class MachiCoroUser {
   }
 
   initBasicUserCards() {
-    this.userCards.push(cardFactory("bakery"));
+    // this.userCards.push(cardFactory("bakery"));
     this.userCards.push(cardFactory("wheatField"));
     logMessage("initBasicUserCards end ");
     logMessage(this.userCards);
+  }
+
+  getAllUserCards() {
+    return this.userCards;
   }
 
   getCardWithColor(color) {

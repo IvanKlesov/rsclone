@@ -35,9 +35,9 @@ export default class MachiCoroGame {
     const userBlueCards = user.getMachiCoroUser().getBlueCards()
     logMessage(userBlueCards);
     userBlueCards.forEach((card) => {
-      if (card.effectCondition === "" && this.isNumberInArrayOFActivationNumbers(card, randNum)) {
-        getMoneyFromBlueCards += card.effectValue;
-      }
+      // if (card.effectCondition === "" && this.isNumberInArrayOFActivationNumbers(card, randNum)) {
+      getMoneyFromBlueCards += card.cardIncome(user.getMachiCoroUser().getAllUserCards(), randNum);
+      //}
     });
     logMessage("насчитали столько новых денюшек из синих карт: " + getMoneyFromBlueCards);
     this.updateUserMoney(user, getMoneyFromBlueCards);
@@ -45,21 +45,42 @@ export default class MachiCoroGame {
     logMessage(user.getMachiCoroUser())
   }
 
-  calculateUserGreenCardsIncome(user, randNum) {
-    logMessage("смотрим зеленые карты игрока");
-    let getMoneyFromGreenCards = 0;
-    const userGreenCards = user.getMachiCoroUser().getGreenCards();
-    logMessage(userGreenCards);
-    userGreenCards.forEach((card) => {
-      if (card.effectCondition === "" && this.isNumberInArrayOFActivationNumbers(card, randNum)) {
-        getMoneyFromGreenCards += card.effectValue;
+  /*   calculateUserGreenCardsIncome(user, randNum) {
+      logMessage("смотрим зеленые карты игрока");
+      let getMoneyFromGreenCards = 0;
+      const userGreenCards = user.getMachiCoroUser().getGreenCards();
+      logMessage(userGreenCards);
+      userGreenCards.forEach((card) => {
+        if (card.effectCondition === "" && this.isNumberInArrayOFActivationNumbers(card, randNum)) {
+          getMoneyFromGreenCards += card.effectValue;
+        }
+      });
+      logMessage("насчитали столько новых денюшек из зеленых карт: " + getMoneyFromGreenCards);
+      this.updateUserMoney(user, getMoneyFromGreenCards);
+      logMessage("Пересчитаем");
+      logMessage(user.getMachiCoroUser())
+    }
+   */
+  /* calculateUserPurpleCardsIncome(curUser, randNum) {
+    let money = 0;
+    const userPurpleCards = curUser.getMachiCoroUser().getPurpleCards();
+    logMessage("Фиолетовые карты пользователя");
+    userPurpleCards.forEach((card) => {
+      if (this.isNumberInArrayOFActivationNumbers(card, randNum)) {
+        if (card.effectCondition === "") {
+          if (card.effect === "getMoneyFromAllUsers") {
+            this.users.forEach((user) => {
+              if (user !== curUser) {
+                this.updateUserMoney(user, -card.effectValue);
+                money += card.effectValue;
+              }
+            });
+          }
+        }
       }
     });
-    logMessage("насчитали столько новых денюшек из зеленых карт: " + getMoneyFromGreenCards);
-    this.updateUserMoney(user, getMoneyFromGreenCards);
-    logMessage("Пересчитаем");
-    logMessage(user.getMachiCoroUser())
-  }
+    this.updateUserMoney(curUser, money);
+  } */
 
   // should be calculated second
   calculateIncome(activeUser, randNum) {
@@ -69,9 +90,9 @@ export default class MachiCoroGame {
       // if it is this user turn
       // calculate from green cars
       // calculate from purple cards
-      if (user === activeUser) {
+      /* if (user === activeUser) {
         this.calculateUserGreenCardsIncome(user, randNum);
-      }
+      } */
     });
   }
 
