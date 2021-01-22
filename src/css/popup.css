@@ -248,6 +248,7 @@ body {
 .rules-categorie p {
   font-size: 20px;
   text-align: justify;
+  margin: 0 20px;
 }
 
 .rules-categorie ul,
@@ -295,10 +296,11 @@ ol {
   display: grid;
   justify-content: center;
   align-content: center;
-  margin: 0 auto;
+  margin: 30px auto 0;
   grid-template-rows: repeat(2, 1fr);
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 20px;
+  padding: 0 20px;
 }
 
 .enterprises-blue-header,
@@ -370,7 +372,7 @@ ol {
   width: 200px;
   height: 60px;
   padding: 10px;
-  margin: 0 auto 20px;
+  margin: 30px auto;
   border: none;
   border-radius: 20px;
   background-color: #00acdc;
@@ -409,7 +411,7 @@ ol {
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1050px) {
   .attractions {
     max-width: 600px;
     grid-template-rows: repeat(3, 1fr);
@@ -422,6 +424,38 @@ ol {
 
   .slider-item img {
     width: 250px;
+  }
+
+  .preparation-game-wrapper {
+    max-width: 800px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preparation-game {
+    order: 1;
+    max-width: 100%;
+  }
+
+  .preparation-game ul {
+    max-width: 680px;
+  }
+
+  .preparation-game-img {
+    order: 0;
+    max-width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .game-progress {
+    max-width: 740px;
+  }
+
+  .enterprises {
+    max-width: 740px;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
@@ -465,5 +499,70 @@ ol {
 
   .picture {
     width: 250px;
+  }
+
+  .preparation-game ul {
+    max-width: 460px;
+  }
+
+  .preparation-game-img img {
+    width: 480px;
+  }
+}
+
+@media (max-width: 490px) {
+  .preparation-game ul {
+    max-width: 275px;
+    font-size: 16px;
+  }
+
+  .preparation-game-img img {
+    width: 300px;
+  }
+
+  .preparation-game-wrapper {
+    max-width: 320px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .game-progress {
+    max-width: 320px;
+  }
+
+  .enterprises {
+    max-width: 320px;
+  }
+
+  .enterprises-blue-card,
+  .enterprises-green-card,
+  .enterprises-red-card,
+  .enterprises-purple-card {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .enterprises-card-img {
+    width: 100%;
+    text-align: center;
+  }
+
+  .enterprises-card-img img {
+    max-width: 240px;
+    padding: 10px;
+  }
+
+  .enterprises-card-description {
+    width: 100%;
+  }
+
+  .enterprises h4 {
+    font-size: 20px;
+  }
+
+  .enterprises-card-description p {
+    font-size: 20px;
   }
 }
