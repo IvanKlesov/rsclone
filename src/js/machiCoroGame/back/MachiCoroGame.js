@@ -96,6 +96,14 @@ export default class MachiCoroGame {
     });
   }
 
+  calculateIncomeFromShoppingCenter(activeUser) {
+    const curMachiCoroUser = activeUser.getMachiCoroUser();
+    if (curMachiCoroUser.hasShoppingCenter) {
+      const shopingCenterCard = curMachiCoroUser.getAllUserCards.find((card) => card.name === "shoppingCenter");
+      shopingCenterCard.attractionsCardEffect(activeUser);
+    }
+  }
+
   // should be calculated second
   calculateIncome(activeUser, randNum) {
     // calculate from blue card
@@ -107,6 +115,7 @@ export default class MachiCoroGame {
     // calculate from purple cards
     this.calculateUserGreenCardsIncome(activeUser, randNum);
     this.calculateUserPurpleCardsIncome(activeUser, randNum);
+    this.calculateIncomeFromShoppingCenter(activeUser)
   }
 
   generateRandNumbers(maxNumber) {

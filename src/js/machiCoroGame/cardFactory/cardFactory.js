@@ -3,6 +3,7 @@ import { Longboat, Forest, WheatField, Trawler, Farm, FlowerGarden, Mine, AppleO
 import { Store, FurnitureFactory, VegetableMarket, Bakery, GroceryWarehouse, CheeseDairy, FlowerStore } from "./cards/greenCards";
 import { Diner, Cafe, Pizzeria, Restaurant, SushiBar } from "./cards/redCards";
 import { BusinessCenter, PublishingHouse, Tax, Stadium, Telecentre } from "./cards/purpleCards";
+import { Airport, RailwayStation, AmusementPark, Port, RadioTower, ShoppingCenter } from "./cards/attractionsCards";
 
 export const cardFactory = (cardName) => {
   switch (cardName) {
@@ -117,6 +118,32 @@ export const cardFactory = (cardName) => {
 
     case "telecentre": {
       return new Telecentre();
+    }
+
+    // attraction cards
+
+    case "airport": {
+      return new Airport();
+    }
+
+    case "railwayStation": {
+      return new RailwayStation();
+    }
+
+    case "amusementPark": {
+      return new AmusementPark();
+    }
+
+    case "port": {
+      return new Port();
+    }
+
+    case "radioTower": {
+      return new RadioTower();
+    }
+
+    case "shoppingCenter": {
+      return new ShoppingCenter();
     }
 
     default: {

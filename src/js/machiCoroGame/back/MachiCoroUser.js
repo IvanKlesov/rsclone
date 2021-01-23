@@ -6,6 +6,12 @@ export class MachiCoroUser {
     this.money = 3;
     this.userCards = [];
     this.initBasicUserCards();
+    this.hasAirport = false;
+    this.hasRailwayStation = false;
+    this.hasAmusementPark = false;
+    this.hasPort = false;
+    this.hasRadioTower = false;
+    this.hasShoppingCenter = false;
     // cardsArray wich contain 2 basic card
     // array of great buildings 
   }
@@ -35,14 +41,32 @@ export class MachiCoroUser {
     return fullInfo;
   }
 
+  isUserHaveThisCard(cardName) {
+    return this.userCards.findIndex((card) => card.name === cardName) > -1;
+  }
+
   addCard(cardName) {
     const newCard = cardFactory(cardName);
     logMessage("addCard func");
     if (newCard) {
-      const cardCondition = newCard.cost <= this.getMoney();
-      if (cardCondition) {
-        this.userCards.push(newCard);
-        return true;
+      const cardConditionCost = newCard.cost <= this.getMoney();
+      if (cardConditionCost) {
+        if (newCard.color === "attraction") {
+          if (!this.isUserHaveThisCard(cardName)) {
+            this.userCards.push(newCard);
+            newCard.toggleСardIndicator(this);
+            return true;
+          }
+        }
+        if (newCard.type === "unic") {
+          if (!this.isUserHaveThisCard(cardName)) {
+            this.userCards.push(newCard);
+            return true;
+          }
+        } else {
+          this.userCards.push(newCard);
+          return true;
+        }
       }
     }
     logMessage("addCard func return false");
@@ -80,7 +104,7 @@ export class MachiCoroUser {
     return this.getCardWithColor("purple");
   }
 
-  updateUserMoney( moneyDelta) {
+  updateUserMoney(moneyDelta) {
     const oldMoney = this.getMoney();
     logMessage("updateUserMoney oldMoney: " + oldMoney);
     let newMoney = oldMoney + moneyDelta;
