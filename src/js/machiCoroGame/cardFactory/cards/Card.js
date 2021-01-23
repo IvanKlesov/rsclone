@@ -31,3 +31,9 @@ export class RedCard extends Card {
     super(name, cost, type, "red", arrayOfActivationNumbers, income);
   }
 }
+
+export class PurpleCard extends Card {
+  constructor(name, cost, type, arrayOfActivationNumbers, income) {
+    super(name, cost, type, "purple", arrayOfActivationNumbers, income);
+  }
+}

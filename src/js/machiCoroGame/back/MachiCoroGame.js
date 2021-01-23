@@ -84,39 +84,29 @@ export default class MachiCoroGame {
     logMessage(user.getMachiCoroUser())
   }
 
-  /* calculateUserPurpleCardsIncome(curUser, randNum) {
-    let money = 0;
-    const userPurpleCards = curUser.getMachiCoroUser().getPurpleCards();
+  calculateUserPurpleCardsIncome(curUser, randNum) {
+    const curMachiCoroUser = curUser.getMachiCoroUser();
+    const userPurpleCards = curMachiCoroUser.getPurpleCards();
     logMessage("Фиолетовые карты пользователя");
+    const machiCoroUsers = this.users.map((user) => user.getMachiCoroUser());
     userPurpleCards.forEach((card) => {
       if (this.isNumberInArrayOFActivationNumbers(card, randNum)) {
-        if (card.effectCondition === "") {
-          if (card.effect === "getMoneyFromAllUsers") {
-            this.users.forEach((user) => {
-              if (user !== curUser) {
-                this.updateUserMoney(user, -card.effectValue);
-                money += card.effectValue;
-              }
-            });
-          }
-        }
+        card.cardIncome(curMachiCoroUser, machiCoroUsers);
       }
     });
-    this.updateUserMoney(curUser, money);
-  } */
+  }
 
   // should be calculated second
   calculateIncome(activeUser, randNum) {
     // calculate from blue card
     this.users.forEach((user) => {
       this.calculateUserBlueCardsIncome(user, randNum);
-      // if it is this user turn
-      // calculate from green cars
-      // calculate from purple cards
-      /* if (user === activeUser) {
-        this.calculateUserGreenCardsIncome(user, randNum);
-      } */
     });
+    // if it is this user turn
+    // calculate from green cars
+    // calculate from purple cards
+    this.calculateUserGreenCardsIncome(activeUser, randNum);
+    this.calculateUserPurpleCardsIncome(activeUser, randNum);
   }
 
   generateRandNumbers(maxNumber) {
@@ -131,7 +121,7 @@ export default class MachiCoroGame {
     if (ws !== curActiveUser.getWs()) {
       return;
     }
-    const randNum = 3;// = this.generateRandNumbers(6 * numberOfCubes);
+    const randNum = 6;//this.generateRandNumbers(6 * numberOfCubes);
     machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, randNum);
     logMessage("randNum = " + randNum);
     this.userThrowCube = true;
@@ -186,6 +176,10 @@ export default class MachiCoroGame {
   }
 
   updateUserMoney(user, moneyDelta) {
+    return user.getMachiCoroUser().updateUserMoney(moneyDelta);
+  }
+
+  /* updateUserMoney(user, moneyDelta) {
     const machiCoroUser = user.getMachiCoroUser();
     const oldMoney = machiCoroUser.getMoney();
     logMessage("updateUserMoney oldMoney: " + oldMoney);
@@ -198,5 +192,5 @@ export default class MachiCoroGame {
     logMessage("updateUserMoney newMoney2: " + newMoney);
     machiCoroUser.setMoney(newMoney);
     return newMoneyBeforeCorrection;
-  }
+  } */
 }

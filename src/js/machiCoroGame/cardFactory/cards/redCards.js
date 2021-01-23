@@ -1,12 +1,6 @@
 // red cards
 import { RedCard as Card } from "./Card";
 
-
-/* case "cafe": {
-  return new Card("cafe", 2, "cafe", "red", [5], effects.getMoneyFromActiveUser, 1, "");
-} */
-
-
 // закусочная
 export class Diner extends Card {
   constructor() {

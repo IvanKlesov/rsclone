@@ -1,7 +1,8 @@
 import logMessage from "../../logger";
-import { Longboat, Forest, WheatField, Trawler, Farm, FlowerGarden, Mine, AppleOrchard } from "./blueCards";
-import { Store, FurnitureFactory, VegetableMarket, Bakery, GroceryWarehouse, CheeseDairy, FlowerStore } from "./greenCards";
-import { Diner, Cafe, Pizzeria, Restaurant, SushiBar } from "./redCards";
+import { Longboat, Forest, WheatField, Trawler, Farm, FlowerGarden, Mine, AppleOrchard } from "./cards/blueCards";
+import { Store, FurnitureFactory, VegetableMarket, Bakery, GroceryWarehouse, CheeseDairy, FlowerStore } from "./cards/greenCards";
+import { Diner, Cafe, Pizzeria, Restaurant, SushiBar } from "./cards/redCards";
+import { BusinessCenter, PublishingHouse, Tax, Stadium, Telecentre } from "./cards/purpleCards";
 
 export const cardFactory = (cardName) => {
   switch (cardName) {
@@ -98,9 +99,25 @@ export const cardFactory = (cardName) => {
     //purple
     // red cards give money to owner in owner turn from opponent cash
 
-    /* case "stadium": {
-      return new Card("stadium", 6, "unic", "purple", [6], effects.getMoneyFromAllUsers, 2, "");
-    } */
+    case "businessCenter": {
+      return new BusinessCenter();
+    }
+
+    case "publishingHouse": {
+      return new PublishingHouse();
+    }
+
+    case "tax": {
+      return new Tax();
+    }
+
+    case "stadium": {
+      return new Stadium();
+    }
+
+    case "telecentre": {
+      return new Telecentre();
+    }
 
     default: {
       break;

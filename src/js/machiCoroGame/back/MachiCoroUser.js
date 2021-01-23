@@ -1,4 +1,4 @@
-import cardFactory from "../cards/cardFactory";
+import cardFactory from "../cardFactory/cardFactory";// "../cards/cardFactory";
 import logMessage from "../../../js/logger";
 
 export class MachiCoroUser {
@@ -78,5 +78,19 @@ export class MachiCoroUser {
 
   getPurpleCards() {
     return this.getCardWithColor("purple");
+  }
+
+  updateUserMoney( moneyDelta) {
+    const oldMoney = this.getMoney();
+    logMessage("updateUserMoney oldMoney: " + oldMoney);
+    let newMoney = oldMoney + moneyDelta;
+    logMessage("updateUserMoney newMoney: " + newMoney);
+    const newMoneyBeforeCorrection = newMoney;
+    if (newMoney < 0) {
+      newMoney = 0;
+    }
+    logMessage("updateUserMoney newMoney2: " + newMoney);
+    this.setMoney(newMoney);
+    return newMoneyBeforeCorrection;
   }
 }
