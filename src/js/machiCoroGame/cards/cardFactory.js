@@ -1,6 +1,7 @@
 import logMessage from "../../logger";
 import { Longboat, Forest, WheatField, Trawler, Farm, FlowerGarden, Mine, AppleOrchard } from "./blueCards";
 import { Store, FurnitureFactory, VegetableMarket, Bakery, GroceryWarehouse, CheeseDairy, FlowerStore } from "./greenCards";
+import { Diner, Cafe, Pizzeria, Restaurant, SushiBar } from "./redCards";
 
 export const cardFactory = (cardName) => {
   switch (cardName) {
@@ -74,11 +75,25 @@ export const cardFactory = (cardName) => {
     //red
     // red cards give money to owner from opponent cash
 
-    /* case "cafe": {
-      return new Card("cafe", 2, "cafe", "red", [5], effects.getMoneyFromActiveUser, 1, "");
-    } */
+    case "diner": {
+      return new Diner();
+    }
 
-    //суши бар
+    case "cafe": {
+      return new Cafe();
+    }
+
+    case "pizzeria": {
+      return new Pizzeria();
+    }
+
+    case "restaurant": {
+      return new Restaurant();
+    }
+
+    case "sushiBar": {
+      return new SushiBar();
+    }
 
     //purple
     // red cards give money to owner in owner turn from opponent cash

@@ -7,7 +7,7 @@ export class Longboat extends Card {
     }
 
     cardIncome(userCards) {
-      if (userCards.findIndex((card) => card.name === "Port" > -1)) {
+      if (userCards.findIndex((card) => card.name === "port" > -1)) {
         return this.income;
       }
       return 0;
@@ -31,7 +31,7 @@ export class Trawler extends Card {
   }
 
   cardIncome(userCards, cubeNumbers) {
-    if (userCards.findIndex((card) => card.name === "Port" > -1)) {
+    if (userCards.findIndex((card) => card.name === "port" > -1)) {
       return cubeNumbers;
     }
     return 0;

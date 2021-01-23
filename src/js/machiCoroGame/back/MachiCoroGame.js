@@ -20,13 +20,36 @@ export default class MachiCoroGame {
     machiCoroServerMessageMethods.sendUserGameInfo(this.users, curActiveUser);
   }
 
-  // should be calculated first
-  calculateExpenses() {
-    // calculate from opponent's red cards;
-  }
-
   isNumberInArrayOFActivationNumbers(card, num) {
     return card.arrayOfActivationNumbers.indexOf(num) > -1;
+  }
+
+  calculateUserRedCardsIncome(curUser, randNum) {
+    let getMoneyFromRedCards = 0;
+    const userRedCards = curUser.getMachiCoroUser().getRedCards();
+    userRedCards.forEach((card) => {
+      if (this.isNumberInArrayOFActivationNumbers(card, randNum)) {
+        getMoneyFromRedCards += card.cardIncome(curUser.getMachiCoroUser().getAllUserCards(), randNum);
+      }
+    });
+    return getMoneyFromRedCards;
+  }
+
+  // should be calculated first
+  calculateExpenses(activeUser, randNum) {
+    // calculate from opponent's red cards;
+    this.users.forEach((user) => {
+      if (user !== activeUser) {
+        const mustSubtractFromActiveUser = this.calculateUserRedCardsIncome(user, randNum);
+        console.log("mustSubtractFromActiveUser:  ", mustSubtractFromActiveUser);
+        console.log("mustSubtractFromActiveUserReverse:  ", -mustSubtractFromActiveUser);
+        const SubtractFromActiveUser = this.updateUserMoney(activeUser, -mustSubtractFromActiveUser);
+        if (SubtractFromActiveUser >= 0) {
+          this.updateUserMoney(user, mustSubtractFromActiveUser);
+          console.log("SubtractFromActiveUser:  ", mustSubtractFromActiveUser);
+        }
+      }
+    });
   }
 
   calculateUserBlueCardsIncome(user, randNum) {
@@ -108,10 +131,11 @@ export default class MachiCoroGame {
     if (ws !== curActiveUser.getWs()) {
       return;
     }
-    const randNum = this.generateRandNumbers(6 * numberOfCubes);
+    const randNum = 3;// = this.generateRandNumbers(6 * numberOfCubes);
     machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, randNum);
     logMessage("randNum = " + randNum);
     this.userThrowCube = true;
+    this.calculateExpenses(curActiveUser, randNum);
     this.calculateIncome(curActiveUser, randNum);
     return randNum;
   }
@@ -164,10 +188,15 @@ export default class MachiCoroGame {
   updateUserMoney(user, moneyDelta) {
     const machiCoroUser = user.getMachiCoroUser();
     const oldMoney = machiCoroUser.getMoney();
+    logMessage("updateUserMoney oldMoney: " + oldMoney);
     let newMoney = oldMoney + moneyDelta;
+    logMessage("updateUserMoney newMoney: " + newMoney);
+    const newMoneyBeforeCorrection = newMoney;
     if (newMoney < 0) {
       newMoney = 0;
     }
+    logMessage("updateUserMoney newMoney2: " + newMoney);
     machiCoroUser.setMoney(newMoney);
+    return newMoneyBeforeCorrection;
   }
 }
