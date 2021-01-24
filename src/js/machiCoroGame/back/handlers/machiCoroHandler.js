@@ -33,6 +33,11 @@ export function machiCoroHandler(data, ws, room, webSocketOpetState) {
       room.machiCoroGameThrowCube(ws, data.cubeNumbers);
       break;
     }
+    case "swap": {
+      logMessage("machiCoroHandler swap");
+      room.machiCoroGameSwapUserCards(ws, data.secondUser, data.firstUserCard, data.secondUserCard);
+      break;
+    }
     default: {
       return false;
     }

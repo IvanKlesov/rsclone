@@ -136,6 +136,7 @@ export default class MachiCoroGame {
     this.userThrowCube = true;
     this.calculateExpenses(curActiveUser, randNum);
     this.calculateIncome(curActiveUser, randNum);
+    this.resOfCubesThrow = randNum;
     return randNum;
   }
 
@@ -169,6 +170,57 @@ export default class MachiCoroGame {
     }
   }
 
+  swapUserCards(ws, secondUserID, firstUserCardName, secondUserCardName) {
+    if (!this.userThrowCube) {
+      machiCoroServerMessageMethods.sendError(ws, "you should throw cube(s)");
+      return;
+    }
+
+    if (this.resOfCubesThrow !== 6) {
+      machiCoroServerMessageMethods.sendError(ws, "throw result isn't 6");
+      return;
+    }
+
+    const curActiveUser = this.users[this.userNumTurn];
+    if (ws !== curActiveUser.getWs()) {
+      machiCoroServerMessageMethods.sendError(ws, "it's not your turn");
+      return;
+    }
+
+    const secondUser = this.users[secondUserID];
+    if (curActiveUser === secondUser) {
+      machiCoroServerMessageMethods.sendError(ws, "you can't swap with yourself");
+      return;
+    }
+    const firstMachiCoroUser = curActiveUser.getMachiCoroUser();
+    if (!firstMachiCoroUser.isUserHaveThisCard("businessCenter")) {
+      machiCoroServerMessageMethods.sendError(ws, "you haven't card businessCenter");
+      return;
+    }
+    const secondMachiCoroUser = secondUser.getMachiCoroUser();
+
+    const firstUserCardIndex = firstMachiCoroUser.getUserCarIndex(firstUserCardName);
+    if (firstUserCardIndex === -1) {
+      machiCoroServerMessageMethods.sendError(ws, `you haven't card ${firstUserCardName}`);
+      return;
+    }
+
+    const secondUserCardIndex = secondMachiCoroUser.getUserCarIndex(secondUserCardName);
+    if (secondUserCardIndex === -1) {
+      machiCoroServerMessageMethods.sendError(ws, `second user haven't card ${secondUserCardName}`);
+      return;
+    }
+
+    const firstUserCards = firstMachiCoroUser.getAllUserCards();
+    const secondUserCards = secondMachiCoroUser.getAllUserCards();
+
+    const firstCardCopy = { ...firstUserCards[firstUserCardIndex] };
+    firstUserCards[firstUserCardIndex] = { ...secondUserCards[secondUserCardIndex] };
+    secondUserCards[secondUserCardIndex] = firstCardCopy;
+
+    machiCoroServerMessageMethods.swapAccept(this.users, this.userNumTurn, secondUserID, firstUserCardName, secondUserCardName)
+  }
+
   getNextUser() {
     if (this.userNumTurn + 1 === this.users.length) {
       this.userNumTurn = 0;
@@ -177,6 +229,7 @@ export default class MachiCoroGame {
     }
     this.userThrowCube = false;
     this.userMakeBuyInThisTurn = false;
+    this.resOfCubesThrow = -1;
     logMessage("this.userNumTurn now = ".concat(this.userNumTurn));
   }
 

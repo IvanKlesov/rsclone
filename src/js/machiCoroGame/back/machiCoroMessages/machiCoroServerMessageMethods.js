@@ -74,4 +74,39 @@ machiCoroServerMessageMethods.sendPurchaseInfo = (users, curActiveUserIndex, buy
   });
 }
 
+machiCoroServerMessageMethods.swapAccept = (users, activeUserID, secondUserID, firstUserCardName, secondUserCardName) => {
+  const message = {
+    method: "swapAccept",
+    content: `player${activeUserID} swap ${firstUserCardName} with player${secondUserID} ${secondUserCardName}`,
+  }
+
+  const messageToActiveUser = {
+    method: "swapAccept",
+    content:  `you swap ${firstUserCardName} with player${secondUserID} ${secondUserCardName}`,
+  }
+
+  const messageToSecondUser = {
+    method: "swapAccept",
+    content:  `player${activeUserID} swap ${firstUserCardName} with you ${secondUserCardName}`,
+  }
+  users.forEach((user, idx) => {
+    const curUserWs = user.getWs();
+    if (idx === activeUserID) {
+      curUserWs.send(JSON.stringify(messageToActiveUser));
+    } else if (idx === secondUserID) {
+      curUserWs.send(JSON.stringify(messageToSecondUser));
+    } else {
+      curUserWs.send(JSON.stringify(message));
+    }
+  });
+}
+
+machiCoroServerMessageMethods.sendError = (ws, errorMessage) => {
+  const message = {
+    method: "machiCoroError",
+    content: errorMessage
+  }
+  ws.send(JSON.stringify(message));
+}
+
 export default machiCoroServerMessageMethods;

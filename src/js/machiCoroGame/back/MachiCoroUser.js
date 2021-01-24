@@ -3,7 +3,7 @@ import logMessage from "../../../js/logger";
 
 export class MachiCoroUser {
   constructor() {
-    this.money = 3;
+    this.money = 20;
     this.userCards = [];
     this.initBasicUserCards();
     this.hasAirport = false;
@@ -43,6 +43,25 @@ export class MachiCoroUser {
 
   isUserHaveThisCard(cardName) {
     return this.userCards.findIndex((card) => card.name === cardName) > -1;
+  }
+
+  getUserCardLink(cardName) {
+    for (let i = 0; i < this.userCards.length; i += 1) {
+
+      if (this.userCards[i].name === cardName) {
+        return this.userCards[i];
+      }
+    }
+    return -1;
+  }
+
+  getUserCarIndex(cardName) {
+    for (let i = 0; i < this.userCards.length; i += 1) {
+      if (this.userCards[i].name === cardName) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   addCard(cardName) {

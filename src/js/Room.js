@@ -40,6 +40,12 @@ export class Room {
     }
   }
 
+  machiCoroGameSwapUserCards(websocket, secondUserID, firstUserCardName, secondUserCardName) {
+    if (this.MachiCoroGame) {
+      this.MachiCoroGame.swapUserCards(websocket, secondUserID, firstUserCardName, secondUserCardName);
+    }
+  }
+
   getUsers() {
     return this.users;
   }

@@ -34,4 +34,15 @@ machiCoroClientMessageMethods.throw = (webSocket, roomID, cubeNumbers = 1) => {
   webSocket.send(JSON.stringify(clientMessage));
 }
 
+machiCoroClientMessageMethods.swap = (webSocket, roomID, secondUser, firstUserCard, secondUserCard) => {
+  const clientMessage = {
+    method: "swap",
+    roomID,
+    secondUser,
+    firstUserCard,
+    secondUserCard
+  };
+  webSocket.send(JSON.stringify(clientMessage));
+}
+
 export default machiCoroClientMessageMethods;

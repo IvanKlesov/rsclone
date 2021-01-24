@@ -17,6 +17,24 @@ function sendThrowCubeMessage(ws, roomID, cubeNumbs) {
   machiCoroClientMessageMethods.throw(ws, roomID, cubeNumbs);
 }
 
+function sendSwapCardsMessage(ws, roomID, commandString) {
+  console.log(commandString);
+  commandString = commandString.split(" ");
+  if (commandString.length < 4) {
+    logMessage("error sendSwapCardsMessage: command lenght < 4");
+    return;
+  }
+
+  const secondUserID = commandString[1];
+  const firstUserCard = commandString[2];
+  const secondUserCasrd = commandString[3];
+  logMessage("secondUserID" + secondUserID);
+  logMessage("firstUserCard" + firstUserCard);
+  logMessage("secondUserCasrd" + secondUserCasrd);
+  machiCoroClientMessageMethods.swap(ws, roomID, secondUserID, firstUserCard, secondUserCasrd);
+
+}
+
 function printInfoAboutBuyAction() {
   return "it is your turn \n/buy name -> buy something;\n/hold - hold turn";
 }
@@ -57,7 +75,12 @@ export function handlerServerMachiCoroResponse(jsonData) {
         return `It is Your turn.You buy ${jsonData.buyResponse}`;
       }
       return `It is turn of player${jsonData.turn}. Player${jsonData.turn} buy ${jsonData.buyResponse}`;
-
+    }
+    case "machiCoroError": {
+      return jsonData.content;
+    }
+    case "swapAccept": {
+      return jsonData.content;
     }
   }
   return "";
@@ -68,8 +91,9 @@ export default function handleCliCommand(ws, command, roomID) {
   if (currectCommand[0] === "/") {
     currectCommand = currectCommand.slice(1);
   }
-  currectCommand = currectCommand.split(" ", 2);
-  switch (currectCommand[0]) {
+  console.log(currectCommand);
+  const commandMethod = currectCommand.split(" ", 2);
+  switch (commandMethod[0]) {
     case "start": {
       logMessage("start game command from client");
       sendStartMessage(ws, roomID);
@@ -77,7 +101,7 @@ export default function handleCliCommand(ws, command, roomID) {
     }
     case "buy": {
       logMessage("buy command from client");
-      const userTryBuyThisThing = currectCommand[1];
+      const userTryBuyThisThing = commandMethod[1];
       logMessage(userTryBuyThisThing);
       sendBuyMessage(ws, roomID, userTryBuyThisThing);
       break;
@@ -99,9 +123,14 @@ export default function handleCliCommand(ws, command, roomID) {
       sendThrowCubeMessage(ws, roomID, 2);
       break;
     }
+
+    case "swap": {
+      sendSwapCardsMessage(ws, roomID, currectCommand);
+      break;
+    }
     default: {
       logMessage("cant response command from client");
-      logMessage("command was: ".concat(currectCommand));
+      logMessage("command was: ".concat(commandMethod));
       break;
     }
   }
