@@ -8,6 +8,8 @@ export default class MachiCoroGame {
     this.userNumTurn = 0;
     this.resOfCubesThrow = -1;
     this.userThrowCube = false;
+    this.userUseSwapPossibility = false;
+    this.userUseStealPossibility = false;
     this.userMakeBuyInThisTurn = false;
   }
 
@@ -187,6 +189,11 @@ export default class MachiCoroGame {
       return;
     }
 
+    if (this.userUseSwapPossibility) {
+      machiCoroServerMessageMethods.sendError(ws, "You use this possibility in this turn");
+      return;
+    }
+
     const secondUser = this.users[secondUserID];
     if (curActiveUser === secondUser) {
       machiCoroServerMessageMethods.sendError(ws, "you can't swap with yourself");
@@ -217,8 +224,52 @@ export default class MachiCoroGame {
     const firstCardCopy = { ...firstUserCards[firstUserCardIndex] };
     firstUserCards[firstUserCardIndex] = { ...secondUserCards[secondUserCardIndex] };
     secondUserCards[secondUserCardIndex] = firstCardCopy;
+    
+    this.userUseSwapPossibility = true;
+    machiCoroServerMessageMethods.swapAccept(this.users, this.userNumTurn, secondUserID, firstUserCardName, secondUserCardName);
+  }
 
-    machiCoroServerMessageMethods.swapAccept(this.users, this.userNumTurn, secondUserID, firstUserCardName, secondUserCardName)
+  steal(ws, secondUserID) {
+    // duplicate checks with swa
+    if (!this.userThrowCube) {
+      machiCoroServerMessageMethods.sendError(ws, "you should throw cube(s)");
+      return;
+    }
+
+    if (this.resOfCubesThrow !== 6) {
+      machiCoroServerMessageMethods.sendError(ws, "throw result isn't 6");
+      return;
+    }
+
+    const curActiveUser = this.users[this.userNumTurn];
+    if (ws !== curActiveUser.getWs()) {
+      machiCoroServerMessageMethods.sendError(ws, "it's not your turn");
+      return;
+    }
+
+    if (this.userUseStealPossibility) {
+      machiCoroServerMessageMethods.sendError(ws, "You use this possibility in this turn");
+      return;
+    }
+
+    const secondUser = this.users[secondUserID];
+    if (curActiveUser === secondUser) {
+      machiCoroServerMessageMethods.sendError(ws, "you can't steal yourself");
+      return;
+    }
+
+    const firstMachiCoroUser = curActiveUser.getMachiCoroUser();
+    if (!firstMachiCoroUser.isUserHaveThisCard("telecentre")) {
+      machiCoroServerMessageMethods.sendError(ws, "you haven't card telecentre");
+      return;
+    }
+    const secondMachiCoroUser = secondUser.getMachiCoroUser();
+
+    this.updateUserMoney(firstMachiCoroUser, 5);
+    this.updateUserMoney(secondMachiCoroUser, -5);
+    this.userUseStealPossibility = true;
+    machiCoroServerMessageMethods.stealAccept(this.users, this.userNumTurn, secondUserID);
+
   }
 
   getNextUser() {
@@ -229,6 +280,8 @@ export default class MachiCoroGame {
     }
     this.userThrowCube = false;
     this.userMakeBuyInThisTurn = false;
+    this.userUseSwapPossibility = false;
+    this.userUseStealPossibility = false;
     this.resOfCubesThrow = -1;
     logMessage("this.userNumTurn now = ".concat(this.userNumTurn));
   }
@@ -240,19 +293,4 @@ export default class MachiCoroGame {
   updateUserMoney(user, moneyDelta) {
     return user.getMachiCoroUser().updateUserMoney(moneyDelta);
   }
-
-  /* updateUserMoney(user, moneyDelta) {
-    const machiCoroUser = user.getMachiCoroUser();
-    const oldMoney = machiCoroUser.getMoney();
-    logMessage("updateUserMoney oldMoney: " + oldMoney);
-    let newMoney = oldMoney + moneyDelta;
-    logMessage("updateUserMoney newMoney: " + newMoney);
-    const newMoneyBeforeCorrection = newMoney;
-    if (newMoney < 0) {
-      newMoney = 0;
-    }
-    logMessage("updateUserMoney newMoney2: " + newMoney);
-    machiCoroUser.setMoney(newMoney);
-    return newMoneyBeforeCorrection;
-  } */
 }

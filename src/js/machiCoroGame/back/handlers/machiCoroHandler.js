@@ -38,6 +38,11 @@ export function machiCoroHandler(data, ws, room, webSocketOpetState) {
       room.machiCoroGameSwapUserCards(ws, data.secondUser, data.firstUserCard, data.secondUserCard);
       break;
     }
+    case "steal": {
+      logMessage("machiCoroHandler steal");
+      room.machiCoroGameSteal(ws, data.secondUser);
+      break;
+    }
     default: {
       return false;
     }

@@ -46,6 +46,12 @@ export class Room {
     }
   }
 
+  machiCoroGameSteal(websocket, secondUserID) {
+    if (this.MachiCoroGame) {
+      this.MachiCoroGame.steal(websocket, secondUserID);
+    }
+  }
+
   getUsers() {
     return this.users;
   }

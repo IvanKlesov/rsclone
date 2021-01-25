@@ -82,13 +82,42 @@ machiCoroServerMessageMethods.swapAccept = (users, activeUserID, secondUserID, f
 
   const messageToActiveUser = {
     method: "swapAccept",
-    content:  `you swap ${firstUserCardName} with player${secondUserID} ${secondUserCardName}`,
+    content: `you swap ${firstUserCardName} with player${secondUserID} ${secondUserCardName}`,
   }
 
   const messageToSecondUser = {
     method: "swapAccept",
-    content:  `player${activeUserID} swap ${firstUserCardName} with you ${secondUserCardName}`,
+    content: `player${activeUserID} swap ${firstUserCardName} with you ${secondUserCardName}`,
   }
+  users.forEach((user, idx) => {
+    const curUserWs = user.getWs();
+    if (idx === activeUserID) {
+      curUserWs.send(JSON.stringify(messageToActiveUser));
+    } else if (idx === secondUserID) {
+      curUserWs.send(JSON.stringify(messageToSecondUser));
+    } else {
+      curUserWs.send(JSON.stringify(message));
+    }
+  });
+}
+
+machiCoroServerMessageMethods.stealAccept = (users, activeUserID, secondUserID) => {
+  // duplicating
+  const message = {
+    method: "stealAccept",
+    content: `player${activeUserID} steal money(5) from player${secondUserID}`,
+  }
+
+  const messageToActiveUser = {
+    method: "stealAccept",
+    content: `you steal money(5) from player${secondUserID}`,
+  }
+
+  const messageToSecondUser = {
+    method: "stealAccept",
+    content: `player${activeUserID} steal with your money(5)`,
+  }
+
   users.forEach((user, idx) => {
     const curUserWs = user.getWs();
     if (idx === activeUserID) {

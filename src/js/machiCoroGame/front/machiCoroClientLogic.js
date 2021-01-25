@@ -32,7 +32,10 @@ function sendSwapCardsMessage(ws, roomID, commandString) {
   logMessage("firstUserCard" + firstUserCard);
   logMessage("secondUserCasrd" + secondUserCasrd);
   machiCoroClientMessageMethods.swap(ws, roomID, secondUserID, firstUserCard, secondUserCasrd);
+}
 
+function sendStealMessage(ws, roomID, secondUserID) {
+  machiCoroClientMessageMethods.steal(ws, roomID, secondUserID);
 }
 
 function printInfoAboutBuyAction() {
@@ -82,6 +85,10 @@ export function handlerServerMachiCoroResponse(jsonData) {
     case "swapAccept": {
       return jsonData.content;
     }
+
+    case "stealAccept": {
+      return jsonData.content;
+    }
   }
   return "";
 }
@@ -127,6 +134,9 @@ export default function handleCliCommand(ws, command, roomID) {
     case "swap": {
       sendSwapCardsMessage(ws, roomID, currectCommand);
       break;
+    }
+    case "steal": {
+      sendStealMessage(ws, roomID, commandMethod[1]);
     }
     default: {
       logMessage("cant response command from client");

@@ -45,4 +45,13 @@ machiCoroClientMessageMethods.swap = (webSocket, roomID, secondUser, firstUserCa
   webSocket.send(JSON.stringify(clientMessage));
 }
 
+machiCoroClientMessageMethods.steal = (webSocket, roomID, secondUser) => {
+  const clientMessage = {
+    method: "steal",
+    roomID,
+    secondUser,
+  };
+  webSocket.send(JSON.stringify(clientMessage));
+}
+
 export default machiCoroClientMessageMethods;
