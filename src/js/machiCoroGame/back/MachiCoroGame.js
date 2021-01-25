@@ -225,6 +225,7 @@ export default class MachiCoroGame {
     }
     let curActiveUser = this.users[this.userNumTurn];
     if (curActiveUser.getWs() === ws) {
+      this.tryUseAirportBonus(ws);
       this.getNextUser();
       curActiveUser = this.users[this.userNumTurn];
       machiCoroServerMessageMethods.sendUserGameInfo(this.users, curActiveUser);
@@ -298,6 +299,14 @@ export default class MachiCoroGame {
     this.userUseStealPossibility = false;
     this.resOfCubesThrow = -1;
     logMessage("this.userNumTurn now = ".concat(this.userNumTurn));
+  }
+
+  tryUseAirportBonus(ws) {
+    if (this.isUserHaveCard(ws, this.userNumTurn, "airport") && !this.userMakeBuyInThisTurn) {
+      this.updateUserMoney(this.users[this.userNumTurn], 10);
+      logMessage("airport add user 10 monets");
+      machiCoroServerMessageMethods.sendError(ws, "you take 10 monets from airport");
+    }
   }
 
   configurateInfoAboutAllUsers() {
