@@ -1,5 +1,6 @@
 import { v4 as uuid } from "uuid";
 import serverMessageMethods from "../server/messages/serverMessageMethods";
+import MachiCoroGame from "./machiCoroGame/back/MachiCoroGame";
 
 export class Room {
   constructor(name) {
@@ -7,10 +8,56 @@ export class Room {
     this.name = name;
     this.users = [];
     this.maxUsersCount = 5;
+    this.owner = undefined;
+  }
+
+  startMachiCoroGame(websocket, webSocketOpetState) {
+    if (this.users.length > 1 && this.MachiCoroGame === undefined) {
+      this.MachiCoroGame = new MachiCoroGame(this.getUsers());
+      this.MachiCoroGame.start(websocket, webSocketOpetState);
+    }
+  }
+
+  getMachiCoroGame() {
+    return this.MachiCoroGame;
+  }
+
+  machiCoroGameBuy(websocket, buyRequest) {
+    if (this.MachiCoroGame) {
+      this.MachiCoroGame.buy(websocket, buyRequest);
+    }
+  }
+
+  machiCoroGameHold(websocket) {
+    if (this.MachiCoroGame) {
+      this.MachiCoroGame.hold(websocket);
+    }
+  }
+
+  machiCoroGameThrowCube(websocket, numberOfCubes = 1) {
+    if (this.MachiCoroGame) {
+      this.MachiCoroGame.throwCubes(websocket, numberOfCubes);
+    }
+  }
+
+  machiCoroGameSwapUserCards(websocket, secondUserID, firstUserCardName, secondUserCardName) {
+    if (this.MachiCoroGame) {
+      this.MachiCoroGame.swapUserCards(websocket, secondUserID, firstUserCardName, secondUserCardName);
+    }
+  }
+
+  machiCoroGameSteal(websocket, secondUserID) {
+    if (this.MachiCoroGame) {
+      this.MachiCoroGame.steal(websocket, secondUserID);
+    }
+  }
+
+  getUsers() {
+    return this.users;
   }
 
   clients() {
-    return this.users;
+    return this.users.map((user) => user.getWs());
   }
 
   addUser(newUser) {
@@ -48,6 +95,10 @@ export class Room {
   setOwner(userOwner) {
     this.owner = userOwner;
     this.addUser(userOwner);
+  }
+
+  getOwner() {
+    return this.owner;
   }
 
   setMaxUsersCount(newMaxCount) {

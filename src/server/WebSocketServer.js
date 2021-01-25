@@ -2,6 +2,7 @@ import WebSocket from "ws";
 import Room from "../js/Room";
 import User from "../js/User";
 import serverMessageMethods from "./messages/serverMessageMethods";
+import { checkMethodExistence, machiCoroHandler } from "../js/machiCoroGame/back/handlers/machiCoroHandler";
 import logMessage from "../js/logger.js";
 
 const intervalValueForPing = 5000;
@@ -65,12 +66,13 @@ export class WebSocketServer {
         }
         case "setRoom": {
           const curRoom = this.findRoomLinkByRoomID(jsonData.content);
-          const addUserIsSuccess = curRoom.addUser(ws);
+          const curUser = this.findCurrentUserByWebsocket(ws)
+          const addUserIsSuccess = curRoom.addUser(curUser);
           if (!addUserIsSuccess) {
             return serverMessageMethods.userRoomReject(ws, jsonData.content);
           }
           if (curRoom.getRoomID()) {
-            this.setCurrentUserRoom(ws, curRoom.getRoomID());
+            curUser.setRoomID(curRoom.getRoomID());
           }
           serverMessageMethods.userRoomAccept(ws, jsonData.content);
           break;
@@ -90,6 +92,17 @@ export class WebSocketServer {
           this.rooms.push(newRoom);
           newRoom.setOwner(ws);
           serverMessageMethods.createRoomAccept(ws, newRoom);
+          break;
+        }
+        default: {
+          logMessage(jsonData.method);
+          // const isMachiCoroMessage = checkMethodExistence(jsonData.method);
+          const curRoom = this.findRoomLinkByRoomID(jsonData.roomID);
+          const itWasMachiCoroMessage = machiCoroHandler(jsonData, ws, curRoom, WebSocket.OPEN);
+          if (itWasMachiCoroMessage) {
+            logMessage("это была комнда machi Coro game");
+          }
+          logMessage(itWasMachiCoroMessage);
           break;
         }
       }
