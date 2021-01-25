@@ -1,6 +1,8 @@
 import logMessage from "../../logger";
 import machiCoroServerMessageMethods from "./machiCoroMessages/machiCoroServerMessageMethods";
 
+import { businessCenterActivationNumbers, telecentreActivationNumbers } from "../cardFactory/cards/purpleCards";
+
 export default class MachiCoroGame {
   // users = arrray of websockets?
   constructor(users) {
@@ -142,6 +144,63 @@ export default class MachiCoroGame {
     return randNum;
   }
 
+  isUserThrowCubesInThisTurn(ws) {
+    if (!this.userThrowCube) {
+      machiCoroServerMessageMethods.sendError(ws, "you should throw cube(s)");
+      return false;
+    }
+    return true;
+  }
+
+  isResultOfCubesThrowActivateCard(ws, activationArray) {
+    if (activationArray.indexOf(this.resOfCubesThrow) === -1) {
+      machiCoroServerMessageMethods.sendError(ws, `throw result(${this.resOfCubesThrow}) not in activationArray ${activationArray}`);
+      return false;
+    }
+    return true;
+  }
+
+  isThisUserTurn(ws) {
+    if (ws !== this.users[this.userNumTurn].getWs()) {
+      machiCoroServerMessageMethods.sendError(ws, "it's not your turn");
+      return false;
+    }
+    return true;
+  }
+
+  isUserDontUseSwapPossibility(ws, possibility) {
+    if (possibility) {
+      machiCoroServerMessageMethods.sendError(ws, "You use this possibility in this turn");
+      return false;
+    }
+    return true;
+  }
+
+  isSecondUserExist(ws, secondUserID) {
+    if (!this.users[secondUserID]) {
+      machiCoroServerMessageMethods.sendError(ws, "can't find second user");
+      return false;
+    }
+    return true;
+  }
+
+  isSecondUserDontEqualsToActiveUser(ws, secondUserID, methodName) {
+    if (ws === this.users[secondUserID].getWs()) {
+      machiCoroServerMessageMethods.sendError(ws, `you can't ${methodName} with yourself`);
+      return false;
+    }
+    return true;
+  }
+
+  isUserHaveCard(ws, userID, cardName) {
+    const user = this.users[userID].getMachiCoroUser();
+    if (!user.isUserHaveThisCard(cardName)) {
+      machiCoroServerMessageMethods.sendError(ws, `player${userID} haven't card ${cardName}`);
+      return false;
+    }
+    return true;
+  }
+
   buy(ws, buyRequest) {
     if (!this.userThrowCube || this.userMakeBuyInThisTurn) {
       return;
@@ -173,38 +232,17 @@ export default class MachiCoroGame {
   }
 
   swapUserCards(ws, secondUserID, firstUserCardName, secondUserCardName) {
-    if (!this.userThrowCube) {
-      machiCoroServerMessageMethods.sendError(ws, "you should throw cube(s)");
+    if (!this.isUserThrowCubesInThisTurn(ws)
+      || !this.isResultOfCubesThrowActivateCard(ws, businessCenterActivationNumbers)
+      || !this.isThisUserTurn(ws)
+      || !this.isUserDontUseSwapPossibility(ws, this.userUseSwapPossibility)
+      || !this.isSecondUserExist(ws, secondUserID)
+      || !this.isSecondUserDontEqualsToActiveUser(ws, secondUserID, "swap")
+      || !this.isUserHaveCard(ws, this.userNumTurn, "businessCenter")) {
       return;
     }
-
-    if (this.resOfCubesThrow !== 6) {
-      machiCoroServerMessageMethods.sendError(ws, "throw result isn't 6");
-      return;
-    }
-
-    const curActiveUser = this.users[this.userNumTurn];
-    if (ws !== curActiveUser.getWs()) {
-      machiCoroServerMessageMethods.sendError(ws, "it's not your turn");
-      return;
-    }
-
-    if (this.userUseSwapPossibility) {
-      machiCoroServerMessageMethods.sendError(ws, "You use this possibility in this turn");
-      return;
-    }
-
-    const secondUser = this.users[secondUserID];
-    if (curActiveUser === secondUser) {
-      machiCoroServerMessageMethods.sendError(ws, "you can't swap with yourself");
-      return;
-    }
-    const firstMachiCoroUser = curActiveUser.getMachiCoroUser();
-    if (!firstMachiCoroUser.isUserHaveThisCard("businessCenter")) {
-      machiCoroServerMessageMethods.sendError(ws, "you haven't card businessCenter");
-      return;
-    }
-    const secondMachiCoroUser = secondUser.getMachiCoroUser();
+    const firstMachiCoroUser = this.users[this.userNumTurn].getMachiCoroUser();
+    const secondMachiCoroUser = this.users[secondUserID].getMachiCoroUser();
 
     const firstUserCardIndex = firstMachiCoroUser.getUserCarIndex(firstUserCardName);
     if (firstUserCardIndex === -1) {
@@ -230,49 +268,19 @@ export default class MachiCoroGame {
   }
 
   steal(ws, secondUserID) {
-    // duplicate checks with swa
-    if (!this.userThrowCube) {
-      machiCoroServerMessageMethods.sendError(ws, "you should throw cube(s)");
+    // duplicate checks with swap
+    if (!this.isUserThrowCubesInThisTurn(ws)
+      || !this.isResultOfCubesThrowActivateCard(ws, telecentreActivationNumbers)
+      || !this.isThisUserTurn(ws)
+      || !this.isUserDontUseSwapPossibility(ws, this.userUseStealPossibility)
+      || !this.isSecondUserExist(ws, secondUserID)
+      || !this.isSecondUserDontEqualsToActiveUser(ws, secondUserID, "steal")
+      || !this.isUserHaveCard(ws, this.userNumTurn, "telecentre")) {
       return;
     }
 
-    if (this.resOfCubesThrow !== 6) {
-      machiCoroServerMessageMethods.sendError(ws, "throw result isn't 6");
-      return;
-    }
-
-    const curActiveUser = this.users[this.userNumTurn];
-    if (ws !== curActiveUser.getWs()) {
-      machiCoroServerMessageMethods.sendError(ws, "it's not your turn");
-      return;
-    }
-
-    if (this.userUseStealPossibility) {
-      machiCoroServerMessageMethods.sendError(ws, "You use this possibility in this turn");
-      return;
-    }
-
-    const secondUser = this.users[secondUserID];
-
-    if (!secondUser) {
-      machiCoroServerMessageMethods.sendError(ws, "can't find second user");
-      return;
-    }
-
-    if (curActiveUser === secondUser) {
-      machiCoroServerMessageMethods.sendError(ws, "you can't steal yourself");
-      return;
-    }
-
-    const firstMachiCoroUser = curActiveUser.getMachiCoroUser();
-    if (!firstMachiCoroUser.isUserHaveThisCard("telecentre")) {
-      machiCoroServerMessageMethods.sendError(ws, "you haven't card telecentre");
-      return;
-    }
-    // const secondMachiCoroUser = secondUser.getMachiCoroUser();
-
-    this.updateUserMoney(curActiveUser, 5);
-    this.updateUserMoney(secondUser, -5);
+    this.updateUserMoney(this.users[this.userNumTurn], 5);
+    this.updateUserMoney(this.users[secondUserID], -5);
     this.userUseStealPossibility = true;
     machiCoroServerMessageMethods.stealAccept(this.users, this.userNumTurn, secondUserID);
 
