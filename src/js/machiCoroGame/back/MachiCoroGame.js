@@ -10,6 +10,7 @@ export default class MachiCoroGame {
     this.userNumTurn = 0;
     this.resOfCubesThrow = -1;
     this.userThrowCube = false;
+    this.userThrowDoubleCubes = false;
     this.userUseSwapPossibility = false;
     this.userUseStealPossibility = false;
     this.userMakeBuyInThisTurn = false;
@@ -144,6 +145,10 @@ export default class MachiCoroGame {
       const randNum2 = this.generateRandNumbers(6);
       this.resOfCubesThrow = randNum + randNum2;
       machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, [randNum, randNum2]);
+      if (randNum === randNum2 && this.isUserHaveCard(ws, this.userNumTurn, "amusementPark")) {
+        this.userThrowDoubleCubes = true;
+        machiCoroServerMessageMethods.sendError(ws, "you get double dice bonus");
+      }
     } else {
       this.resOfCubesThrow = randNum;
       machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, randNum);
@@ -298,12 +303,15 @@ export default class MachiCoroGame {
   }
 
   getNextUser() {
-    if (this.userNumTurn + 1 === this.users.length) {
-      this.userNumTurn = 0;
-    } else {
-      this.userNumTurn += 1;
+    if (!this.userThrowDoubleCubes) {
+      if (this.userNumTurn + 1 === this.users.length) {
+        this.userNumTurn = 0;
+      } else {
+        this.userNumTurn += 1;
+      }
     }
     this.userThrowCube = false;
+    this.userThrowDoubleCubes = false;
     this.userMakeBuyInThisTurn = false;
     this.userUseSwapPossibility = false;
     this.userUseStealPossibility = false;
