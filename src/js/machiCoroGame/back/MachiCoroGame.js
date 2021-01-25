@@ -128,19 +128,30 @@ export default class MachiCoroGame {
 
   throwCubes(ws, numberOfCubes = 1) {
     if (this.userThrowCube) {
+      machiCoroServerMessageMethods.sendError(ws, "you already throw cube(s) in this turn");
       return;
     }
     const curActiveUser = this.users[this.userNumTurn];
     if (ws !== curActiveUser.getWs()) {
+      machiCoroServerMessageMethods.sendError(ws, "it's not your turn");
       return;
     }
-    const randNum = 6;//this.generateRandNumbers(6 * numberOfCubes);
-    machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, randNum);
+    const randNum = this.generateRandNumbers(6);
+    if (numberOfCubes === 2) {
+      if (!this.isUserHaveCard(ws, this.userNumTurn, "railwayStation")) {
+        return;
+      }
+      const randNum2 = this.generateRandNumbers(6);
+      this.resOfCubesThrow = randNum + randNum2;
+      machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, [randNum, randNum2]);
+    } else {
+      this.resOfCubesThrow = randNum;
+      machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, randNum);
+    }
     logMessage("randNum = " + randNum);
     this.userThrowCube = true;
     this.calculateExpenses(curActiveUser, randNum);
     this.calculateIncome(curActiveUser, randNum);
-    this.resOfCubesThrow = randNum;
     return randNum;
   }
 
@@ -284,7 +295,6 @@ export default class MachiCoroGame {
     this.updateUserMoney(this.users[secondUserID], -5);
     this.userUseStealPossibility = true;
     machiCoroServerMessageMethods.stealAccept(this.users, this.userNumTurn, secondUserID);
-
   }
 
   getNextUser() {
