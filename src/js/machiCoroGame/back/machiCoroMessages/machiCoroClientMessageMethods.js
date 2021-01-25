@@ -54,4 +54,20 @@ machiCoroClientMessageMethods.steal = (webSocket, roomID, secondUser) => {
   webSocket.send(JSON.stringify(clientMessage));
 }
 
+machiCoroClientMessageMethods.acceptPortBonus = (webSocket, roomID) => {
+  const clientMessage = {
+    method: "acceptPortBonus",
+    roomID,
+  };
+  webSocket.send(JSON.stringify(clientMessage));
+}
+
+machiCoroClientMessageMethods.rejectPortBonus = (webSocket, roomID) => {
+  const clientMessage = {
+    method: "rejectPortBonus",
+    roomID,
+  };
+  webSocket.send(JSON.stringify(clientMessage));
+}
+
 export default machiCoroClientMessageMethods;

@@ -52,6 +52,24 @@ export class Room {
     }
   }
 
+  machiCoroGamePortBonusResult(websocket, result) {
+    if (this.MachiCoroGame) {
+      switch (result) {
+        case "accept": {
+          this.MachiCoroGame.acceptPortBonus(websocket);
+          break;
+        }
+        case "reject": {
+          this.MachiCoroGame.rejectPortBonus(websocket);
+          break;
+        }
+        default: {
+          break
+        }
+      }
+    }
+  }
+
   getUsers() {
     return this.users;
   }

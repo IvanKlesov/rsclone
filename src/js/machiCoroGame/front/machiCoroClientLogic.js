@@ -38,6 +38,14 @@ function sendStealMessage(ws, roomID, secondUserID) {
   machiCoroClientMessageMethods.steal(ws, roomID, secondUserID);
 }
 
+function sendAcceptPortBonusMessage(ws, roomID) {
+  machiCoroClientMessageMethods.acceptPortBonus(ws, roomID);
+}
+
+function sendRejectPortBonusMessage(ws, roomID) {
+  machiCoroClientMessageMethods.rejectPortBonus(ws, roomID);
+}
+
 function printInfoAboutBuyAction() {
   return "it is your turn \n/buy name -> buy something;\n/hold - hold turn";
 }
@@ -137,6 +145,15 @@ export default function handleCliCommand(ws, command, roomID) {
     }
     case "steal": {
       sendStealMessage(ws, roomID, commandMethod[1]);
+      break;
+    }
+    case "acceptPortBonus": {
+      sendAcceptPortBonusMessage(ws, roomID);
+      break;
+    }
+    case "rejectPortBonus": {
+      sendRejectPortBonusMessage(ws, roomID);
+      break;
     }
     default: {
       logMessage("cant response command from client");

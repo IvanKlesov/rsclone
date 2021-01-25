@@ -43,6 +43,16 @@ export function machiCoroHandler(data, ws, room, webSocketOpetState) {
       room.machiCoroGameSteal(ws, data.secondUser);
       break;
     }
+    case "acceptPortBonus": {
+      logMessage("machiCoroHandler acceptPortBonus");
+      room.machiCoroGamePortBonusResult(ws, "accept");
+      break;
+    }
+    case "rejectPortBonus": {
+      logMessage("machiCoroHandler rejectPortBonus");
+      room.machiCoroGamePortBonusResult(ws, "reject");
+      break;
+    }
     default: {
       return false;
     }

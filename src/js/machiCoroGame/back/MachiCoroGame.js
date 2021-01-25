@@ -11,6 +11,7 @@ export default class MachiCoroGame {
     this.resOfCubesThrow = -1;
     this.userThrowCube = false;
     this.userThrowDoubleCubes = false;
+    this.userThrowRequestForPortBonus = false;
     this.userUseSwapPossibility = false;
     this.userUseStealPossibility = false;
     this.userMakeBuyInThisTurn = false;
@@ -155,9 +156,14 @@ export default class MachiCoroGame {
     }
     logMessage("randNum = " + randNum);
     this.userThrowCube = true;
-    this.calculateExpenses(curActiveUser, randNum);
-    this.calculateIncome(curActiveUser, randNum);
-    return randNum;
+    if (curActiveUser.getMachiCoroUser().hasPort) {
+      this.userThrowRequestForPortBonus = true;
+      this.sendRequestForAcceptPortBonus(ws);
+    } else {
+      this.calculateExpenses(curActiveUser, randNum);
+      this.calculateIncome(curActiveUser, randNum);
+      return randNum;
+    }
   }
 
   isUserThrowCubesInThisTurn(ws) {
@@ -184,7 +190,7 @@ export default class MachiCoroGame {
     return true;
   }
 
-  isUserDontUseSwapPossibility(ws, possibility) {
+  isUserDontUsePossibility(ws, possibility) {
     if (possibility) {
       machiCoroServerMessageMethods.sendError(ws, "You use this possibility in this turn");
       return false;
@@ -217,7 +223,15 @@ export default class MachiCoroGame {
     return true;
   }
 
+  sendRequestForAcceptPortBonus(ws) {
+    machiCoroServerMessageMethods.sendError(ws, "You have card port.You can get 2 throw point bonus.Send /acceptPortBonus or /rejectPortBonus command;")
+  }
+
   buy(ws, buyRequest) {
+    if (this.userThrowRequestForPortBonus) {
+      this.sendRequestForAcceptPortBonus(ws);
+      return;
+    }
     if (!this.userThrowCube || this.userMakeBuyInThisTurn) {
       return;
     }
@@ -236,6 +250,10 @@ export default class MachiCoroGame {
   }
 
   hold(ws) {
+    if (this.userThrowRequestForPortBonus) {
+      this.sendRequestForAcceptPortBonus(ws);
+      return;
+    }
     if (!this.userThrowCube) {
       return;
     }
@@ -249,10 +267,14 @@ export default class MachiCoroGame {
   }
 
   swapUserCards(ws, secondUserID, firstUserCardName, secondUserCardName) {
+    if (this.userThrowRequestForPortBonus) {
+      this.sendRequestForAcceptPortBonus(ws);
+      return;
+    }
     if (!this.isUserThrowCubesInThisTurn(ws)
       || !this.isResultOfCubesThrowActivateCard(ws, businessCenterActivationNumbers)
       || !this.isThisUserTurn(ws)
-      || !this.isUserDontUseSwapPossibility(ws, this.userUseSwapPossibility)
+      || !this.isUserDontUsePossibility(ws, this.userUseSwapPossibility)
       || !this.isSecondUserExist(ws, secondUserID)
       || !this.isSecondUserDontEqualsToActiveUser(ws, secondUserID, "swap")
       || !this.isUserHaveCard(ws, this.userNumTurn, "businessCenter")) {
@@ -285,11 +307,15 @@ export default class MachiCoroGame {
   }
 
   steal(ws, secondUserID) {
+    if (this.userThrowRequestForPortBonus) {
+      this.sendRequestForAcceptPortBonus(ws);
+      return;
+    }
     // duplicate checks with swap
     if (!this.isUserThrowCubesInThisTurn(ws)
       || !this.isResultOfCubesThrowActivateCard(ws, telecentreActivationNumbers)
       || !this.isThisUserTurn(ws)
-      || !this.isUserDontUseSwapPossibility(ws, this.userUseStealPossibility)
+      || !this.isUserDontUsePossibility(ws, this.userUseStealPossibility)
       || !this.isSecondUserExist(ws, secondUserID)
       || !this.isSecondUserDontEqualsToActiveUser(ws, secondUserID, "steal")
       || !this.isUserHaveCard(ws, this.userNumTurn, "telecentre")) {
@@ -302,6 +328,39 @@ export default class MachiCoroGame {
     machiCoroServerMessageMethods.stealAccept(this.users, this.userNumTurn, secondUserID);
   }
 
+  acceptPortBonus(ws) {
+    // duplicating code
+    if (!this.isUserThrowCubesInThisTurn(ws)
+      || !this.isThisUserTurn(ws)
+      || !this.isUserHaveCard(ws, this.userNumTurn, "port")) {
+      return;
+    }
+    if (this.userThrowRequestForPortBonus) {
+      this.userThrowRequestForPortBonus = false;
+      this.resOfCubesThrow += 2;
+      const curActiveUser = this.users[this.userNumTurn];
+      this.calculateExpenses(curActiveUser, this.resOfCubesThrow);
+      this.calculateIncome(curActiveUser, this.resOfCubesThrow);
+      machiCoroServerMessageMethods.portBonusResult(this.users, this.userNumTurn, "accept");
+    }
+  }
+
+  rejectPortBonus(ws) {
+    // duplicating code
+    if (!this.isUserThrowCubesInThisTurn(ws)
+      || !this.isThisUserTurn(ws)
+      || !this.isUserHaveCard(ws, this.userNumTurn, "port")) {
+      return;
+    }
+    if (this.userThrowRequestForPortBonus) {
+      this.userThrowRequestForPortBonus = false;
+      const curActiveUser = this.users[this.userNumTurn];
+      this.calculateExpenses(curActiveUser, this.resOfCubesThrow);
+      this.calculateIncome(curActiveUser, this.resOfCubesThrow);
+      machiCoroServerMessageMethods.portBonusResult(this.users, this.userNumTurn, "reject");
+    }
+  }
+
   getNextUser() {
     if (!this.userThrowDoubleCubes) {
       if (this.userNumTurn + 1 === this.users.length) {
@@ -312,6 +371,7 @@ export default class MachiCoroGame {
     }
     this.userThrowCube = false;
     this.userThrowDoubleCubes = false;
+    this.userThrowRequestForPortBonus = false;
     this.userMakeBuyInThisTurn = false;
     this.userUseSwapPossibility = false;
     this.userUseStealPossibility = false;

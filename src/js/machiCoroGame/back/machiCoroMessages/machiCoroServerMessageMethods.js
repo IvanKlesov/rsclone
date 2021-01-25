@@ -130,6 +130,27 @@ machiCoroServerMessageMethods.stealAccept = (users, activeUserID, secondUserID) 
   });
 }
 
+machiCoroServerMessageMethods.portBonusResult = (users, curActiveUserID, result) => {
+  // scratch. Fix it in future
+  const messageToALlUsers = {
+    method: "machiCoroError",
+    content: `player${curActiveUserID} ${result} portBonus`
+  }
+
+  const messageToActiveUser = {
+    method: "machiCoroError",
+    content: `You ${result} portBonus`
+  }
+  users.forEach((user,index) => {
+    const curUserWs = user.getWs();
+    if (index === curActiveUserID) {
+      curUserWs.send(JSON.stringify(messageToActiveUser));
+    } else {
+      curUserWs.send(JSON.stringify(messageToALlUsers));
+    }
+  });
+}
+
 machiCoroServerMessageMethods.sendError = (ws, errorMessage) => {
   const message = {
     method: "machiCoroError",
