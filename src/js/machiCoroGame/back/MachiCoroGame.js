@@ -224,7 +224,7 @@ export default class MachiCoroGame {
     const firstCardCopy = { ...firstUserCards[firstUserCardIndex] };
     firstUserCards[firstUserCardIndex] = { ...secondUserCards[secondUserCardIndex] };
     secondUserCards[secondUserCardIndex] = firstCardCopy;
-    
+
     this.userUseSwapPossibility = true;
     machiCoroServerMessageMethods.swapAccept(this.users, this.userNumTurn, secondUserID, firstUserCardName, secondUserCardName);
   }
@@ -253,6 +253,12 @@ export default class MachiCoroGame {
     }
 
     const secondUser = this.users[secondUserID];
+
+    if (!secondUser) {
+      machiCoroServerMessageMethods.sendError(ws, "can't find second user");
+      return;
+    }
+
     if (curActiveUser === secondUser) {
       machiCoroServerMessageMethods.sendError(ws, "you can't steal yourself");
       return;
@@ -263,10 +269,10 @@ export default class MachiCoroGame {
       machiCoroServerMessageMethods.sendError(ws, "you haven't card telecentre");
       return;
     }
-    const secondMachiCoroUser = secondUser.getMachiCoroUser();
+    // const secondMachiCoroUser = secondUser.getMachiCoroUser();
 
-    this.updateUserMoney(firstMachiCoroUser, 5);
-    this.updateUserMoney(secondMachiCoroUser, -5);
+    this.updateUserMoney(curActiveUser, 5);
+    this.updateUserMoney(secondUser, -5);
     this.userUseStealPossibility = true;
     machiCoroServerMessageMethods.stealAccept(this.users, this.userNumTurn, secondUserID);
 
