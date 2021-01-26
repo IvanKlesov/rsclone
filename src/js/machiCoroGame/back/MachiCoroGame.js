@@ -151,7 +151,7 @@ export default class MachiCoroGame {
       this.resOfCubesThrow = randNum;
       machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, randNum);
     }
-    logMessage("randNum = " + randNum);
+
     this.userThrowCube = true;
     if (curActiveUser.getMachiCoroUser().hasPort) {
       this.userThrowRequestForPortBonus = true;
@@ -162,7 +162,6 @@ export default class MachiCoroGame {
       }
     } else {
       if (curActiveUser.getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
-        logMessage("Вылезло в месте 1");
         this.sendRequestForAcceptRethrowCubes(ws);
       } else {
         this.calculateExpenses(curActiveUser, randNum);
@@ -239,7 +238,7 @@ export default class MachiCoroGame {
       .concat(" send /acceptThrow command"));
   }
 
-  isUserUsePortOrRadioTowerBonus(ws) {
+  isUserUsePortOrRadioTowerBonus(ws, additionalConditionForRadio = true) {
     if (this.userThrowRequestForPortBonus) {
       if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
         this.sendRequestForAcceptPortBonus(ws, "also you can rethrow cube(s)");
@@ -247,7 +246,8 @@ export default class MachiCoroGame {
         this.sendRequestForAcceptPortBonus(ws);
       }
       return false;
-    } else if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
+    } else if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest
+      && additionalConditionForRadio) {
       this.sendRequestForAcceptRethrowCubes(ws);
       return false;
     }
@@ -261,7 +261,7 @@ export default class MachiCoroGame {
       || !this.isThisUserTurn(ws)) {
       return;
     }
-    
+
     const curActiveUser = this.users[this.userNumTurn];
     const machiCoroUser = curActiveUser.getMachiCoroUser();
     const isCardAdded = machiCoroUser.addCard(buyRequest);
@@ -275,22 +275,9 @@ export default class MachiCoroGame {
   }
 
   hold(ws) {
-    if (this.userThrowRequestForPortBonus) {
-      if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
-        this.sendRequestForAcceptPortBonus(ws, "also you can rethrow cube(s)");
-      } else {
-        this.sendRequestForAcceptPortBonus(ws);
-      }
-      return;
-    } else if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest
-      && this.buyInThisTurn !== "radioTower") {
-      logMessage("Вылезло в месте 3");
-      this.sendRequestForAcceptRethrowCubes(ws);
-      return;
-    }
-
-    if (!this.userThrowCube) {
-      return;
+    if (!this.isUserUsePortOrRadioTowerBonus(ws, this.buyInThisTurn !== "radioTower")
+      || !this.userThrowCube) {
+      return
     }
     let curActiveUser = this.users[this.userNumTurn];
     if (curActiveUser.getWs() === ws) {
@@ -301,15 +288,23 @@ export default class MachiCoroGame {
     }
   }
 
-  swapUserCards(ws, secondUserID, firstUserCardName, secondUserCardName) {
+  isConditionForSpecialCardPassed(ws, activationNumbersArray, possibility, secondUserID, possibilityName, cardName) {
     if (!this.isUserUsePortOrRadioTowerBonus(ws)
       || !this.isUserThrowCubesInThisTurn(ws)
-      || !this.isResultOfCubesThrowActivateCard(ws, businessCenterActivationNumbers)
+      || !this.isResultOfCubesThrowActivateCard(ws, activationNumbersArray)
       || !this.isThisUserTurn(ws)
-      || !this.isUserDontUsePossibility(ws, this.userUseSwapPossibility)
+      || !this.isUserDontUsePossibility(ws, possibility)
       || !this.isSecondUserExist(ws, secondUserID)
-      || !this.isSecondUserDontEqualsToActiveUser(ws, secondUserID, "swap")
-      || !this.isUserHaveCard(ws, this.userNumTurn, "businessCenter")) {
+      || !this.isSecondUserDontEqualsToActiveUser(ws, secondUserID, possibilityName)
+      || !this.isUserHaveCard(ws, this.userNumTurn, cardName)) {
+      return false;
+    }
+    return true;
+  }
+
+  swapUserCards(ws, secondUserID, firstUserCardName, secondUserCardName) {
+    if (!this.isConditionForSpecialCardPassed(ws, businessCenterActivationNumbers,
+      this.userUseSwapPossibility, secondUserID, "swap", "businessCenter")) {
       return;
     }
     const firstMachiCoroUser = this.users[this.userNumTurn].getMachiCoroUser();
@@ -339,15 +334,8 @@ export default class MachiCoroGame {
   }
 
   steal(ws, secondUserID) {
-    // duplicate checks with swap
-    if (!this.isUserUsePortOrRadioTowerBonus(ws)
-      || !this.isUserThrowCubesInThisTurn(ws)
-      || !this.isResultOfCubesThrowActivateCard(ws, telecentreActivationNumbers)
-      || !this.isThisUserTurn(ws)
-      || !this.isUserDontUsePossibility(ws, this.userUseStealPossibility)
-      || !this.isSecondUserExist(ws, secondUserID)
-      || !this.isSecondUserDontEqualsToActiveUser(ws, secondUserID, "steal")
-      || !this.isUserHaveCard(ws, this.userNumTurn, "telecentre")) {
+    if (!this.isConditionForSpecialCardPassed(ws, telecentreActivationNumbers,
+      this.userUseStealPossibility, secondUserID, "steal", "telecentre")) {
       return;
     }
 
@@ -421,19 +409,13 @@ export default class MachiCoroGame {
     this.resOfCubesThrow = -1;
 
     this.buyInThisTurn = "";
-    logMessage("this.userNumTurn now = ".concat(this.userNumTurn));
   }
 
   tryUseAirportBonus(ws) {
     if (this.isUserHaveCard(ws, this.userNumTurn, "airport") && !this.userMakeBuyInThisTurn) {
       this.updateUserMoney(this.users[this.userNumTurn], 10);
-      logMessage("airport add user 10 monets");
       machiCoroServerMessageMethods.sendError(ws, "you take 10 monets from airport");
     }
-  }
-
-  configurateInfoAboutAllUsers() {
-
   }
 
   updateUserMoney(user, moneyDelta) {
