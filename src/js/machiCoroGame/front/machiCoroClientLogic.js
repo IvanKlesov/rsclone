@@ -46,6 +46,10 @@ function sendRejectPortBonusMessage(ws, roomID) {
   machiCoroClientMessageMethods.rejectPortBonus(ws, roomID);
 }
 
+function sendAcceptThrowMessage(ws, roomID) {
+  machiCoroClientMessageMethods.acceptThrow(ws, roomID);
+}
+
 function printInfoAboutBuyAction() {
   return "it is your turn \n/buy name -> buy something;\n/hold - hold turn";
 }
@@ -153,6 +157,10 @@ export default function handleCliCommand(ws, command, roomID) {
     }
     case "rejectPortBonus": {
       sendRejectPortBonusMessage(ws, roomID);
+      break;
+    }
+    case "acceptThrow": {
+      sendAcceptThrowMessage(ws, roomID)
       break;
     }
     default: {

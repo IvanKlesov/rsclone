@@ -53,6 +53,11 @@ export function machiCoroHandler(data, ws, room, webSocketOpetState) {
       room.machiCoroGamePortBonusResult(ws, "reject");
       break;
     }
+    case "acceptThrow" :{
+      logMessage("machiCoroHandler acceptThrow");
+      room.machiCoroGameAcceptThrow(ws);
+      break;
+    }
     default: {
       return false;
     }

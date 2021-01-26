@@ -70,4 +70,12 @@ machiCoroClientMessageMethods.rejectPortBonus = (webSocket, roomID) => {
   webSocket.send(JSON.stringify(clientMessage));
 }
 
+machiCoroClientMessageMethods.acceptThrow = (webSocket, roomID) => {
+  const clientMessage = {
+    method: "acceptThrow",
+    roomID,
+  };
+  webSocket.send(JSON.stringify(clientMessage));
+}
+
 export default machiCoroClientMessageMethods;

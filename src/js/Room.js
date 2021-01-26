@@ -70,6 +70,12 @@ export class Room {
     }
   }
 
+  machiCoroGameAcceptThrow(websocket) {
+    if (this.MachiCoroGame) {
+      this.MachiCoroGame.acceptThrow(websocket);
+    }
+  }
+
   getUsers() {
     return this.users;
   }
