@@ -52,53 +52,41 @@ export default class MachiCoroGame {
     this.users.forEach((user) => {
       if (user !== activeUser) {
         const mustSubtractFromActiveUser = this.calculateUserRedCardsIncome(user, randNum);
-        console.log("mustSubtractFromActiveUser:  ", mustSubtractFromActiveUser);
-        console.log("mustSubtractFromActiveUserReverse:  ", -mustSubtractFromActiveUser);
         const SubtractFromActiveUser = this.updateUserMoney(activeUser, -mustSubtractFromActiveUser);
         if (SubtractFromActiveUser >= 0) {
           this.updateUserMoney(user, mustSubtractFromActiveUser);
-          console.log("SubtractFromActiveUser:  ", mustSubtractFromActiveUser);
         }
       }
     });
   }
 
   calculateUserBlueCardsIncome(user, randNum) {
-    logMessage("смотрим синие карты игрока");
     let getMoneyFromBlueCards = 0;
     const userBlueCards = user.getMachiCoroUser().getBlueCards()
-    logMessage(userBlueCards);
+
     userBlueCards.forEach((card) => {
       if (this.isNumberInArrayOFActivationNumbers(card, randNum)) {
         getMoneyFromBlueCards += card.cardIncome(user.getMachiCoroUser().getAllUserCards(), randNum);
       }
     });
-    logMessage("насчитали столько новых денюшек из синих карт: " + getMoneyFromBlueCards);
+
     this.updateUserMoney(user, getMoneyFromBlueCards);
-    logMessage("Пересчитаем");
-    logMessage(user.getMachiCoroUser())
   }
 
   calculateUserGreenCardsIncome(user, randNum) {
-    logMessage("смотрим зеленые карты игрока");
     let getMoneyFromGreenCards = 0;
     const userGreenCards = user.getMachiCoroUser().getGreenCards();
-    logMessage(userGreenCards);
     userGreenCards.forEach((card) => {
       if (this.isNumberInArrayOFActivationNumbers(card, randNum)) {
         getMoneyFromGreenCards += card.cardIncome(user.getMachiCoroUser().getAllUserCards(), randNum);
       }
     });
-    logMessage("насчитали столько новых денюшек из зеленых карт: " + getMoneyFromGreenCards);
     this.updateUserMoney(user, getMoneyFromGreenCards);
-    logMessage("Пересчитаем");
-    logMessage(user.getMachiCoroUser())
   }
 
   calculateUserPurpleCardsIncome(curUser, randNum) {
     const curMachiCoroUser = curUser.getMachiCoroUser();
     const userPurpleCards = curMachiCoroUser.getPurpleCards();
-    logMessage("Фиолетовые карты пользователя");
     const machiCoroUsers = this.users.map((user) => user.getMachiCoroUser());
     userPurpleCards.forEach((card) => {
       if (this.isNumberInArrayOFActivationNumbers(card, randNum)) {
@@ -251,33 +239,36 @@ export default class MachiCoroGame {
       .concat(" send /acceptThrow command"));
   }
 
-  buy(ws, buyRequest) {
+  isUserUsePortOrRadioTowerBonus(ws) {
     if (this.userThrowRequestForPortBonus) {
       if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
         this.sendRequestForAcceptPortBonus(ws, "also you can rethrow cube(s)");
       } else {
         this.sendRequestForAcceptPortBonus(ws);
       }
-      return;
+      return false;
     } else if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
-      logMessage("Вылезло в месте 2");
       this.sendRequestForAcceptRethrowCubes(ws);
-      return;
+      return false;
     }
+    return true;
+  }
 
-    if (!this.userThrowCube || this.userMakeBuyInThisTurn) {
+  buy(ws, buyRequest) {
+    if (!this.isUserUsePortOrRadioTowerBonus(ws)
+      || !this.userThrowCube
+      || this.userMakeBuyInThisTurn
+      || !this.isThisUserTurn(ws)) {
       return;
     }
-    let curActiveUser = this.users[this.userNumTurn];
-    if (ws !== curActiveUser.getWs()) {
-      return;
-    }
+    
+    const curActiveUser = this.users[this.userNumTurn];
     const machiCoroUser = curActiveUser.getMachiCoroUser();
     const isCardAdded = machiCoroUser.addCard(buyRequest);
+
     if (isCardAdded) {
       this.userMakeBuyInThisTurn = true;
       this.buyInThisTurn = buyRequest;
-      logMessage("machiCoroServerMessageMethods.sendPurchaseInfo()");
       machiCoroServerMessageMethods.sendPurchaseInfo(this.users, this.userNumTurn, buyRequest);
       this.hold(ws);
     }
@@ -311,20 +302,8 @@ export default class MachiCoroGame {
   }
 
   swapUserCards(ws, secondUserID, firstUserCardName, secondUserCardName) {
-    if (this.userThrowRequestForPortBonus) {
-      if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
-        this.sendRequestForAcceptPortBonus(ws, "also you can rethrow cube(s)");
-      } else {
-        this.sendRequestForAcceptPortBonus(ws);
-      }
-      return;
-    } else if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
-      logMessage("Вылезло в месте 4");
-      this.sendRequestForAcceptRethrowCubes(ws);
-      return;
-    }
-
-    if (!this.isUserThrowCubesInThisTurn(ws)
+    if (!this.isUserUsePortOrRadioTowerBonus(ws)
+      || !this.isUserThrowCubesInThisTurn(ws)
       || !this.isResultOfCubesThrowActivateCard(ws, businessCenterActivationNumbers)
       || !this.isThisUserTurn(ws)
       || !this.isUserDontUsePossibility(ws, this.userUseSwapPossibility)
@@ -360,21 +339,9 @@ export default class MachiCoroGame {
   }
 
   steal(ws, secondUserID) {
-    if (this.userThrowRequestForPortBonus) {
-      if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
-        this.sendRequestForAcceptPortBonus(ws, "also you can rethrow cube(s)");
-      } else {
-        this.sendRequestForAcceptPortBonus(ws);
-      }
-      return;
-    } else if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
-      logMessage("Вылезло в месте 5");
-      this.sendRequestForAcceptRethrowCubes(ws);
-      return;
-    }
-
     // duplicate checks with swap
-    if (!this.isUserThrowCubesInThisTurn(ws)
+    if (!this.isUserUsePortOrRadioTowerBonus(ws)
+      || !this.isUserThrowCubesInThisTurn(ws)
       || !this.isResultOfCubesThrowActivateCard(ws, telecentreActivationNumbers)
       || !this.isThisUserTurn(ws)
       || !this.isUserDontUsePossibility(ws, this.userUseStealPossibility)
@@ -390,14 +357,17 @@ export default class MachiCoroGame {
     machiCoroServerMessageMethods.stealAccept(this.users, this.userNumTurn, secondUserID);
   }
 
-  acceptPortBonus(ws) {
-    // duplicating code
+  isConditionForUsingPortBonusCompleted(ws) {
     if (!this.isUserThrowCubesInThisTurn(ws)
       || !this.isThisUserTurn(ws)
       || !this.isUserHaveCard(ws, this.userNumTurn, "port")) {
-      return;
+      return false;
     }
-    if (this.userThrowRequestForPortBonus) {
+    return true;
+  }
+
+  acceptPortBonus(ws) {
+    if (this.isConditionForUsingPortBonusCompleted(ws) && this.userThrowRequestForPortBonus) {
       this.userThrowRequestForPortBonus = false;
       this.userReThrowCubesRequest = true;
       this.resOfCubesThrow += 2;
@@ -409,13 +379,7 @@ export default class MachiCoroGame {
   }
 
   rejectPortBonus(ws) {
-    // duplicating code
-    if (!this.isUserThrowCubesInThisTurn(ws)
-      || !this.isThisUserTurn(ws)
-      || !this.isUserHaveCard(ws, this.userNumTurn, "port")) {
-      return;
-    }
-    if (this.userThrowRequestForPortBonus) {
+    if (this.isConditionForUsingPortBonusCompleted(ws) && this.userThrowRequestForPortBonus) {
       this.userThrowRequestForPortBonus = false;
       this.userReThrowCubesRequest = true;
       const curActiveUser = this.users[this.userNumTurn];
@@ -425,8 +389,6 @@ export default class MachiCoroGame {
     }
   }
 
-  /*  You have card radiTower.You can rethrow cubes.To rethrow send /throw. To accept current result"
-       .concat(" send /acceptThrow command")); */
   acceptThrow(ws) {
     if (!this.isUserThrowCubesInThisTurn(ws)
       || !this.isThisUserTurn(ws)
