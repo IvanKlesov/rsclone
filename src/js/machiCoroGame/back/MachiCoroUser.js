@@ -3,7 +3,7 @@ import logMessage from "../../../js/logger";
 
 export class MachiCoroUser {
   constructor() {
-    this.money = 30;
+    this.money = 350;
     this.userCards = [];
     this.initBasicUserCards();
     this.hasAirport = false;
@@ -135,5 +135,10 @@ export class MachiCoroUser {
     logMessage("updateUserMoney newMoney2: " + newMoney);
     this.setMoney(newMoney);
     return newMoneyBeforeCorrection;
+  }
+
+  isUserWin() {
+    return this.hasAirport && this.hasRailwayStation && this.hasAmusementPark
+      && this.hasPort && this.hasRadioTower && this.hasShoppingCenter;
   }
 }

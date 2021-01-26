@@ -1,3 +1,5 @@
+import logMessage from "../../../logger";
+
 export const machiCoroServerMessageMethods = {};
 
 // users = array of User objects
@@ -141,7 +143,7 @@ machiCoroServerMessageMethods.portBonusResult = (users, curActiveUserID, result)
     method: "machiCoroError",
     content: `You ${result} portBonus`
   }
-  users.forEach((user,index) => {
+  users.forEach((user, index) => {
     const curUserWs = user.getWs();
     if (index === curActiveUserID) {
       curUserWs.send(JSON.stringify(messageToActiveUser));
@@ -149,6 +151,28 @@ machiCoroServerMessageMethods.portBonusResult = (users, curActiveUserID, result)
       curUserWs.send(JSON.stringify(messageToALlUsers));
     }
   });
+}
+
+machiCoroServerMessageMethods.sendGameIsOverMessage = (users, winner) => {
+  const indexOfWinner = users.findIndex((user) => user === winner);
+  logMessage("winner index: ", indexOfWinner);
+  const messageToWinner = {
+    method: "machiCoroError",
+    content: `You are game winner`
+  };
+
+  const messageToLosser = {
+    method: "machiCoroError",
+    content: `You loose this game. Player${indexOfWinner} win this game`
+  };
+
+  users.forEach((user, index) => {
+    if (indexOfWinner === index) {
+      user.getWs().send(JSON.stringify(messageToWinner));
+    } else {
+      user.getWs().send(JSON.stringify(messageToLosser));
+    }
+  })
 }
 
 machiCoroServerMessageMethods.sendError = (ws, errorMessage) => {
