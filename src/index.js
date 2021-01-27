@@ -2,6 +2,7 @@ import logMessage from "./js/logger";
 import "./js/popup";
 import "./css/style.css";
 import "./css/popup.css";
+import "./css/shop.css";
 import { clientMessageMethods } from "./server/messages/clientMessageMethods";
 import handleCliCommand, { handlerServerMachiCoroResponse } from "./js/machiCoroGame/front/machiCoroClientLogic";
 
