@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import serverMessageMethods from "../server/messages/serverMessageMethods";
+import { serverMessageMethods } from "../server/messages/serverMessageMethods";
 import MachiCoroGame from "./machiCoroGame/back/MachiCoroGame";
 
 export class Room {
@@ -12,7 +12,7 @@ export class Room {
   }
 
   startMachiCoroGame(websocket, webSocketOpetState) {
-    if (this.users.length > 1) {// && this.MachiCoroGame === undefined) {
+    if (this.users.length > 1) {
       if (this.MachiCoroGame === undefined) {
         this.MachiCoroGame = new MachiCoroGame(this.getUsers());
         this.MachiCoroGame.start(websocket, webSocketOpetState);
@@ -70,7 +70,7 @@ export class Room {
           break;
         }
         default: {
-          break
+          break;
         }
       }
     }
@@ -100,7 +100,7 @@ export class Room {
   }
 
   removeAllUsers() {
-    this.users.forEach(client => {
+    this.users.forEach((client) => {
       serverMessageMethods.getOutRoomAccept(client);
     });
     this.users.lenght = 0;

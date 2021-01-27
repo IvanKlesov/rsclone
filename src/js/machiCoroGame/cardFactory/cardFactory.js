@@ -7,7 +7,7 @@ import { Airport, RailwayStation, AmusementPark, Port, RadioTower, ShoppingCente
 
 export const cardFactory = (cardName) => {
   switch (cardName) {
-    //blue
+    // blue
     // blue cards wich turn give money to owner
     case "longboat": {
       return new Longboat();
@@ -74,7 +74,7 @@ export const cardFactory = (cardName) => {
     case "flowerStore": {
       return new FlowerStore();
     }
-    //red
+    // red
     // red cards give money to owner from opponent cash
 
     case "diner": {
@@ -97,7 +97,7 @@ export const cardFactory = (cardName) => {
       return new SushiBar();
     }
 
-    //purple
+    // purple
     // red cards give money to owner in owner turn from opponent cash
 
     case "businessCenter": {
@@ -150,6 +150,6 @@ export const cardFactory = (cardName) => {
       break;
     }
   }
-}
+};
 
 export default cardFactory;

@@ -1,5 +1,5 @@
-import logMessage from "../../logger";
-import machiCoroServerMessageMethods from "./machiCoroMessages/machiCoroServerMessageMethods";
+// import logMessage from "../../logger";
+import { machiCoroServerMessageMethods } from "./machiCoroMessages/machiCoroServerMessageMethods";
 
 import { businessCenterActivationNumbers, telecentreActivationNumbers } from "../cardFactory/cards/purpleCards";
 
@@ -63,7 +63,7 @@ export default class MachiCoroGame {
 
   calculateUserBlueCardsIncome(user, randNum) {
     let getMoneyFromBlueCards = 0;
-    const userBlueCards = user.getMachiCoroUser().getBlueCards()
+    const userBlueCards = user.getMachiCoroUser().getBlueCards();
 
     userBlueCards.forEach((card) => {
       if (this.isNumberInArrayOFActivationNumbers(card, randNum)) {
@@ -115,7 +115,7 @@ export default class MachiCoroGame {
     // calculate from purple cards
     this.calculateUserGreenCardsIncome(activeUser, randNum);
     this.calculateUserPurpleCardsIncome(activeUser, randNum);
-    this.calculateIncomeFromShoppingCenter(activeUser)
+    this.calculateIncomeFromShoppingCenter(activeUser);
   }
 
   generateRandNumbers(maxNumber) {
@@ -135,9 +135,8 @@ export default class MachiCoroGame {
       if (!this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower || this.userReThrowCubesRequest) {
         machiCoroServerMessageMethods.sendError(ws, "you already throw cube(s) in this turn");
         return;
-      } else {
-        this.userReThrowCubesRequest = true;
       }
+      this.userReThrowCubesRequest = true;
     }
     const curActiveUser = this.users[this.userNumTurn];
     if (ws !== curActiveUser.getWs()) {
@@ -195,7 +194,8 @@ export default class MachiCoroGame {
 
   isResultOfCubesThrowActivateCard(ws, activationArray) {
     if (activationArray.indexOf(this.resOfCubesThrow) === -1) {
-      machiCoroServerMessageMethods.sendError(ws, `throw result(${this.resOfCubesThrow}) not in activationArray ${activationArray}`);
+      machiCoroServerMessageMethods
+        .sendError(ws, `throw result(${this.resOfCubesThrow}) not in activationArray ${activationArray}`);
       return false;
     }
     return true;
@@ -243,12 +243,15 @@ export default class MachiCoroGame {
   }
 
   sendRequestForAcceptPortBonus(ws, additionalInfo = "") {
-    machiCoroServerMessageMethods.sendError(ws, "You have card port.You can get 2 throw point bonus.Send /acceptPortBonus or /rejectPortBonus command;"
-      .concat(additionalInfo));
+    machiCoroServerMessageMethods.sendError(ws,
+      "You have card port.You can get 2 throw point bonus."
+        .concat("Send /acceptPortBonus or /rejectPortBonus command;")
+        .concat(additionalInfo));
   }
 
   sendRequestForAcceptRethrowCubes(ws) {
-    machiCoroServerMessageMethods.sendError(ws, "You have card radiTower.You can rethrow cubes.To rethrow send /throw. To accept current result"
+    machiCoroServerMessageMethods.sendError(ws, "You have card radiTower.You can rethrow cubes."
+      .concat("To rethrow send /throw. To accept current result")
       .concat(" send /acceptThrow command"));
   }
 
@@ -260,7 +263,8 @@ export default class MachiCoroGame {
         this.sendRequestForAcceptPortBonus(ws);
       }
       return false;
-    } else if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest
+    }
+    if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest
       && additionalConditionForRadio) {
       this.sendRequestForAcceptRethrowCubes(ws);
       return false;
@@ -297,7 +301,7 @@ export default class MachiCoroGame {
     if (!this.isUserUsePortOrRadioTowerBonus(ws, this.buyInThisTurn !== "radioTower")
       || !this.userThrowCube
       || this.isWin(this.users[this.userNumTurn])) {
-      return
+      return;
     }
     let curActiveUser = this.users[this.userNumTurn];
     if (curActiveUser.getWs() === ws) {
@@ -351,7 +355,8 @@ export default class MachiCoroGame {
     secondUserCards[secondUserCardIndex] = firstCardCopy;
 
     this.userUseSwapPossibility = true;
-    machiCoroServerMessageMethods.swapAccept(this.users, this.userNumTurn, secondUserID, firstUserCardName, secondUserCardName);
+    machiCoroServerMessageMethods.swapAccept(this.users, this.userNumTurn,
+      secondUserID, firstUserCardName, secondUserCardName);
   }
 
   steal(ws, secondUserID) {

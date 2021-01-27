@@ -1,6 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { MachiCoroUser }  from "./machiCoroGame/back/MachiCoroUser";
-// import cardFactory from "./machiCoroGame/cards";
+import MachiCoroUser from "./machiCoroGame/back/MachiCoroUser";
 
 export class User {
   constructor(webSocket) {
@@ -8,7 +7,7 @@ export class User {
     this.id = uuid();
   }
 
-  getWs(){
+  getWs() {
     return this.ws;
   }
 

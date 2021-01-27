@@ -1,7 +1,7 @@
-import cardFactory from "../cardFactory/cardFactory";// "../cards/cardFactory";
-import logMessage from "../../../js/logger";
+import { cardFactory } from "../cardFactory/cardFactory";
+import logMessage from "../../logger";
 
-export class MachiCoroUser {
+export default class MachiCoroUser {
   constructor() {
     this.money = 350;
     this.userCards = [];
@@ -36,7 +36,7 @@ export class MachiCoroUser {
     const fullInfo = {
       money: this.getMoney(),
       cards,
-    }
+    };
     return fullInfo;
   }
 
@@ -46,7 +46,6 @@ export class MachiCoroUser {
 
   getUserCardLink(cardName) {
     for (let i = 0; i < this.userCards.length; i += 1) {
-
       if (this.userCards[i].name === cardName) {
         return this.userCards[i];
       }
@@ -123,14 +122,14 @@ export class MachiCoroUser {
 
   updateUserMoney(moneyDelta) {
     const oldMoney = this.getMoney();
-    logMessage("updateUserMoney oldMoney: " + oldMoney);
+    logMessage(`updateUserMoney oldMoney: ${oldMoney}`);
     let newMoney = oldMoney + moneyDelta;
-    logMessage("updateUserMoney newMoney: " + newMoney);
+    logMessage(`updateUserMoney newMoney: ${newMoney}`);
     const newMoneyBeforeCorrection = newMoney;
     if (newMoney < 0) {
       newMoney = 0;
     }
-    logMessage("updateUserMoney newMoney2: " + newMoney);
+    logMessage(`updateUserMoney newMoney2: ${newMoney}`);
     this.setMoney(newMoney);
     return newMoneyBeforeCorrection;
   }

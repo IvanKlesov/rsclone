@@ -1,18 +1,18 @@
 // blue cards
-import { BlueCards as Card} from "./Card";
+import { BlueCards as Card } from "./Card";
 
 export class Longboat extends Card {
-    constructor() {
-      super("longboat", 2, "boat", [8], 3);
-    }
-
-    cardIncome(userCards) {
-      if (userCards.findIndex((card) => card.name === "port" > -1)) {
-        return this.income;
-      }
-      return 0;
-    }
+  constructor() {
+    super("longboat", 2, "boat", [8], 3);
   }
+
+  cardIncome(userCards) {
+    if (userCards.findIndex((card) => card.name === "port" > -1)) {
+      return this.income;
+    }
+    return 0;
+  }
+}
 export class Forest extends Card {
   constructor() {
     super("forest", 3, "nature", [5], 5);

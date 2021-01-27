@@ -23,7 +23,7 @@ machiCoroClientMessageMethods.hold = (webSocket, roomID) => {
     roomID,
   };
   webSocket.send(JSON.stringify(clientMessage));
-}
+};
 
 machiCoroClientMessageMethods.throw = (webSocket, roomID, cubeNumbers = 1) => {
   const clientMessage = {
@@ -32,7 +32,7 @@ machiCoroClientMessageMethods.throw = (webSocket, roomID, cubeNumbers = 1) => {
     cubeNumbers,
   };
   webSocket.send(JSON.stringify(clientMessage));
-}
+};
 
 machiCoroClientMessageMethods.swap = (webSocket, roomID, secondUser, firstUserCard, secondUserCard) => {
   const clientMessage = {
@@ -40,10 +40,10 @@ machiCoroClientMessageMethods.swap = (webSocket, roomID, secondUser, firstUserCa
     roomID,
     secondUser,
     firstUserCard,
-    secondUserCard
+    secondUserCard,
   };
   webSocket.send(JSON.stringify(clientMessage));
-}
+};
 
 machiCoroClientMessageMethods.steal = (webSocket, roomID, secondUser) => {
   const clientMessage = {
@@ -52,7 +52,7 @@ machiCoroClientMessageMethods.steal = (webSocket, roomID, secondUser) => {
     secondUser,
   };
   webSocket.send(JSON.stringify(clientMessage));
-}
+};
 
 machiCoroClientMessageMethods.acceptPortBonus = (webSocket, roomID) => {
   const clientMessage = {
@@ -60,7 +60,7 @@ machiCoroClientMessageMethods.acceptPortBonus = (webSocket, roomID) => {
     roomID,
   };
   webSocket.send(JSON.stringify(clientMessage));
-}
+};
 
 machiCoroClientMessageMethods.rejectPortBonus = (webSocket, roomID) => {
   const clientMessage = {
@@ -68,7 +68,7 @@ machiCoroClientMessageMethods.rejectPortBonus = (webSocket, roomID) => {
     roomID,
   };
   webSocket.send(JSON.stringify(clientMessage));
-}
+};
 
 machiCoroClientMessageMethods.acceptThrow = (webSocket, roomID) => {
   const clientMessage = {
@@ -76,6 +76,6 @@ machiCoroClientMessageMethods.acceptThrow = (webSocket, roomID) => {
     roomID,
   };
   webSocket.send(JSON.stringify(clientMessage));
-}
+};
 
 export default machiCoroClientMessageMethods;

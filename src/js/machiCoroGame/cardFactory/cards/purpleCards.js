@@ -23,8 +23,8 @@ export class PublishingHouse extends Card {
     users.forEach((user) => {
       if (user !== activeUser) {
         const buildingsForWhichWeConsiderPayment = user.getAllUserCards().filter((card) => card.type === "cafe" || card.type === "shop");
-        user.updateUserMoney(-buildingsForWhichWeConsiderPayment.length)
-        activeUser.updateUserMoney(buildingsForWhichWeConsiderPayment.length)
+        user.updateUserMoney(-buildingsForWhichWeConsiderPayment.length);
+        activeUser.updateUserMoney(buildingsForWhichWeConsiderPayment.length);
       }
     });
     return 0;
