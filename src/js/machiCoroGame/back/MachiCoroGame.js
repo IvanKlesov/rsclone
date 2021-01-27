@@ -21,6 +21,9 @@ export default class MachiCoroGame {
 
     this.buyInThisTurn = "";
     this.gameIsOver = false;
+
+    this.timer = null;
+    this.timerPoints = [10, 10, 10, 10, 10, 5, 1, 1, 1, 1, 0];
   }
 
   start(ws, webSocketOpetState) {
@@ -30,6 +33,34 @@ export default class MachiCoroGame {
     });
     machiCoroServerMessageMethods.gameStarted(this.users, ws, webSocketOpetState);
     machiCoroServerMessageMethods.sendUserGameInfo(this.users, curActiveUser);
+    this.startTimer(curActiveUser);
+  }
+
+  startTimer(activeUser) {
+    const userWhoStartTimer = activeUser;
+    const timer = (delay, timerPoint = 0) => {
+      this.timer = setTimeout(() => {
+        const timeLeft = this.timerPoints.slice(timerPoint).reduce((acc, el) => acc + el, 0);
+        machiCoroServerMessageMethods.sendError(this.users[this.userNumTurn].getWs(),
+          `У вас ${timeLeft} секунд на ход`);
+        if (timerPoint !== this.timerPoints.length - 1) {
+          timer(this.timerPoints[timerPoint], timerPoint + 1);
+        } else {
+          if (this.users[this.userNumTurn] === userWhoStartTimer) {
+
+            this.resOfCubesThrow = this.generateRandNumbers(6);
+            this.userThrowCube = true;
+
+            this.calculateExpenses(userWhoStartTimer, this.resOfCubesThrow);
+            this.calculateIncome(userWhoStartTimer, this.resOfCubesThrow);
+            machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, this.resOfCubesThrow);
+
+            this.hold(userWhoStartTimer.getWs());
+          }
+        }
+      }, delay * 1000);
+    }
+    timer(1);
   }
 
   isNumberInArrayOFActivationNumbers(card, num) {
@@ -305,10 +336,12 @@ export default class MachiCoroGame {
     }
     let curActiveUser = this.users[this.userNumTurn];
     if (curActiveUser.getWs() === ws) {
+      clearTimeout(this.timer);
       this.tryUseAirportBonus(ws);
       this.getNextUser();
       curActiveUser = this.users[this.userNumTurn];
       machiCoroServerMessageMethods.sendUserGameInfo(this.users, curActiveUser);
+      this.startTimer(curActiveUser);
     }
   }
 
