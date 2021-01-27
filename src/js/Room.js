@@ -12,9 +12,15 @@ export class Room {
   }
 
   startMachiCoroGame(websocket, webSocketOpetState) {
-    if (this.users.length > 1 && this.MachiCoroGame === undefined) {
-      this.MachiCoroGame = new MachiCoroGame(this.getUsers());
-      this.MachiCoroGame.start(websocket, webSocketOpetState);
+    if (this.users.length > 1) {// && this.MachiCoroGame === undefined) {
+      if (this.MachiCoroGame === undefined) {
+        this.MachiCoroGame = new MachiCoroGame(this.getUsers());
+        this.MachiCoroGame.start(websocket, webSocketOpetState);
+      } else if (this.MachiCoroGame && this.gameIsOver) {
+        this.MachiCoroGame = undefined;
+        this.MachiCoroGame = new MachiCoroGame(this.getUsers());
+        this.MachiCoroGame.start(websocket, webSocketOpetState);
+      }
     }
   }
 
@@ -24,7 +30,7 @@ export class Room {
 
   machiCoroGameBuy(websocket, buyRequest) {
     if (this.MachiCoroGame) {
-      this.MachiCoroGame.buy(websocket, buyRequest);
+      this.gameIsOver = this.MachiCoroGame.buy(websocket, buyRequest);
     }
   }
 
