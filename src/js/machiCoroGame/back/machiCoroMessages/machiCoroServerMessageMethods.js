@@ -1,4 +1,5 @@
 import logMessage from "../../../logger";
+import getDateDifferenceInTime from "../../../time";
 
 export const machiCoroServerMessageMethods = {};
 
@@ -192,6 +193,15 @@ machiCoroServerMessageMethods.sendGameIsOverMessage = (users, winner) => {
       user.getWs().send(JSON.stringify(messageToLosser));
     }
   });
+};
+
+machiCoroServerMessageMethods.sendGameFinalStat = (users, gameStartObj, gameEndObj) => {
+  const timeDiff = getDateDifferenceInTime(gameStartObj, gameEndObj);
+  const message = {
+    method: "gameFinalStat",
+    content: `Game lasted ${timeDiff.hours} hours : ${timeDiff.minutes} minutes: ${timeDiff.seconds} seconds`,
+  }
+  users.forEach((user) => user.getWs().send(JSON.stringify(message)));
 };
 
 machiCoroServerMessageMethods.sendError = (ws, errorMessage) => {
