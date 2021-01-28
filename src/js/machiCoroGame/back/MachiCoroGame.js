@@ -24,6 +24,9 @@ export default class MachiCoroGame {
 
     this.timer = null;
     this.timerPoints = [10, 10, 10, 10, 10, 5, 1, 1, 1, 1, 0];
+
+    this.gameWasStartIn = new Date();
+    this.gameWasEndIn = null;
   }
 
   checkUsersLength() {
@@ -34,7 +37,11 @@ export default class MachiCoroGame {
     if (this.users.length < 2) {
       this.gameIsOver = true;
       if (this.users[0]) {
+        if (!this.gameWasEndIn) {
+          this.gameWasEndIn = new Date();
+        }
         machiCoroServerMessageMethods.sendError(this.users[0].getWs(), "You last player.Game is Over");
+        machiCoroServerMessageMethods.sendGameFinalStat(this.users, this.gameWasStartIn, this.gameWasEndIn);
       }
     } else {
       this.startTimer(this.users[this.userNumTurn]);
@@ -170,8 +177,12 @@ export default class MachiCoroGame {
 
   isWin(user) {
     if (user.getMachiCoroUser().isUserWin()) {
+      if (!this.gameWasEndIn) {
+        this.gameWasEndIn = new Date();
+      }
       this.gameIsOver = true;
       machiCoroServerMessageMethods.sendGameIsOverMessage(this.users, user);
+      machiCoroServerMessageMethods.sendGameFinalStat(this.users, this.gameWasStartIn, this.gameWasEndIn);
     }
     return this.gameIsOver;
   }

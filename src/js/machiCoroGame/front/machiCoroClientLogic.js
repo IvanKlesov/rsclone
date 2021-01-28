@@ -109,6 +109,10 @@ export function handlerServerMachiCoroResponse(jsonData) {
       return info;
     }
 
+    case "gameFinalStat": {
+      return jsonData.content;
+    }
+
     default: {
       break;
     }
