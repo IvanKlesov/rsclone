@@ -2,6 +2,7 @@ import logMessage from "./js/logger";
 import "./js/popup";
 import "./css/style.css";
 import "./css/popup.css";
+import "./css/shop.css";
 import { clientMessageMethods } from "./server/messages/clientMessageMethods";
 import handleCliCommand, { handlerServerMachiCoroResponse } from "./js/machiCoroGame/front/machiCoroClientLogic";
 
@@ -15,6 +16,7 @@ if (typeof module.hot !== "undefined") {
   module.hot.accept(); // eslint-disable-line no-undef
 }
 
+const newGame = document.querySelector(".new-game");
 const sendBtn = document.getElementById("send");
 const chatRoomsBtn = document.getElementById("chatRoomsBtn");
 const getOutRoomBtn = document.getElementById("getOutRoomBtn");
@@ -181,6 +183,11 @@ sendBtn.onclick = () => {
 };
 
 chatRoomsBtn.onclick = () => {
+  logMessage("chat rooms btn");
+  clientMessageMethods.getRooms(ws);
+};
+
+newGame.onclick = () => {
   logMessage("chat rooms btn");
   clientMessageMethods.getRooms(ws);
 };
