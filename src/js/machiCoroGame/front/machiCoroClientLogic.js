@@ -18,24 +18,35 @@ function sendThrowCubeMessage(ws, roomID, cubeNumbs) {
 }
 
 function sendSwapCardsMessage(ws, roomID, commandString) {
-  console.log(commandString);
-  commandString = commandString.split(" ");
+  const commandStringSplit = commandString.split(" ");
   if (commandString.length < 4) {
     logMessage("error sendSwapCardsMessage: command lenght < 4");
     return;
   }
 
-  const secondUserID = commandString[1];
-  const firstUserCard = commandString[2];
-  const secondUserCasrd = commandString[3];
-  logMessage("secondUserID" + secondUserID);
-  logMessage("firstUserCard" + firstUserCard);
-  logMessage("secondUserCasrd" + secondUserCasrd);
+  const secondUserID = commandStringSplit[1];
+  const firstUserCard = commandStringSplit[2];
+  const secondUserCasrd = commandStringSplit[3];
+  logMessage(`secondUserID ${secondUserID}`);
+  logMessage(`firstUserCard ${firstUserCard}`);
+  logMessage(`secondUserCasrd ${secondUserCasrd}`);
   machiCoroClientMessageMethods.swap(ws, roomID, secondUserID, firstUserCard, secondUserCasrd);
 }
 
 function sendStealMessage(ws, roomID, secondUserID) {
   machiCoroClientMessageMethods.steal(ws, roomID, secondUserID);
+}
+
+function sendAcceptPortBonusMessage(ws, roomID) {
+  machiCoroClientMessageMethods.acceptPortBonus(ws, roomID);
+}
+
+function sendRejectPortBonusMessage(ws, roomID) {
+  machiCoroClientMessageMethods.rejectPortBonus(ws, roomID);
+}
+
+function sendAcceptThrowMessage(ws, roomID) {
+  machiCoroClientMessageMethods.acceptThrow(ws, roomID);
 }
 
 function printInfoAboutBuyAction() {
@@ -45,7 +56,7 @@ function printInfoAboutBuyAction() {
 export function handlerServerMachiCoroResponse(jsonData) {
   logMessage("handlerServerMachiCoroResponse");
   logMessage(jsonData);
-  const method = jsonData.method;
+  const { method } = jsonData;
   switch (method) {
     case "gameStarted": {
       return "game was started";
@@ -67,10 +78,9 @@ export function handlerServerMachiCoroResponse(jsonData) {
       const point = jsonData.throwCubeResult;
       if (jsonData.turn === "you") {
         return `You throw ${point}`;
-      } else {
-        const activePlayerNum = jsonData.turn
-        return `Player ${activePlayerNum} throw ${point}`;
       }
+      const activePlayerNum = jsonData.turn;
+      return `Player ${activePlayerNum} throw ${point}`;
     }
     case "purchaseInfo": {
       const itIsYourTurn = jsonData.turn === "you";
@@ -89,6 +99,23 @@ export function handlerServerMachiCoroResponse(jsonData) {
     case "stealAccept": {
       return jsonData.content;
     }
+
+    case "allUsersInfo": {
+      const result = jsonData.content;
+      const info = result
+        .reduce((acc, userInfo) => (
+          acc.concat(`Player${userInfo.index}\n\t`).concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`)
+        ), "");
+      return info;
+    }
+
+    case "gameFinalStat": {
+      return jsonData.content;
+    }
+
+    default: {
+      break;
+    }
   }
   return "";
 }
@@ -98,7 +125,6 @@ export default function handleCliCommand(ws, command, roomID) {
   if (currectCommand[0] === "/") {
     currectCommand = currectCommand.slice(1);
   }
-  console.log(currectCommand);
   const commandMethod = currectCommand.split(" ", 2);
   switch (commandMethod[0]) {
     case "start": {
@@ -137,6 +163,19 @@ export default function handleCliCommand(ws, command, roomID) {
     }
     case "steal": {
       sendStealMessage(ws, roomID, commandMethod[1]);
+      break;
+    }
+    case "acceptPortBonus": {
+      sendAcceptPortBonusMessage(ws, roomID);
+      break;
+    }
+    case "rejectPortBonus": {
+      sendRejectPortBonusMessage(ws, roomID);
+      break;
+    }
+    case "acceptThrow": {
+      sendAcceptThrowMessage(ws, roomID);
+      break;
     }
     default: {
       logMessage("cant response command from client");

@@ -1,19 +1,18 @@
-import cardFactory from "../cardFactory/cardFactory";// "../cards/cardFactory";
-import logMessage from "../../../js/logger";
+import { cardFactory } from "../cardFactory/cardFactory";
+import logMessage from "../../logger";
 
-export class MachiCoroUser {
+export default class MachiCoroUser {
   constructor() {
-    this.money = 20;
+    this.money = 3;
     this.userCards = [];
     this.initBasicUserCards();
+
     this.hasAirport = false;
     this.hasRailwayStation = false;
     this.hasAmusementPark = false;
     this.hasPort = false;
     this.hasRadioTower = false;
     this.hasShoppingCenter = false;
-    // cardsArray wich contain 2 basic card
-    // array of great buildings 
   }
 
   setMoney(newMoneyValue) {
@@ -37,7 +36,7 @@ export class MachiCoroUser {
     const fullInfo = {
       money: this.getMoney(),
       cards,
-    }
+    };
     return fullInfo;
   }
 
@@ -47,7 +46,6 @@ export class MachiCoroUser {
 
   getUserCardLink(cardName) {
     for (let i = 0; i < this.userCards.length; i += 1) {
-
       if (this.userCards[i].name === cardName) {
         return this.userCards[i];
       }
@@ -66,7 +64,6 @@ export class MachiCoroUser {
 
   addCard(cardName) {
     const newCard = cardFactory(cardName);
-    logMessage("addCard func");
     if (newCard) {
       const cardConditionCost = newCard.cost <= this.getMoney();
       if (cardConditionCost) {
@@ -74,29 +71,29 @@ export class MachiCoroUser {
           if (!this.isUserHaveThisCard(cardName)) {
             this.userCards.push(newCard);
             newCard.toggleСardIndicator(this);
+            this.updateUserMoney(-newCard.cost);
             return true;
           }
         }
         if (newCard.type === "unic") {
           if (!this.isUserHaveThisCard(cardName)) {
             this.userCards.push(newCard);
+            this.updateUserMoney(-newCard.cost);
             return true;
           }
         } else {
           this.userCards.push(newCard);
+          this.updateUserMoney(-newCard.cost);
           return true;
         }
       }
     }
-    logMessage("addCard func return false");
     return false;
   }
 
   initBasicUserCards() {
-    // this.userCards.push(cardFactory("bakery"));
+    this.userCards.push(cardFactory("bakery"));
     this.userCards.push(cardFactory("wheatField"));
-    logMessage("initBasicUserCards end ");
-    logMessage(this.userCards);
   }
 
   getAllUserCards() {
@@ -125,15 +122,20 @@ export class MachiCoroUser {
 
   updateUserMoney(moneyDelta) {
     const oldMoney = this.getMoney();
-    logMessage("updateUserMoney oldMoney: " + oldMoney);
+    logMessage(`updateUserMoney oldMoney: ${oldMoney}`);
     let newMoney = oldMoney + moneyDelta;
-    logMessage("updateUserMoney newMoney: " + newMoney);
+    logMessage(`updateUserMoney newMoney: ${newMoney}`);
     const newMoneyBeforeCorrection = newMoney;
     if (newMoney < 0) {
       newMoney = 0;
     }
-    logMessage("updateUserMoney newMoney2: " + newMoney);
+    logMessage(`updateUserMoney newMoney2: ${newMoney}`);
     this.setMoney(newMoney);
     return newMoneyBeforeCorrection;
+  }
+
+  isUserWin() {
+    return this.hasAirport && this.hasRailwayStation && this.hasAmusementPark
+      && this.hasPort && this.hasRadioTower && this.hasShoppingCenter;
   }
 }

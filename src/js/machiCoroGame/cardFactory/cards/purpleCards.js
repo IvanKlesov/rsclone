@@ -3,9 +3,12 @@
 // activeUser === activeUser.getMachiCoroUser();
 import { PurpleCard as Card } from "./Card";
 
+export const businessCenterActivationNumbers = [6];
+export const telecentreActivationNumbers = [6];
+
 export class BusinessCenter extends Card {
   constructor() {
-    super("businessCenter", 8, "unic", [6], 0);
+    super("businessCenter", 8, "unic", businessCenterActivationNumbers, 0);
   }
 }
 
@@ -20,8 +23,8 @@ export class PublishingHouse extends Card {
     users.forEach((user) => {
       if (user !== activeUser) {
         const buildingsForWhichWeConsiderPayment = user.getAllUserCards().filter((card) => card.type === "cafe" || card.type === "shop");
-        user.updateUserMoney(-buildingsForWhichWeConsiderPayment.length)
-        activeUser.updateUserMoney(buildingsForWhichWeConsiderPayment.length)
+        user.updateUserMoney(-buildingsForWhichWeConsiderPayment.length);
+        activeUser.updateUserMoney(buildingsForWhichWeConsiderPayment.length);
       }
     });
     return 0;
@@ -66,6 +69,6 @@ export class Stadium extends Card {
 
 export class Telecentre extends Card {
   constructor() {
-    super("telecentre", 7, "unic", [6], 0);
+    super("telecentre", 7, "unic", telecentreActivationNumbers, 0);
   }
 }

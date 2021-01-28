@@ -1,9 +1,9 @@
 import WebSocket from "ws";
-import Room from "../js/Room";
-import User from "../js/User";
-import serverMessageMethods from "./messages/serverMessageMethods";
-import { checkMethodExistence, machiCoroHandler } from "../js/machiCoroGame/back/handlers/machiCoroHandler";
-import logMessage from "../js/logger.js";
+import { Room } from "../js/Room";
+import { User } from "../js/User";
+import { serverMessageMethods } from "./messages/serverMessageMethods";
+import { machiCoroHandler } from "../js/machiCoroGame/back/handlers/machiCoroHandler";
+import logMessage from "../js/logger";
 
 const intervalValueForPing = 5000;
 
@@ -26,7 +26,7 @@ export class WebSocketServer {
   }
 
   findCurrentUserByWebsocket(ws) {
-    return this.users.find(user => user.ws === ws);
+    return this.users.find((user) => user.ws === ws);
   }
 
   setCurrentUserRoom(ws, id) {
@@ -66,7 +66,7 @@ export class WebSocketServer {
         }
         case "setRoom": {
           const curRoom = this.findRoomLinkByRoomID(jsonData.content);
-          const curUser = this.findCurrentUserByWebsocket(ws)
+          const curUser = this.findCurrentUserByWebsocket(ws);
           const addUserIsSuccess = curRoom.addUser(curUser);
           if (!addUserIsSuccess) {
             return serverMessageMethods.userRoomReject(ws, jsonData.content);
@@ -79,7 +79,8 @@ export class WebSocketServer {
         }
         case "getOutRoom": {
           const curRoom = this.findRoomLinkByRoomID(jsonData.content);
-          const itWasRoomOwner = curRoom.removeUser(ws);
+          const curUser = this.findCurrentUserByWebsocket(ws);
+          const itWasRoomOwner = curRoom.removeUser(curUser);
           if (!itWasRoomOwner) {
             this.destroyRoom(curRoom);
           }
@@ -90,13 +91,15 @@ export class WebSocketServer {
         case "createRoom": {
           const newRoom = new Room(jsonData.content);
           this.rooms.push(newRoom);
-          newRoom.setOwner(ws);
+
+          const curUser = this.findCurrentUserByWebsocket(ws);
+          newRoom.setOwner(curUser);
+
           serverMessageMethods.createRoomAccept(ws, newRoom);
           break;
         }
         default: {
           logMessage(jsonData.method);
-          // const isMachiCoroMessage = checkMethodExistence(jsonData.method);
           const curRoom = this.findRoomLinkByRoomID(jsonData.roomID);
           const itWasMachiCoroMessage = machiCoroHandler(jsonData, ws, curRoom, WebSocket.OPEN);
           if (itWasMachiCoroMessage) {
@@ -119,11 +122,11 @@ export class WebSocketServer {
   }
 
   initWssConectionHandler() {
-    this.wss.on('connection', (ws) => {
+    this.wss.on("connection", (ws) => {
       logMessage("new user");
       heartbeat(ws);
       this.users.push(new User(ws));
-      ws.on('message', (data) => {
+      ws.on("message", (data) => {
         heartbeat(ws);
         this.parseRequestFromClient(data, ws);
       });
@@ -136,7 +139,7 @@ export class WebSocketServer {
         if (client.isAlive === false) {
           if (client.roomID) {
             const curRoom = this.findRoomLinkByRoomID(client.roomID);
-            curRoom.removeUser(ws);
+            curRoom.removeUser(client);
           }
           return client.close();
         }
@@ -147,7 +150,7 @@ export class WebSocketServer {
   }
 
   initWssCloseHandler() {
-    this.wss.on('close', () => {
+    this.wss.on("close", () => {
       clearInterval(this.pingInterval);
     });
   }

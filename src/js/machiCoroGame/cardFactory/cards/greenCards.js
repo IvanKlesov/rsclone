@@ -41,7 +41,8 @@ export class GroceryWarehouse extends Card {
   }
 
   cardIncome(userCards) {
-    // implement after red cards
+    const cardsWithTypeCafe = userCards.filter((card) => card.type === "cafe");
+    return cardsWithTypeCafe.length * this.income;
   }
 }
 

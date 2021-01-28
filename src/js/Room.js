@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import serverMessageMethods from "../server/messages/serverMessageMethods";
+import { serverMessageMethods } from "../server/messages/serverMessageMethods";
 import MachiCoroGame from "./machiCoroGame/back/MachiCoroGame";
 
 export class Room {
@@ -12,9 +12,15 @@ export class Room {
   }
 
   startMachiCoroGame(websocket, webSocketOpetState) {
-    if (this.users.length > 1 && this.MachiCoroGame === undefined) {
-      this.MachiCoroGame = new MachiCoroGame(this.getUsers());
-      this.MachiCoroGame.start(websocket, webSocketOpetState);
+    if (this.users.length > 1) {
+      if (this.MachiCoroGame === undefined) {
+        this.MachiCoroGame = new MachiCoroGame(this.getUsers());
+        this.MachiCoroGame.start(websocket, webSocketOpetState);
+      } else if (this.MachiCoroGame && this.MachiCoroGame.gameIsOver) {
+        this.MachiCoroGame = undefined;
+        this.MachiCoroGame = new MachiCoroGame(this.getUsers());
+        this.MachiCoroGame.start(websocket, webSocketOpetState);
+      }
     }
   }
 
@@ -52,6 +58,30 @@ export class Room {
     }
   }
 
+  machiCoroGamePortBonusResult(websocket, result) {
+    if (this.MachiCoroGame) {
+      switch (result) {
+        case "accept": {
+          this.MachiCoroGame.acceptPortBonus(websocket);
+          break;
+        }
+        case "reject": {
+          this.MachiCoroGame.rejectPortBonus(websocket);
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    }
+  }
+
+  machiCoroGameAcceptThrow(websocket) {
+    if (this.MachiCoroGame) {
+      this.MachiCoroGame.acceptThrow(websocket);
+    }
+  }
+
   getUsers() {
     return this.users;
   }
@@ -64,13 +94,19 @@ export class Room {
     if (this.users.length >= this.maxUsersCount) {
       return false;
     }
-    newUser.roomID = this.id;
+    if (this.MachiCoroGame !== undefined && !this.MachiCoroGame.gameIsOver) {
+      return false;
+    }
+    newUser.roomID === this.id;
+    if (this.users.indexOf(newUser) > -1) {
+      return true;
+    }
     this.users.push(newUser);
     return true;
   }
 
   removeAllUsers() {
-    this.users.forEach(client => {
+    this.users.forEach((client) => {
       serverMessageMethods.getOutRoomAccept(client);
     });
     this.users.lenght = 0;
@@ -83,6 +119,9 @@ export class Room {
         return false;
       }
       this.users.splice(userIndex, 1);
+      if (this.getMachiCoroGame()) {
+        this.getMachiCoroGame().checkUsersLength(userIndex);
+      }
     }
     user.roomID = undefined;
     return true;

@@ -8,28 +8,21 @@ export function machiCoroHandler(data, ws, room, webSocketOpetState) {
     case "startGame": {
       logMessage("machiCoroHandler startGame");
       logMessage(room);
-      if ((room.getOwner() && ws === room.getOwner()) ||
-        (room.getOwner() === undefined && room.clients().length >= NEED_USERS_FOR_GAME_START)) {
+      if ((room.getOwner() && ws === room.getOwner().getWs())
+        || (room.getOwner() === undefined && room.clients().length >= NEED_USERS_FOR_GAME_START)) {
         room.startMachiCoroGame(ws, webSocketOpetState);
       }
       break;
     }
     case "buy": {
-      logMessage("machiCoroHandler buy");
-      logMessage(room);
-      logMessage();
-      room.machiCoroGameBuy(ws, data.buyRequest)
+      room.machiCoroGameBuy(ws, data.buyRequest);
       break;
     }
     case "hold": {
-      console.log(room);
-      logMessage("get hold message");
       room.machiCoroGameHold(ws);
       break;
     }
     case "throw": {
-      logMessage("get throwMessage");
-      logMessage(room);
       room.machiCoroGameThrowCube(ws, data.cubeNumbers);
       break;
     }
@@ -41,6 +34,21 @@ export function machiCoroHandler(data, ws, room, webSocketOpetState) {
     case "steal": {
       logMessage("machiCoroHandler steal");
       room.machiCoroGameSteal(ws, data.secondUser);
+      break;
+    }
+    case "acceptPortBonus": {
+      logMessage("machiCoroHandler acceptPortBonus");
+      room.machiCoroGamePortBonusResult(ws, "accept");
+      break;
+    }
+    case "rejectPortBonus": {
+      logMessage("machiCoroHandler rejectPortBonus");
+      room.machiCoroGamePortBonusResult(ws, "reject");
+      break;
+    }
+    case "acceptThrow": {
+      logMessage("machiCoroHandler acceptThrow");
+      room.machiCoroGameAcceptThrow(ws);
       break;
     }
     default: {
