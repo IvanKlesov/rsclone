@@ -1,10 +1,10 @@
 import path from "path";
 import express from "express";
 import webpack from "webpack";
-import { WebSocketServer } from "./WebSocketServer";
 
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
+import { WebSocketServer } from "./WebSocketServer";
 import config from "../../webpack.dev.config";
 import logMessage from "../js/logger";
 

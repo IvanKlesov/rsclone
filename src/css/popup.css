@@ -1,0 +1,568 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.popup {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 172, 220, 1);
+  overflow: scroll;
+  font-family: "Oswald", sans-serif;
+  transition: 0.3s linear;
+  z-index: 5;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Main menu */
+.main-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+  color: #ffffff;
+  font-size: 36px;
+}
+
+.main-menu h2 {
+  font-size: 72px;
+  font-weight: bold;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 50px auto;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.main-menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.main-menu li {
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.main-menu h2:hover {
+  color: rgba(218, 55, 58);
+}
+
+.main-menu li:hover {
+  color: rgba(218, 55, 58);
+}
+
+/* Cards */
+
+.all-cards {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+  color: #ffffff;
+}
+
+.all-cards h2 {
+  margin-bottom: 0;
+  font-size: 48px;
+  font-weight: bold;
+  color: #ffffff;
+  text-transform: uppercase;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.all-cards h4 {
+  font-size: 36px;
+  font-weight: bold;
+  color: #ffffff;
+  text-transform: uppercase;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.attractions {
+  display: grid;
+  max-width: 1200px;
+  justify-content: center;
+  align-content: center;
+  margin: 0 auto;
+  grid-template-rows: repeat(1, 1fr);
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 20px;
+}
+
+.picture {
+  width: 180px;
+  margin: 10px 25px;
+  transition: 0.3s linear;
+}
+
+.picture:hover {
+  transform: scale(1.45);
+}
+
+.ordinary-buildings {
+  max-width: 1200px;
+}
+
+.start-cards {
+  display: grid;
+  max-width: 1200px;
+  justify-content: center;
+  align-content: center;
+  margin: 0 auto;
+  grid-template-rows: repeat(1, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
+
+.unique-buildings {
+  display: grid;
+  max-width: 1200px;
+  justify-content: center;
+  align-content: center;
+  margin: 0 auto 60px;
+  grid-template-rows: repeat(1, 1fr);
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 20px;
+}
+
+.btn-back-cards {
+  width: 200px;
+  height: 60px;
+  padding: 10px;
+  margin: 0 auto 20px;
+  border: none;
+  border-radius: 20px;
+  color: #00acdc;
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.btn-back-cards:hover {
+  background-color: rgba(218, 55, 58);
+}
+/* Slider */
+.slider {
+  position: relative;
+  overflow: hidden;
+}
+
+.slider-wrapper {
+  display: flex;
+  transition: transform 0.6s ease;
+}
+
+.slider-item {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.slider-item img {
+  width: 400px;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+.slider-control {
+  position: absolute;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  color: #fff;
+  text-align: center;
+  opacity: 0.5;
+  height: 50px;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.slider-control:hover {
+  color: #fff;
+  text-decoration: none;
+  outline: 0;
+  opacity: 0.9;
+}
+
+.slider-control-left {
+  left: 0;
+}
+
+.slider-control-right {
+  right: 0;
+}
+
+.slider-control::before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: transparent no-repeat center center;
+  background-size: 100% 100%;
+}
+
+.slider-control-left::before {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+}
+
+.slider-control-right::before {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+}
+
+/* Rules */
+
+.rules-categorie {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  background-color: #ffffff;
+  font-family: "Roboto", sans-serif;
+}
+
+.rules-categorie h4 {
+  font-family: "Oswald", sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  color: #000000;
+  text-transform: uppercase;
+  transition: 0.3s linear;
+  cursor: pointer;
+  text-align: center;
+}
+
+.rules-categorie p {
+  font-size: 20px;
+  text-align: justify;
+  margin: 0 20px;
+}
+
+.rules-categorie ul,
+ol {
+  max-width: 500px;
+  font-size: 17px;
+  line-height: 26px;
+  color: #3e3e3e;
+  font-weight: bold;
+  margin: 0;
+}
+
+.description-game {
+  max-width: 1200px;
+}
+
+.preparation-game-wrapper {
+  max-width: 1200px;
+  display: flex;
+}
+
+.preparation-game {
+  max-width: 50%;
+}
+
+.preparation-game ul {
+  padding-left: 0;
+  padding-right: 10px;
+}
+
+.preparation-game-img {
+  max-width: 50%;
+}
+
+.preparation-game-img img {
+  max-width: 500px;
+}
+
+.game-progress {
+  max-width: 1200px;
+}
+
+.enterprises {
+  max-width: 1200px;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  margin: 30px auto 0;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+  padding: 0 20px;
+}
+
+.enterprises-blue-header,
+.enterprises-green-header,
+.enterprises-red-header,
+.enterprises-purple-header {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.enterprises-blue-header {
+  background-color: #1766a4;
+}
+
+.enterprises-green-header {
+  background-color: #427830;
+}
+
+.enterprises-red-header {
+  background-color: #9e1f2b;
+}
+
+.enterprises-purple-header {
+  background-color: #762775;
+}
+
+.enterprises h4 {
+  margin: 0 auto;
+  color: #ffffff;
+  padding: 10px auto;
+}
+
+.enterprises-blue-card,
+.enterprises-green-card,
+.enterprises-red-card,
+.enterprises-purple-card {
+  display: flex;
+  padding-top: 10px;
+  border-left: 2px solid #b2b2b8;
+  border-right: 2px solid #b2b2b8;
+  border-bottom: 2px solid #b2b2b8;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.enterprises-card-img {
+  width: 40%;
+}
+
+.enterprises-card-img img {
+  max-width: 200px;
+  padding: 10px;
+}
+
+.enterprises-card-description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+}
+
+.enterprises-card-description p {
+  max-width: 400px;
+  text-align: center;
+  font-size: 32px;
+}
+
+.btn-back-rules {
+  width: 200px;
+  height: 60px;
+  padding: 10px;
+  margin: 30px auto;
+  border: none;
+  border-radius: 20px;
+  background-color: #00acdc;
+  color: #ffffff;
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.btn-back-rules:hover {
+  background-color: rgba(218, 55, 58);
+}
+
+/* Media */
+
+@media (max-width: 1440px) {
+  .attractions {
+    max-width: 600px;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .ordinary-buildings {
+    max-width: 1000px;
+  }
+
+  .unique-buildings {
+    max-width: 600px;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .btn-back-cards {
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 1050px) {
+  .attractions {
+    max-width: 600px;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ordinary-buildings {
+    max-width: 680px;
+  }
+
+  .slider-item img {
+    width: 250px;
+  }
+
+  .preparation-game-wrapper {
+    max-width: 800px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .preparation-game {
+    order: 1;
+    max-width: 100%;
+  }
+
+  .preparation-game ul {
+    max-width: 680px;
+  }
+
+  .preparation-game-img {
+    order: 0;
+    max-width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .game-progress {
+    max-width: 740px;
+  }
+
+  .enterprises {
+    max-width: 740px;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media (max-width: 740px) {
+  .attractions {
+    max-width: 200px;
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .ordinary-buildings {
+    max-width: 420px;
+  }
+
+  .slider-item img {
+    width: 180px;
+    padding: 0;
+  }
+
+  .slider-control {
+    width: 20px;
+    height: 25px;
+  }
+
+  .slider-control::before {
+    width: 10px;
+    height: 10px;
+  }
+
+  .start-cards {
+    max-width: 300px;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .unique-buildings {
+    max-width: 200px;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .picture {
+    width: 250px;
+  }
+
+  .preparation-game ul {
+    max-width: 460px;
+  }
+
+  .preparation-game-img img {
+    width: 480px;
+  }
+}
+
+@media (max-width: 490px) {
+  .preparation-game ul {
+    max-width: 275px;
+    font-size: 16px;
+  }
+
+  .preparation-game-img img {
+    width: 300px;
+  }
+
+  .preparation-game-wrapper {
+    max-width: 320px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .game-progress {
+    max-width: 320px;
+  }
+
+  .enterprises {
+    max-width: 320px;
+  }
+
+  .enterprises-blue-card,
+  .enterprises-green-card,
+  .enterprises-red-card,
+  .enterprises-purple-card {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .enterprises-card-img {
+    width: 100%;
+    text-align: center;
+  }
+
+  .enterprises-card-img img {
+    max-width: 240px;
+    padding: 10px;
+  }
+
+  .enterprises-card-description {
+    width: 100%;
+  }
+
+  .enterprises h4 {
+    font-size: 20px;
+  }
+
+  .enterprises-card-description p {
+    font-size: 20px;
+  }
+}

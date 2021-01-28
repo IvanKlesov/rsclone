@@ -67,21 +67,18 @@ export default class MachiCoroGame {
           `У вас ${timeLeft} секунд на ход`);
         if (timerPoint !== this.timerPoints.length - 1) {
           timer(this.timerPoints[timerPoint], timerPoint + 1);
-        } else {
-          if (this.users[this.userNumTurn] === userWhoStartTimer) {
+        } else if (this.users[this.userNumTurn] === userWhoStartTimer) {
+          this.resOfCubesThrow = this.generateRandNumbers(6);
+          this.userThrowCube = true;
 
-            this.resOfCubesThrow = this.generateRandNumbers(6);
-            this.userThrowCube = true;
+          this.calculateExpenses(userWhoStartTimer, this.resOfCubesThrow);
+          this.calculateIncome(userWhoStartTimer, this.resOfCubesThrow);
+          machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, this.resOfCubesThrow);
 
-            this.calculateExpenses(userWhoStartTimer, this.resOfCubesThrow);
-            this.calculateIncome(userWhoStartTimer, this.resOfCubesThrow);
-            machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, this.resOfCubesThrow);
-
-            this.hold(userWhoStartTimer.getWs());
-          }
+          this.hold(userWhoStartTimer.getWs());
         }
       }, delay * 1000);
-    }
+    };
     timer(1);
   }
 
@@ -230,14 +227,12 @@ export default class MachiCoroGame {
       } else {
         this.sendRequestForAcceptPortBonus(ws);
       }
+    } else if (curActiveUser.getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
+      this.sendRequestForAcceptRethrowCubes(ws);
     } else {
-      if (curActiveUser.getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
-        this.sendRequestForAcceptRethrowCubes(ws);
-      } else {
-        this.calculateExpenses(curActiveUser, randNum);
-        this.calculateIncome(curActiveUser, randNum);
-        return randNum;
-      }
+      this.calculateExpenses(curActiveUser, randNum);
+      this.calculateIncome(curActiveUser, randNum);
+      return randNum;
     }
   }
 
