@@ -197,11 +197,16 @@ machiCoroServerMessageMethods.sendGameIsOverMessage = (users, winner) => {
 
 machiCoroServerMessageMethods.sendGameFinalStat = (users, gameStartObj, gameEndObj) => {
   const timeDiff = getDateDifferenceInTime(gameStartObj, gameEndObj);
+  const timeMessage = `Game lasted ${timeDiff.hours} hours : ${timeDiff.minutes} minutes: ${timeDiff.seconds} seconds.`
   const message = {
     method: "gameFinalStat",
-    content: `Game lasted ${timeDiff.hours} hours : ${timeDiff.minutes} minutes: ${timeDiff.seconds} seconds`,
   }
-  users.forEach((user) => user.getWs().send(JSON.stringify(message)));
+  users.forEach((user) => {
+    const machiCoroUser = user.getMachiCoroUser();
+    const userScore= machiCoroUser.getAllUserCards().reduce((acc, card) => acc + card.cost, 0) + machiCoroUser.getMoney();
+    message.content = timeMessage.concat(`Your score: ${userScore}.`);
+    user.getWs().send(JSON.stringify(message));
+  });
 };
 
 machiCoroServerMessageMethods.sendError = (ws, errorMessage) => {
