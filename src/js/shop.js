@@ -15,6 +15,24 @@ const attractionCards = ["port", "railwayStation", "shoppingCenter", "amusementP
 
 export function createShop(color) {
   currentColor = color;
+  let countCards;
+  switch (currentColor) {
+    case ".picture-blue":
+      countCards = 8;
+      break;
+    case ".picture-green":
+      countCards = 7;
+      break;
+    case ".picture-red":
+      countCards = 5;
+      break;
+    case ".picture-purple":
+      countCards = 5;
+      break;
+    case ".picture-attractions":
+      countCards = 6;
+      break;
+  }
   const shopContent = document.querySelector(".shop-content");
   if (document.querySelector(".canvas-shop")) {
     shopContent.removeChild(document.querySelector(".canvas-shop"));
@@ -31,10 +49,14 @@ export function createShop(color) {
   const arrayImages = Array.from(images);
   const widthImg = 180;
   const heightImg = 275;
-  const countImgBlock = Math.floor((widthShop - 60) / widthImg);
-  const margin = (widthShop - countImgBlock * widthImg + 60) / (countImgBlock * 2);
+  let countImgBlock = Math.floor((widthShop - 60) / widthImg);
+  let margin = (widthShop - countImgBlock * widthImg) / (countImgBlock + 1);
 
-  const countImgLine = Math.ceil(8 / countImgBlock);
+  if (widthShop < 240) {
+    margin = 20;
+    countImgBlock = 1;
+  }
+  const countImgLine = Math.ceil(countCards / countImgBlock);
   let heightShop;
 
   switch (countImgLine) {
@@ -66,7 +88,7 @@ export function createShop(color) {
   canvasShop.setAttribute("width", widthShop);
   canvasShop.setAttribute("height", heightShop);
 
-  ctx.clearRect(0, 0, canvasShop.width, canvasShop.height);
+  ctx.clearRect(0, 0, canvasShop.width, canvasShop.height, countImgLine);
 
   console.log(widthShop, countImgBlock, margin);
 
@@ -123,7 +145,7 @@ export function createShop(color) {
       }
       ctx.drawImage(arrayImages[i], x, y, 180, 275);
       x += widthImg + margin;
-      if (widthShop - x <= margin + widthImg) {
+      if (widthShop - x < margin + widthImg) {
         x = margin;
         y = y + heightImg + padding;
       }
