@@ -79,7 +79,8 @@ export class WebSocketServer {
         }
         case "getOutRoom": {
           const curRoom = this.findRoomLinkByRoomID(jsonData.content);
-          const itWasRoomOwner = curRoom.removeUser(ws);
+          const curUser = this.findCurrentUserByWebsocket(ws);
+          const itWasRoomOwner = curRoom.removeUser(curUser);
           if (!itWasRoomOwner) {
             this.destroyRoom(curRoom);
           }

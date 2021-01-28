@@ -16,7 +16,7 @@ export class Room {
       if (this.MachiCoroGame === undefined) {
         this.MachiCoroGame = new MachiCoroGame(this.getUsers());
         this.MachiCoroGame.start(websocket, webSocketOpetState);
-      } else if (this.MachiCoroGame && this.gameIsOver) {
+      } else if (this.MachiCoroGame && this.MachiCoroGame.gameIsOver) {
         this.MachiCoroGame = undefined;
         this.MachiCoroGame = new MachiCoroGame(this.getUsers());
         this.MachiCoroGame.start(websocket, webSocketOpetState);
@@ -30,7 +30,7 @@ export class Room {
 
   machiCoroGameBuy(websocket, buyRequest) {
     if (this.MachiCoroGame) {
-      this.gameIsOver = this.MachiCoroGame.buy(websocket, buyRequest);
+      this.MachiCoroGame.buy(websocket, buyRequest);
     }
   }
 
@@ -94,7 +94,13 @@ export class Room {
     if (this.users.length >= this.maxUsersCount) {
       return false;
     }
-    newUser.roomID = this.id;
+    if (this.MachiCoroGame !== undefined && !this.MachiCoroGame.gameIsOver) {
+      return false;
+    }
+    newUser.roomID === this.id;
+    if (this.users.indexOf(newUser) > -1) {
+      return true;
+    }
     this.users.push(newUser);
     return true;
   }
@@ -113,6 +119,7 @@ export class Room {
         return false;
       }
       this.users.splice(userIndex, 1);
+      this.getMachiCoroGame().checkUsersLength(userIndex);
     }
     user.roomID = undefined;
     return true;

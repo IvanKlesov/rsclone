@@ -26,6 +26,21 @@ export default class MachiCoroGame {
     this.timerPoints = [10, 10, 10, 10, 10, 5, 1, 1, 1, 1, 0];
   }
 
+  checkUsersLength() {
+    console.log(this.users);
+    clearTimeout(this.timer);
+    this.getNextUser();
+
+    if (this.users.length < 2) {
+      this.gameIsOver = true;
+      if (this.users[0]) {
+        machiCoroServerMessageMethods.sendError(this.users[0].getWs(), "You last player.Game is Over");
+      }
+    } else {
+      this.startTimer(this.users[this.userNumTurn]);
+    }
+  }
+
   start(ws, webSocketOpetState) {
     const curActiveUser = this.users[this.userNumTurn];
     this.users.forEach((user) => {
