@@ -8,7 +8,7 @@ export function machiCoroHandler(data, ws, room, webSocketOpetState) {
     case "startGame": {
       logMessage("machiCoroHandler startGame");
       logMessage(room);
-      if ((room.getOwner() && ws === room.getOwner())
+      if ((room.getOwner() && ws === room.getOwner().getWs())
         || (room.getOwner() === undefined && room.clients().length >= NEED_USERS_FOR_GAME_START)) {
         room.startMachiCoroGame(ws, webSocketOpetState);
       }

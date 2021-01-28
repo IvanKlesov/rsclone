@@ -91,7 +91,10 @@ export class WebSocketServer {
         case "createRoom": {
           const newRoom = new Room(jsonData.content);
           this.rooms.push(newRoom);
-          newRoom.setOwner(ws);
+
+          const curUser = this.findCurrentUserByWebsocket(ws);
+          newRoom.setOwner(curUser);
+
           serverMessageMethods.createRoomAccept(ws, newRoom);
           break;
         }
