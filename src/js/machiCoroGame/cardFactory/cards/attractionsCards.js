@@ -93,5 +93,3 @@ export class ShoppingCenter extends AttractionsCard {
     user.updateUserMoney(buildingsForWhichWeConsiderPayment.length);
   }
 }
-
-

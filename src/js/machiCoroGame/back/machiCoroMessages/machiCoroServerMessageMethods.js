@@ -49,7 +49,7 @@ machiCoroServerMessageMethods.sendAllOtherUserGameInfo = (users) => {
   users.forEach((user, idx) => {
     let otherUsersInfo = users.map((user, index) => {
       const info = {
-        index, 
+        index,
         money: user.getMachiCoroUser().money,
         cards: user.getMachiCoroUser().userCards.map((card) => card.name),
       };
@@ -59,7 +59,7 @@ machiCoroServerMessageMethods.sendAllOtherUserGameInfo = (users) => {
     const message = {
       method: "allUsersInfo",
       content: otherUsersInfo,
-    }
+    };
     user.getWs().send(JSON.stringify(message));
   });
 };
@@ -197,13 +197,13 @@ machiCoroServerMessageMethods.sendGameIsOverMessage = (users, winner) => {
 
 machiCoroServerMessageMethods.sendGameFinalStat = (users, gameStartObj, gameEndObj) => {
   const timeDiff = getDateDifferenceInTime(gameStartObj, gameEndObj);
-  const timeMessage = `Game lasted ${timeDiff.hours} hours : ${timeDiff.minutes} minutes: ${timeDiff.seconds} seconds.`
+  const timeMessage = `Game lasted ${timeDiff.hours} hours : ${timeDiff.minutes} minutes: ${timeDiff.seconds} seconds.`;
   const message = {
     method: "gameFinalStat",
-  }
+  };
   users.forEach((user) => {
     const machiCoroUser = user.getMachiCoroUser();
-    const userScore= machiCoroUser.getAllUserCards().reduce((acc, card) => acc + card.cost, 0) + machiCoroUser.getMoney();
+    const userScore = machiCoroUser.getAllUserCards().reduce((acc, card) => acc + card.cost, 0) + machiCoroUser.getMoney();
     message.content = timeMessage.concat(`Your score: ${userScore}.`);
     user.getWs().send(JSON.stringify(message));
   });

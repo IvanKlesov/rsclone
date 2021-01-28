@@ -1,9 +1,19 @@
 import logMessage from "../../logger";
-import { Longboat, Forest, WheatField, Trawler, Farm, FlowerGarden, Mine, AppleOrchard } from "./cards/blueCards";
-import { Store, FurnitureFactory, VegetableMarket, Bakery, GroceryWarehouse, CheeseDairy, FlowerStore } from "./cards/greenCards";
-import { Diner, Cafe, Pizzeria, Restaurant, SushiBar } from "./cards/redCards";
-import { BusinessCenter, PublishingHouse, Tax, Stadium, Telecentre } from "./cards/purpleCards";
-import { Airport, RailwayStation, AmusementPark, Port, RadioTower, ShoppingCenter } from "./cards/attractionsCards";
+import {
+  Longboat, Forest, WheatField, Trawler, Farm, FlowerGarden, Mine, AppleOrchard,
+} from "./cards/blueCards";
+import {
+  Store, FurnitureFactory, VegetableMarket, Bakery, GroceryWarehouse, CheeseDairy, FlowerStore,
+} from "./cards/greenCards";
+import {
+  Diner, Cafe, Pizzeria, Restaurant, SushiBar,
+} from "./cards/redCards";
+import {
+  BusinessCenter, PublishingHouse, Tax, Stadium, Telecentre,
+} from "./cards/purpleCards";
+import {
+  Airport, RailwayStation, AmusementPark, Port, RadioTower, ShoppingCenter,
+} from "./cards/attractionsCards";
 
 export const cardFactory = (cardName) => {
   switch (cardName) {
