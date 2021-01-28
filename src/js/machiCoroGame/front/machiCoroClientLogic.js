@@ -100,6 +100,15 @@ export function handlerServerMachiCoroResponse(jsonData) {
       return jsonData.content;
     }
 
+    case "allUsersInfo": {
+      const result = jsonData.content;
+      const info = result
+        .reduce((acc, userInfo) => (
+          acc.concat(`Player${userInfo.index}\n\t`).concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`)
+        ), "");
+      return info;
+    }
+
     default: {
       break;
     }

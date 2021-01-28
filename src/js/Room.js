@@ -119,7 +119,9 @@ export class Room {
         return false;
       }
       this.users.splice(userIndex, 1);
-      this.getMachiCoroGame().checkUsersLength(userIndex);
+      if (this.getMachiCoroGame()) {
+        this.getMachiCoroGame().checkUsersLength(userIndex);
+      }
     }
     user.roomID = undefined;
     return true;

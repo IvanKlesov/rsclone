@@ -44,6 +44,25 @@ machiCoroServerMessageMethods.sendUserGameInfo = (users, curActiveUser) => {
   });
 };
 
+machiCoroServerMessageMethods.sendAllOtherUserGameInfo = (users) => {
+  users.forEach((user, idx) => {
+    let otherUsersInfo = users.map((user, index) => {
+      const info = {
+        index, 
+        money: user.getMachiCoroUser().money,
+        cards: user.getMachiCoroUser().userCards.map((card) => card.name),
+      };
+      return info;
+    });
+    otherUsersInfo = otherUsersInfo.filter((userInfo) => userInfo.index !== idx);
+    const message = {
+      method: "allUsersInfo",
+      content: otherUsersInfo,
+    }
+    user.getWs().send(JSON.stringify(message));
+  });
+};
+
 machiCoroServerMessageMethods.sendResultOfThrowCube = (users, curActiveUserIndex, throwCubeResult) => {
   users.forEach((user, index) => {
     const userWs = user.getWs();

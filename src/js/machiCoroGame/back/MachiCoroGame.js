@@ -355,6 +355,7 @@ export default class MachiCoroGame {
       this.tryUseAirportBonus(ws);
       this.getNextUser();
       curActiveUser = this.users[this.userNumTurn];
+      machiCoroServerMessageMethods.sendAllOtherUserGameInfo(this.users, this.userNumTurn);
       machiCoroServerMessageMethods.sendUserGameInfo(this.users, curActiveUser);
       this.startTimer(curActiveUser);
     }
