@@ -1,5 +1,5 @@
 import "./slider";
-import { createShop } from "./shop";
+import createShop from "./shop";
 
 const popup = document.querySelector(".popup");
 const mainMenu = document.querySelector(".main-menu");

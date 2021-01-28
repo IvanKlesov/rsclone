@@ -13,7 +13,7 @@ const redCards = ["sushiBar", "cafe", "pizzeria", "diner", "restaurant"];
 const purpleCards = ["businessCenter", "stadium", "telecentre", "publishingHouse", "tax"];
 const attractionCards = ["port", "railwayStation", "shoppingCenter", "amusementPark", "radioTower", "airport"];
 
-export function createShop(color) {
+export default function createShop(color) {
   currentColor = color;
   let countCards;
   switch (currentColor) {
@@ -32,6 +32,8 @@ export function createShop(color) {
     case ".picture-attractions":
       countCards = 6;
       break;
+    default:
+      countCards = 8;
   }
   const shopContent = document.querySelector(".shop-content");
   if (document.querySelector(".canvas-shop")) {
@@ -90,8 +92,6 @@ export function createShop(color) {
 
   ctx.clearRect(0, 0, canvasShop.width, canvasShop.height, countImgLine);
 
-  console.log(widthShop, countImgBlock, margin);
-
   function drawShop() {
     let x = margin;
     let y = 0;
@@ -142,6 +142,14 @@ export function createShop(color) {
             height: 275,
           });
           break;
+        default:
+          elements.push({
+            name: blueCards[i],
+            left: x,
+            top: y,
+            width: 180,
+            height: 275,
+          });
       }
       ctx.drawImage(arrayImages[i], x, y, 180, 275);
       x += widthImg + margin;
@@ -166,10 +174,8 @@ export function createShop(color) {
       }
     });
   });
-  console.log(elements);
 }
 
-console.log(currentColor);
 window.addEventListener("resize", () => {
   createShop(currentColor);
 });
