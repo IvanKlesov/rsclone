@@ -4,3 +4,24 @@ body {
   background-image: url("../assets/images/board.jpg");
   background-size: cover;
 }
+
+.game-board-wrapper {
+  width: 100%;
+  height: 80%;
+}
+
+.functional-panel {
+  display: flex;
+  width: 100%;
+  height: 20%;
+}
+
+.functional-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+}
+
+.game-board {
+}

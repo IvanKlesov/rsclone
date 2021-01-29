@@ -320,18 +320,28 @@
         </div>
       </div>
     </div>
-    <button class="btn-shop">Магазин</button>
-    <h1>Real Time Messaging</h1>
+    <button id="chatRoomsBtn" title="get chat rooms">Get chat rooms</button>
     <div id="chatRooms">
       <input type="text" id="createRoomInput" class="hide" placeholder="Type your new room name here" />
-      <button id="createRoomBtn" class="hide">create room</button>
+      <button id="createRoomBtn" class="hide">Create room</button>
       <br />
     </div>
-    <pre id="messages" class="hide"></pre>
-
-    <input type="text" id="messageBox" class="hide" placeholder="Type your message here" />
-    <button id="send" class="hide" title="Send Message!">Send Message</button>
-    <button id="chatRoomsBtn" title="get chat rooms">get chat rooms</button>
-    <button id="getOutRoomBtn" class="hide" title="get out from room">get out from room</button>
+    <div class="game-board-wrapper">
+      <canvas class="game-board"></canvas>
+    </div>
+    <div class="functional-panel">
+      <div class="chat">
+        <h4>Чат матча</h4>
+        <pre id="messages" class="hide"></pre>
+        <input type="text" id="messageBox" class="hide" placeholder="Type your message here" />
+        <div class="chat-btn">
+          <button id="send" class="hide" title="Send Message!">Send Message</button>
+          <button id="getOutRoomBtn" class="hide" title="get out from room">Get out from room</button>
+        </div>
+      </div>
+      <div class="functional-btn">
+        <button class="btn-shop">Магазин</button>
+      </div>
+    </div>
   </body>
 </html>

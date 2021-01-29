@@ -140,10 +140,6 @@
   background-color: rgba(218, 55, 58);
 }
 
-.hover {
-  transform: scale(1.45);
-}
-
 .canvas-shop {
   margin: 20px;
 }
