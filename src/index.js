@@ -258,11 +258,13 @@ sendBtn.onclick = () => {
 chatRoomsBtn.onclick = () => {
   logMessage("chat rooms btn");
   clientMessageMethods.getRooms(ws);
+  hideElement(chatRoomsBtn);
 };
 
 newGame.onclick = () => {
   logMessage("chat rooms btn");
   clientMessageMethods.getRooms(ws);
+  hideElement(chatRoomsBtn);
 };
 
 getOutRoomBtn.onclick = () => {
