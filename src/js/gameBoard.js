@@ -27,13 +27,15 @@ export default function createBoard() {
   const board = document.querySelector(".game-board");
   const ctx = board.getContext("2d");
   const widthBoard = wrapperBoard.offsetWidth;
-  const heightBoard = main.clientHeight;
+  const heightBoard = wrapperBoard.offsetHeight;
   const widthInfoPlayer = 100;
   const heightInfoPlayer = 140;
   const padding = 20;
 
   board.setAttribute("width", widthBoard);
   board.setAttribute("height", heightBoard);
+
+  ctx.clearRect(0, 0, board.width, board.height);
 
   // Игрок сверху
   const xTopPlayer = Math.ceil(widthBoard * 0.35);
@@ -135,7 +137,7 @@ export default function createBoard() {
 
   ctx.strokeRect(xBottomPlayer + widthInfoPlayer + padding, yBottomPlayer, 800, 140);
   const handBottomPlayer = [];
-  for (let i = 0, k = 0; i < basicHand.length; i += 1, k += 1) {
+  for (let i = 0, k = 1; i < basicHand.length; i += 1, k += 1) {
     const img = new Image();
     img.src = basicHand[i];
     img.onload = function loadCardsBottom() {
