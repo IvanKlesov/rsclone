@@ -90,7 +90,7 @@ export default function createShop(color) {
   canvasShop.setAttribute("width", widthShop);
   canvasShop.setAttribute("height", heightShop);
 
-  ctx.clearRect(0, 0, canvasShop.width, canvasShop.height, countImgLine);
+  ctx.clearRect(0, 0, canvasShop.width, canvasShop.height);
 
   function drawShop() {
     let x = margin;
