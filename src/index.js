@@ -7,6 +7,8 @@ import handleCliCommand, { handlerServerMachiCoroResponse } from "./js/machiCoro
 
 import createEl, { configurateButton, hideElement, unhideElement } from "./js/createEl";
 
+import clientPlayer from "./js/front/clientPlayer";
+
 // Log message to console
 logMessage("Welcome to Expack!");
 
@@ -40,6 +42,7 @@ function changeHttpUrlOnWs(url) {
 const HOST = changeHttpUrlOnWs(window.location.href);
 logMessage(HOST);
 const ws = new WebSocket(HOST);
+clientPlayer.setWs(ws);
 
 function acceptMessege(newMessage) {
   const p = createEl("p");
@@ -132,6 +135,7 @@ ws.onmessage = (event) => {
       }
       case "userRoomAccept": {
         roomID = jsonData.content;
+        clientPlayer.setRoomID(roomID);
         logMessage("roomID", roomID);
         enterChat();
         break;
@@ -142,6 +146,7 @@ ws.onmessage = (event) => {
       }
       case "getOutRoomAccept": {
         roomID = undefined;
+        clientPlayer.setRoomID(roomID);
         outChat();
         break;
       }
@@ -150,6 +155,7 @@ ws.onmessage = (event) => {
         // const name = jsonData.content.split("__id")[0];
         const id = jsonData.content.split("__id")[1];
         roomID = id;
+        clientPlayer.setRoomID(roomID);
         enterChat();
         break;
       }
