@@ -5,7 +5,7 @@ function sendStartMessage(ws, roomID) {
   machiCoroClientMessageMethods.startGame(ws, roomID);
 }
 
-function sendBuyMessage(ws, roomID, willBuy) {
+export function sendBuyMessage(ws, roomID, willBuy) {
   machiCoroClientMessageMethods.buy(ws, roomID, willBuy);
 }
 
