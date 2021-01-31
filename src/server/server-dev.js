@@ -62,6 +62,13 @@ const server = express()
     }
   )
 
+  .get('/logout', (req, res) => {
+    req.session = null;
+    req.logout();
+    res.redirect('/');
+  })
+  
+
   /* .use((req, res, next) => {
     compiler.outputFileSystem.readFile(HTML_FILE, (err, result) => {
       if (err) {

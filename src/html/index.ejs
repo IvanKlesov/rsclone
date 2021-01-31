@@ -29,11 +29,28 @@
   </div>
   <div class="popup">
     <div class="/auth-login">
+    <script>
+      <% if (user) {%>
+            var userID = <%- user.id %>;
+            var userName = '<%- user.displayName %>';
+            var userPhotoAdress = '<%- user.photos[0].value %>';
+      <%} else {%>
+        var userID = undefined;
+        var userName = "anonym";
+        var userPhotoAdress = undefined;
+      <%}%>
+    </script>
+    
     <%if (user) {%>
     <%var name = user.displayName%>
-    <button id = "login" class = "">login <%- name%></button>
+    <%var pathToPhoto = user.photos[0].value%>
+    <img src= <%= pathToPhoto %> class = "user-icon" alt="user photo">
+    <a href="/logout">
+      <button id = "login" class = "">logout</button>
+    </a>
     <%} else {%>
         <%var name = "anonym"%>
+        <img src= "../assets/svg/user_icon-icons.com_57997.svg" class = "user-icon" alt="user photo">
           <button id = "login">login</button>
     <%}%>
       <h2><%- name %></h2>
