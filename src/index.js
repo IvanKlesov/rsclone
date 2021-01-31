@@ -1,5 +1,6 @@
 import logMessage from "./js/logger";
 import "./js/popup";
+import createBoard from "./js/gameBoard";
 import "./css/main.css";
 import { clientMessageMethods } from "./server/messages/clientMessageMethods";
 import handleCliCommand, { handlerServerMachiCoroResponse } from "./js/machiCoroGame/front/machiCoroClientLogic";
@@ -15,6 +16,7 @@ if (typeof module.hot !== "undefined") {
 }
 
 const newGame = document.querySelector(".new-game");
+const gameContent = document.querySelector(".game-content");
 const sendBtn = document.getElementById("send");
 const chatRoomsBtn = document.getElementById("chatRoomsBtn");
 const getOutRoomBtn = document.getElementById("getOutRoomBtn");
@@ -69,6 +71,8 @@ function configurateChatRoomButtons(rooms) {
       button.addEventListener("click", () => {
         clientMessageMethods.setRoom(ws, id);
         hideElement(chatRooms);
+        gameContent.classList.remove("hidden");
+        createBoard();
       });
     }
   });
