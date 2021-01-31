@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-
     "build": "webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
     "dev": "rd /s /q dist && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
     "prod": "rd /s /q dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
@@ -27,7 +26,12 @@
   "dependencies": {
     "express": "^4.17.1",
     "uuid": "^8.3.2",
-    "ws": "^7.4.2"
+    "ws": "^7.4.2",
+    "cookie-session": "^1.4.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.5",
+    "passport": "^0.4.1",
+    "passport-google-oauth": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

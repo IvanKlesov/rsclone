@@ -8,6 +8,8 @@ import handleCliCommand, { handlerServerMachiCoroResponse } from "./js/machiCoro
 
 import createEl, { configurateButton, hideElement, unhideElement } from "./js/createEl";
 
+import initAuth from "./js/auth";
+
 // Log message to console
 logMessage("Welcome to Expack!");
 
@@ -40,6 +42,8 @@ function changeHttpUrlOnWs(url) {
 const HOST = changeHttpUrlOnWs(window.location.href);
 logMessage(HOST);
 const ws = new WebSocket(HOST);
+
+initAuth();
 
 function acceptMessege(newMessage) {
   const p = createEl("p");
