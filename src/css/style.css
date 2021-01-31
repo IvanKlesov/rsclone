@@ -42,15 +42,15 @@ p {
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  margin: 5px auto;
+  margin: 20px auto;
 }
 
 #send,
 #getOutRoomBtn {
-  width: 200px;
-  height: 30px;
-  border: 2px solid #ffffff;
-  border-radius: 5px;
+  width: 180px;
+  height: 60px;
+  border: 4px solid #ffffff;
+  border-radius: 20px;
   font-size: 18px;
   color: #ffffff;
   background: rgba(0, 172, 220, 1);
@@ -125,11 +125,27 @@ p {
 }
 
 .chat {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-family: "Oswald", sans-serif;
+  transition: 0.3s linear;
+  z-index: 5;
+}
+
+.chat-content {
+  position: absolute;
+  top: 25%;
+  left: 25%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 40%;
+  width: 50%;
+  background-color: rgba(0, 172, 220, 1);
+  border: 5px solid #ffffff;
+  border-radius: 20px;
 }
 
 .chat h4 {
@@ -137,8 +153,25 @@ p {
   font-weight: bold;
   color: #ffffff;
   text-transform: uppercase;
-  margin: 5px auto;
+  margin: 10px auto;
   text-align: center;
+}
+
+.close-chat {
+  width: 180px;
+  height: 60px;
+  border: 4px solid #ffffff;
+  border-radius: 20px;
+  font-size: 18px;
+  color: #ffffff;
+  background: rgba(0, 172, 220, 1);
+  text-align: center;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.close-chat:hover {
+  background-color: rgba(218, 55, 58);
 }
 
 .hide {

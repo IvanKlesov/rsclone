@@ -320,28 +320,32 @@
         </div>
       </div>
     </div>
-    <button id="chatRoomsBtn" title="get chat rooms">Get chat rooms</button>
-    <div id="chatRooms">
-      <input type="text" id="createRoomInput" class="hide" placeholder="Type your new room name here" />
-      <button id="createRoomBtn" class="hide">Create room</button>
-      <br />
-    </div>
-    <div class="game-board-wrapper">
-      <canvas class="game-board"></canvas>
-    </div>
-    <div class="functional-panel">
-      <div class="chat">
+    <div class="chat hidden">
+      <div class="chat-content">
         <h4>Чат матча</h4>
         <pre id="messages" class="hide"></pre>
         <input type="text" id="messageBox" class="hide" placeholder="Type your message here" />
         <div class="chat-btn">
           <button id="send" class="hide" title="Send Message!">Send Message</button>
           <button id="getOutRoomBtn" class="hide" title="get out from room">Get out from room</button>
+          <button class="close-chat" title="close chat">Close chat</button>
         </div>
       </div>
-      <div class="functional-btn">
-        <button class="btn-shop">Магазин</button>
-      </div>
     </div>
+    <button id="chatRoomsBtn" title="get chat rooms">Get chat rooms</button>
+    <div id="chatRooms">
+      <input type="text" id="createRoomInput" class="hide" placeholder="Type your new room name here" />
+      <button id="createRoomBtn" class="hide">Create room</button>
+      <br />
+    </div>
+    <main class="game-content hidden">
+      <div class="game-board-wrapper">
+        <canvas class="game-board"></canvas>
+      </div>
+      <div class="functional-panel">
+        <button class="btn-shop">Магазин</button>
+        <button class="btn-chat">Чат</button>
+      </div>
+    </main>
   </body>
 </html>
