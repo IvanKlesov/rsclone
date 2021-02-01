@@ -326,23 +326,38 @@
         <pre id="messages" class="hide"></pre>
         <input type="text" id="messageBox" class="hide" placeholder="Type your message here" />
         <div class="chat-btn">
-          <button id="send" class="hide" title="Send Message!">Send Message</button>
-          <button id="getOutRoomBtn" class="hide" title="get out from room">Get out from room</button>
-          <button class="close-chat" title="close chat">Close chat</button>
+          <button id="send" class="hide" title="Send Message!">Отправить сообщение</button>
+          <button id="getOutRoomBtn" class="hide" title="get out from room">Выйти из комнаты</button>
+          <button class="close-chat" title="close chat">Закрыть чат</button>
         </div>
       </div>
     </div>
-    <button id="chatRoomsBtn" title="get chat rooms">Get chat rooms</button>
+    <div class="nav-btn hidden">
+      <button id="chatRoomsBtn" title="get chat rooms">Войти в лобби</button>
+      <button class="back-to-menu">Главное меню</button>
+    </div>
     <div id="chatRooms">
       <input type="text" id="createRoomInput" class="hide" placeholder="Type your new room name here" />
       <button id="createRoomBtn" class="hide">Create room</button>
       <br />
+    </div>
+    <div class="full-card-wrapper hidden">
+      <div class="full-card">
+        <button class="full-card-btn">Назад</button>
+      </div>
     </div>
     <main class="game-content hidden">
       <div class="game-board-wrapper">
         <canvas class="game-board"></canvas>
       </div>
       <div class="functional-panel">
+        <button class="btn-start">Старт игры</button>
+        <button class="btn-throw">Бросок кубика</button>
+        <button class="btn-throw2">Бросок кубиков</button>
+        <button class="btn-hold">Завершить ход</button>
+        <button class="btn-swap">Обмен картами</button>
+        <button class="btn-steal">Бонус телецентра</button>
+        <button class="btn-port-bonus">Бонус порта</button>
         <button class="btn-shop">Магазин</button>
         <button class="btn-chat">Чат</button>
       </div>

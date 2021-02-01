@@ -24,6 +24,10 @@ const btnChat = document.querySelector(".btn-chat");
 const closeChat = document.querySelector(".close-chat");
 const closeRoom = document.getElementById("getOutRoomBtn");
 const gameContent = document.querySelector(".game-content");
+const backToMenu = document.querySelector(".back-to-menu");
+const navBtn = document.querySelector(".nav-btn");
+const fullCardBtn = document.querySelector(".full-card-btn");
+const fullCardWrapper = document.querySelector(".full-card-wrapper");
 
 function openCategories(categorie) {
   mainMenu.classList.add("hidden");
@@ -98,4 +102,13 @@ closeChat.addEventListener("click", () => {
 
 closeRoom.addEventListener("click", () => {
   gameContent.classList.add("hidden");
+});
+
+backToMenu.addEventListener("click", () => {
+  popup.classList.remove("hidden");
+  navBtn.classList.add("hidden");
+});
+
+fullCardBtn.addEventListener("click", () => {
+  fullCardWrapper.classList.add("hidden");
 });

@@ -1,7 +1,7 @@
 import logMessage from "../../logger";
 import { machiCoroClientMessageMethods } from "../back/machiCoroMessages/machiCoroClientMessageMethods";
 
-function sendStartMessage(ws, roomID) {
+export function sendStartMessage(ws, roomID) {
   machiCoroClientMessageMethods.startGame(ws, roomID);
 }
 
@@ -9,15 +9,15 @@ export function sendBuyMessage(ws, roomID, willBuy) {
   machiCoroClientMessageMethods.buy(ws, roomID, willBuy);
 }
 
-function sendHoldMessage(ws, roomID) {
+export function sendHoldMessage(ws, roomID) {
   machiCoroClientMessageMethods.hold(ws, roomID);
 }
 
-function sendThrowCubeMessage(ws, roomID, cubeNumbs) {
+export function sendThrowCubeMessage(ws, roomID, cubeNumbs) {
   machiCoroClientMessageMethods.throw(ws, roomID, cubeNumbs);
 }
 
-function sendSwapCardsMessage(ws, roomID, commandString) {
+export function sendSwapCardsMessage(ws, roomID, commandString) {
   const commandStringSplit = commandString.split(" ");
   if (commandString.length < 4) {
     logMessage("error sendSwapCardsMessage: command lenght < 4");
@@ -33,11 +33,11 @@ function sendSwapCardsMessage(ws, roomID, commandString) {
   machiCoroClientMessageMethods.swap(ws, roomID, secondUserID, firstUserCard, secondUserCasrd);
 }
 
-function sendStealMessage(ws, roomID, secondUserID) {
+export function sendStealMessage(ws, roomID, secondUserID) {
   machiCoroClientMessageMethods.steal(ws, roomID, secondUserID);
 }
 
-function sendAcceptPortBonusMessage(ws, roomID) {
+export function sendAcceptPortBonusMessage(ws, roomID) {
   machiCoroClientMessageMethods.acceptPortBonus(ws, roomID);
 }
 
@@ -102,10 +102,10 @@ export function handlerServerMachiCoroResponse(jsonData) {
 
     case "allUsersInfo": {
       const result = jsonData.content;
-      const info = result
-        .reduce((acc, userInfo) => (
-          acc.concat(`Player${userInfo.index}\n\t`).concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`)
-        ), "");
+      const info = result.reduce(
+        (acc, userInfo) => acc.concat(`Player${userInfo.index}\n\t`).concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`),
+        "",
+      );
       return info;
     }
 

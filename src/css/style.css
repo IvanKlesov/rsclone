@@ -21,12 +21,24 @@ p {
   background-repeat: no-repeat;
 }
 
-#chatRoomsBtn {
+.nav-btn {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   position: absolute;
-  top: 49%;
-  left: 43%;
+  top: 40%;
+  left: 30%;
+  width: 40%;
+  height: 20%;
+  background: rgba(0, 172, 220, 1);
+  border: 5px solid #ffffff;
+  border-radius: 20px;
+}
+
+#chatRoomsBtn,
+.back-to-menu {
   width: 200px;
-  height: 45px;
+  height: 60px;
   border: 3px solid #ffffff;
   border-radius: 10px;
   font-size: 18px;
@@ -61,7 +73,8 @@ p {
 
 #send:hover,
 #chatRoomsBtn:hover,
-#getOutRoomBtn:hover {
+#getOutRoomBtn:hover,
+.back-to-menu:hover {
   background-color: rgba(218, 55, 58);
 }
 
