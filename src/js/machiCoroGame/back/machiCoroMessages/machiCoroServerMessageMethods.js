@@ -29,7 +29,8 @@ machiCoroServerMessageMethods.gameStarted = (users, webSocket, webSocketOpetStat
 
 // refactor = > curActiveUser change to curActiveUserIndex
 machiCoroServerMessageMethods.sendUserGameInfo = (users, curActiveUser) => {
-  const curActiveUserIndex = users.findIndex((user) => user === curActiveUser);
+  // const curActiveUserIndex = users.findIndex((user) => user === curActiveUser);
+  const curActiveUserIndex = curActiveUser.getUserID();//= users.find((user) => user === curActiveUser).getUserID();
   users.forEach((user, index) => {
     const userWs = user.getWs();
     const userGameData = user.getGameInfo();
@@ -39,7 +40,7 @@ machiCoroServerMessageMethods.sendUserGameInfo = (users, curActiveUser) => {
       userGameData.playerNum = curActiveUserIndex;
     } else {
       userGameData.turn = curActiveUserIndex;
-      userGameData.playerNum = index;
+      userGameData.playerNum = user.getUserID();
     }
     userWs.send(JSON.stringify(userGameData));
   });
@@ -47,15 +48,15 @@ machiCoroServerMessageMethods.sendUserGameInfo = (users, curActiveUser) => {
 
 machiCoroServerMessageMethods.sendAllOtherUserGameInfo = (users) => {
   users.forEach((user, idx) => {
-    let otherUsersInfo = users.map((user, index) => {
+    let otherUsersInfo = users.map((user2) => {
       const info = {
-        index,
-        money: user.getMachiCoroUser().money,
-        cards: user.getMachiCoroUser().userCards.map((card) => card.name),
+        index: user2.getUserID(),
+        money: user2.getMachiCoroUser().money,
+        cards: user2.getMachiCoroUser().userCards.map((card) => card.name),
       };
       return info;
     });
-    otherUsersInfo = otherUsersInfo.filter((userInfo) => userInfo.index !== idx);
+    otherUsersInfo = otherUsersInfo.filter((userInfo) => userInfo.index !== user.getUserID());
     const message = {
       method: "allUsersInfo",
       content: otherUsersInfo,
@@ -74,7 +75,7 @@ machiCoroServerMessageMethods.sendResultOfThrowCube = (users, curActiveUserIndex
     if (curActiveUserIndex === index) {
       message.turn = "you";
     } else {
-      message.turn = curActiveUserIndex;
+      message.turn = user.getUserID();
     }
     userWs.send(JSON.stringify(message));
   });
@@ -90,7 +91,7 @@ machiCoroServerMessageMethods.sendPurchaseInfo = (users, curActiveUserIndex, buy
     if (curActiveUserIndex === index) {
       message.turn = "you";
     } else {
-      message.turn = curActiveUserIndex;
+      message.turn = user.getUserID();
     }
     userWs.send(JSON.stringify(message));
   });
@@ -99,17 +100,17 @@ machiCoroServerMessageMethods.sendPurchaseInfo = (users, curActiveUserIndex, buy
 machiCoroServerMessageMethods.swapAccept = (users, activeUserID, secondUserID, firstUserCardName, secondUserCardName) => {
   const message = {
     method: "swapAccept",
-    content: `player${activeUserID} swap ${firstUserCardName} with player${secondUserID} ${secondUserCardName}`,
+    content: `player${users[activeUserID].getUserID()} swap ${firstUserCardName} with player${users[secondUserID].getUserID()} ${secondUserCardName}`,
   };
 
   const messageToActiveUser = {
     method: "swapAccept",
-    content: `you swap ${firstUserCardName} with player${secondUserID} ${secondUserCardName}`,
+    content: `you swap ${firstUserCardName} with player${users[secondUserID].getUserID()} ${secondUserCardName}`,
   };
 
   const messageToSecondUser = {
     method: "swapAccept",
-    content: `player${activeUserID} swap ${firstUserCardName} with you ${secondUserCardName}`,
+    content: `player${users[activeUserID].getUserID()} swap ${firstUserCardName} with you ${secondUserCardName}`,
   };
   users.forEach((user, idx) => {
     const curUserWs = user.getWs();
@@ -127,17 +128,17 @@ machiCoroServerMessageMethods.stealAccept = (users, activeUserID, secondUserID) 
   // duplicating
   const message = {
     method: "stealAccept",
-    content: `player${activeUserID} steal money(5) from player${secondUserID}`,
+    content: `player${users[activeUserID].getUserID()} steal money(5) from player${users[secondUserID].getUserID()}`,
   };
 
   const messageToActiveUser = {
     method: "stealAccept",
-    content: `you steal money(5) from player${secondUserID}`,
+    content: `you steal money(5) from player${users[secondUserID].getUserID()}`,
   };
 
   const messageToSecondUser = {
     method: "stealAccept",
-    content: `player${activeUserID} steal with your money(5)`,
+    content: `player${users[activeUserID].getUserID()} steal with your money(5)`,
   };
 
   users.forEach((user, idx) => {
@@ -156,7 +157,7 @@ machiCoroServerMessageMethods.portBonusResult = (users, curActiveUserID, result)
   // scratch. Fix it in future
   const messageToALlUsers = {
     method: "machiCoroError",
-    content: `player${curActiveUserID} ${result} portBonus`,
+    content: `player ${users[curActiveUserID].getUserID()} ${result} portBonus`,
   };
 
   const messageToActiveUser = {
@@ -183,7 +184,7 @@ machiCoroServerMessageMethods.sendGameIsOverMessage = (users, winner) => {
 
   const messageToLosser = {
     method: "machiCoroError",
-    content: `You loose this game. Player${indexOfWinner} win this game`,
+    content: `You loose this game. Player ${winner.getUserID()} win this game`,
   };
 
   users.forEach((user, index) => {

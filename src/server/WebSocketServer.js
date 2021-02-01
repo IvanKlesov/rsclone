@@ -60,6 +60,18 @@ export class WebSocketServer {
           serverMessageMethods.sendMessage(curRoom, ws, jsonData, WebSocket.OPEN);
           break;
         }
+        case "registerUser": {
+          logMessage("find registerUser command");
+          const curUser = this.findCurrentUserByWebsocket(ws);
+          if (jsonData.userID) {
+            curUser.setOauthID(jsonData.userID);
+          }
+          curUser.setUserName(jsonData.userName)
+          if (jsonData.userPhotoAdress) {
+            curUser.setUserPhotoAdress(jsonData.userPhotoAdress)
+          }
+            break
+        }
         case "getRooms": {
           serverMessageMethods.sendRooms(ws, this.rooms);
           break;
@@ -74,7 +86,8 @@ export class WebSocketServer {
           if (curRoom.getRoomID()) {
             curUser.setRoomID(curRoom.getRoomID());
           }
-          serverMessageMethods.userRoomAccept(ws, jsonData.content);
+          serverMessageMethods.userRoomAccept(ws, jsonData.content, curRoom);
+          serverMessageMethods.newUserInRoom(curRoom, curUser);
           break;
         }
         case "getOutRoom": {

@@ -33,6 +33,7 @@ const chatRooms = document.getElementById("chatRooms");
 const chatRoomsId = [];
 
 let roomID;
+let infoAboutUsersInRoom;
 // let ownRoomID;
 
 function changeHttpUrlOnWs(url) {
@@ -112,6 +113,7 @@ function isGameCliCommand(clientMessage) {
 
 ws.onopen = () => {
   logMessage("websocket start");
+  clientMessageMethods.registerUser(ws, userID, userName, userPhotoAdress);
 };
 
 ws.onmessage = (event) => {
@@ -135,7 +137,32 @@ ws.onmessage = (event) => {
       case "userRoomAccept": {
         roomID = jsonData.content;
         logMessage("roomID", roomID);
+        logMessage("----------------------------------------------------");
+        logMessage("----------------------------------------------------");
+        logMessage("----------------------------------------------------");
+        logMessage(jsonData.infoAboutOtherUsers);
+        infoAboutUsersInRoom = jsonData.infoAboutOtherUsers;
         enterChat();
+        break;
+      }
+
+      case "newUserInRoom": {
+        if (jsonData.roomID === roomID) {
+          const newUser = {
+            id: jsonData.id,
+            name: jsonData.name,
+            photoAddress: jsonData.photoAddress,
+          };
+          logMessage("----------------------------------------------------");
+          logMessage("----------------------------------------------------");
+          logMessage("----------------------------------------------------");
+          logMessage(newUser);
+          infoAboutUsersInRoom.push(newUser);
+          logMessage("----------------------------------------------------");
+          logMessage("----------------------------------------------------");
+          logMessage("----------------------------------------------------");
+          logMessage(infoAboutUsersInRoom);
+        }
         break;
       }
       case "userRoomReject": {

@@ -5,6 +5,9 @@ export class User {
   constructor(webSocket) {
     this.ws = webSocket;
     this.id = uuid();
+    this.oauthID;
+    this.userName = "anonym";
+    this.userPhotoAdress;
   }
 
   getWs() {
@@ -37,6 +40,30 @@ export class User {
 
   getGameInfo() {
     return this.machiCoroUser.getFullInfoAboutMachiCoroUser();
+  }
+
+  setOauthID (newOauthID) {
+    this.oauthID = newOauthID;
+  }
+
+  getOauthID() {
+    return this.oauthID;
+  }
+
+  setUserName(newUserName) {
+    this.userName = newUserName;
+  }
+
+  getUserName() {
+    return this.userName;
+  }
+
+  setUserPhotoAdress(newAdress) {
+    this.userPhotoAdress = newAdress;
+  }
+
+  getUserPhotoAdress() {
+    return this.userPhotoAdress;
   }
 }
 
