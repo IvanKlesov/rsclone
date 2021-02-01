@@ -1,7 +1,6 @@
 import clientPlayer from "./front/clientPlayer";
 import { sendBuyMessage } from "./machiCoroGame/front/machiCoroClientLogic";
 import { drawNewCard } from "./gameBoard";
-import { closeShop } from "./popup";
 
 let currentColor;
 const blueCards = [
@@ -72,6 +71,7 @@ export default function createShop(color) {
   if (document.querySelector(".canvas-shop")) {
     shopContent.removeChild(document.querySelector(".canvas-shop"));
   }
+  const shop = document.querySelector(".shop");
   const canvasShop = document.createElement("canvas");
   canvasShop.classList.add("canvas-shop");
   shopContent.appendChild(canvasShop);
@@ -210,7 +210,7 @@ export default function createShop(color) {
     elements.forEach((element) => {
       if (y > element.top && y < element.top + element.height && x > element.left && x < element.left + element.width) {
         drawNewCard(element);
-        closeShop();
+        shop.classList.add("hidden");
         console.log("отправляем :", element.name);
         const ws = clientPlayer.getWs();
         const roomID = clientPlayer.getRoomID();

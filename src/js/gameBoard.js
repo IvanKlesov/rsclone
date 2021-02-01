@@ -328,13 +328,12 @@ export default function createBoard() {
 
 export function drawNewCard(newCard) {
   const widthBoard = wrapperBoard.offsetWidth;
-  const heightBoard = wrapperBoard.offsetHeight;
+
   const widthCard = 50;
   const heightCard = 70;
 
   const xBottomPlayer = Math.ceil(widthBoard * 0.1);
-  const yBottomPlayer = Math.ceil(heightBoard * 0.8);
-  console.log(handBottomPlayer);
+
   let x = handBottomPlayer[handBottomPlayer.length - 1].left;
   let y = handBottomPlayer[handBottomPlayer.length - 1].top;
   const newImg = new Image();
@@ -342,11 +341,11 @@ export function drawNewCard(newCard) {
   for (let i = 0; i < allCards.length; i += 1) {
     if (allCards[i].name === newCard.name) newImg.src = allCards[i].url;
   }
-  console.log(x, y, xBottomPlayer, yBottomPlayer, padding);
+
   newImg.onload = function addCardsBottom() {
     if (x + padding + widthCard <= xBottomPlayer + 1200) {
       handBottomPlayer.push({
-        name: newCard.url,
+        name: newImg.src,
         left: x + widthCard + padding,
         top: y,
         width: 50,
@@ -358,7 +357,7 @@ export function drawNewCard(newCard) {
       x = xBottomPlayer + widthCard * 2 + padding;
       y = y + padding + heightCard;
       handBottomPlayer.push({
-        name: newCard.url,
+        name: newImg.src,
         left: x,
         top: y,
         width: 50,
@@ -368,4 +367,21 @@ export function drawNewCard(newCard) {
       ctx.drawImage(newImg, x, y, widthCard, heightCard);
     }
   };
+
+  board.addEventListener("click", (event) => {
+    const box = board.getBoundingClientRect();
+
+    const newX = event.clientX - box.left;
+    const newY = event.clientY - box.top;
+
+    if (
+      newY > handBottomPlayer[handBottomPlayer.length - 1].top
+      && newY < handBottomPlayer[handBottomPlayer.length - 1].top + handBottomPlayer[handBottomPlayer.length - 1].height
+      && newX > handBottomPlayer[handBottomPlayer.length - 1].left
+      && newX < handBottomPlayer[handBottomPlayer.length - 1].left + handBottomPlayer[handBottomPlayer.length - 1].width
+    ) {
+      showFullCard(handBottomPlayer[handBottomPlayer.length - 1].name);
+      fullCardWrapper.classList.remove("hidden");
+    }
+  });
 }
