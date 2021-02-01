@@ -44,7 +44,7 @@ function openShop() {
   createShop(".picture-blue");
 }
 
-export function closeShop() {
+function closeShop() {
   shop.classList.add("hidden");
 }
 
