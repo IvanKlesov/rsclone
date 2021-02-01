@@ -22,6 +22,7 @@ const gameContent = document.querySelector(".game-content");
 const sendBtn = document.getElementById("send");
 const chatRoomsBtn = document.getElementById("chatRoomsBtn");
 const getOutRoomBtn = document.getElementById("getOutRoomBtn");
+const navBtn = document.querySelector(".nav-btn");
 
 const messages = document.getElementById("messages");
 const messageBox = document.getElementById("messageBox");
@@ -138,6 +139,7 @@ ws.onmessage = (event) => {
         clientPlayer.setRoomID(roomID);
         logMessage("roomID", roomID);
         enterChat();
+
         break;
       }
       case "userRoomReject": {
@@ -147,6 +149,7 @@ ws.onmessage = (event) => {
       case "getOutRoomAccept": {
         roomID = undefined;
         clientPlayer.setRoomID(roomID);
+        navBtn.classList.remove("hidden");
         outChat();
         break;
       }
@@ -193,7 +196,7 @@ sendBtn.onclick = () => {
 chatRoomsBtn.onclick = () => {
   logMessage("chat rooms btn");
   clientMessageMethods.getRooms(ws);
-  hideElement(chatRoomsBtn);
+  navBtn.classList.add("hidden");
 };
 
 newGame.onclick = () => {
