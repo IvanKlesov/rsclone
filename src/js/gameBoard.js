@@ -9,6 +9,42 @@ import shirtRadioTower from "../assets/images/attractions/shirtRadioTower.png";
 import shirtRailwayStation from "../assets/images/attractions/shirtRailwayStation.png";
 import shirtShoppingCenter from "../assets/images/attractions/shirtShoppingCenter.png";
 
+import wheatField2 from "../assets/images/ordinaryBuildings/wheatField.png";
+import farm from "../assets/images/ordinaryBuildings/farm.png";
+import flowerGarden from "../assets/images/ordinaryBuildings/flowerGarden.png";
+import forest from "../assets/images/ordinaryBuildings/forest.png";
+import longboat from "../assets/images/ordinaryBuildings/longboat.png";
+import mine from "../assets/images/ordinaryBuildings/mine.png";
+import appleOrchard from "../assets/images/ordinaryBuildings/appleOrchard.png";
+import trawler from "../assets/images/ordinaryBuildings/trawler.png";
+
+import bakery2 from "../assets/images/ordinaryBuildings/bakery.png";
+import store from "../assets/images/ordinaryBuildings/store.png";
+import flowerStore from "../assets/images/ordinaryBuildings/flowerStore.png";
+import cheeseDairy from "../assets/images/ordinaryBuildings/cheeseDairy.png";
+import furnitureFactory from "../assets/images/ordinaryBuildings/furnitureFactory.png";
+import vegetableMarket from "../assets/images/ordinaryBuildings/vegetableMarket.png";
+import groceryWarehouse from "../assets/images/ordinaryBuildings/groceryWarehouse.png";
+
+import sushiBar from "../assets/images/ordinaryBuildings/sushiBar.png";
+import cafe from "../assets/images/ordinaryBuildings/cafe.png";
+import pizzeria from "../assets/images/ordinaryBuildings/pizzeria.png";
+import diner from "../assets/images/ordinaryBuildings/diner.png";
+import restaurant from "../assets/images/ordinaryBuildings/restaurant.png";
+
+import businessCenter from "../assets/images/uniqueBuildings/businessCenter.png";
+import stadium from "../assets/images/uniqueBuildings/stadium.png";
+import telecentre from "../assets/images/uniqueBuildings/telecentre.png";
+import publishingHouse from "../assets/images/uniqueBuildings/publishingHouse.png";
+import tax from "../assets/images/uniqueBuildings/tax.png";
+
+import port from "../assets/images/attractions/port.png";
+import railwayStation from "../assets/images/attractions/railwayStation.png";
+import shoppingCenter from "../assets/images/attractions/shoppingCenter.png";
+import amusementPark from "../assets/images/attractions/amusementPark.png";
+import radioTower from "../assets/images/attractions/radioTower.png";
+import airport from "../assets/images/attractions/airport.png";
+
 import clientPlayer from "./front/clientPlayer";
 import {
   sendStartMessage,
@@ -84,6 +120,40 @@ const basicHand = [
   shirtAirport,
 ];
 
+const allCards = [
+  { name: "wheatField", url: wheatField2 },
+  { name: "farm", url: farm },
+  { name: "flowerGarden", url: flowerGarden },
+  { name: "forest", url: forest },
+  { name: "longboat", url: longboat },
+  { name: "mine", url: mine },
+  { name: "appleOrchard", url: appleOrchard },
+  { name: "trawler", url: trawler },
+  { name: "bakery", url: bakery2 },
+  { name: "store", url: store },
+  { name: "flowerStore", url: flowerStore },
+  { name: "cheeseDairy", url: cheeseDairy },
+  { name: "furnitureFactory", url: furnitureFactory },
+  { name: "vegetableMarket", url: vegetableMarket },
+  { name: "groceryWarehouse", url: groceryWarehouse },
+  { name: "sushiBar", url: sushiBar },
+  { name: "cafe", url: cafe },
+  { name: "pizzeria", url: pizzeria },
+  { name: "diner", url: diner },
+  { name: "restaurant", url: restaurant },
+  { name: "businessCenter", url: businessCenter },
+  { name: "stadium", url: stadium },
+  { name: "telecentre", url: telecentre },
+  { name: "publishingHouse", url: publishingHouse },
+  { name: "tax", url: tax },
+  { name: "port", url: port },
+  { name: "railwayStation", url: railwayStation },
+  { name: "shoppingCenter", url: shoppingCenter },
+  { name: "amusementPark", url: amusementPark },
+  { name: "radioTower", url: radioTower },
+  { name: "airport", url: airport },
+];
+
 function showFullCard(url) {
   if (fullCard.children.length > 0) {
     fullCard.removeChild(fullCard.firstChild);
@@ -95,15 +165,20 @@ function showFullCard(url) {
   fullCard.prepend(image);
 }
 
+const wrapperBoard = document.querySelector(".game-board-wrapper");
+const board = document.querySelector(".game-board");
+const ctx = board.getContext("2d");
+const handTopPlayer = [];
+const handLeftPlayer = [];
+const handRightPlayer = [];
+const handBottomPlayer = [];
+const padding = 20;
+
 export default function createBoard() {
-  const wrapperBoard = document.querySelector(".game-board-wrapper");
-  const board = document.querySelector(".game-board");
-  const ctx = board.getContext("2d");
   const widthBoard = wrapperBoard.offsetWidth;
   const heightBoard = wrapperBoard.offsetHeight;
   const widthInfoPlayer = 100;
   const heightInfoPlayer = 140;
-  const padding = 20;
 
   board.setAttribute("width", widthBoard);
   board.setAttribute("height", heightBoard);
@@ -123,7 +198,7 @@ export default function createBoard() {
   ctx.fillText("Coin:", xTopPlayer + 10, heightInfoPlayer - 5);
 
   ctx.strokeRect(xTopPlayer + widthInfoPlayer + padding, 0, 400, 140);
-  const handTopPlayer = [];
+
   for (let i = 0, k = 1; i < basicHand.length; i += 1, k += 1) {
     const img = new Image();
     img.src = basicHand[i];
@@ -153,7 +228,7 @@ export default function createBoard() {
   ctx.fillText("Coin:", xLeftPlayer + 10, yLeftPlayer + heightInfoPlayer - 5);
 
   ctx.strokeRect(xLeftPlayer, yLeftPlayer + heightInfoPlayer + padding, 400, 140);
-  const handLeftPlayer = [];
+
   for (let i = 0, k = 0; i < basicHand.length; i += 1, k += 1) {
     const img = new Image();
     img.src = basicHand[i];
@@ -183,7 +258,7 @@ export default function createBoard() {
   ctx.fillText("Coin:", xRightPlayer + 10, yRightPlayer + heightInfoPlayer - 5);
 
   ctx.strokeRect(xRightPlayer - 300, yRightPlayer + heightInfoPlayer + padding, 400, 140);
-  const handRightPlayer = [];
+
   for (let i = 0, k = 0; i < basicHand.length; i += 1, k += 1) {
     const img = new Image();
     img.src = basicHand[i];
@@ -213,26 +288,27 @@ export default function createBoard() {
   ctx.fillText("Coin:", xBottomPlayer + 10, yBottomPlayer + heightInfoPlayer);
 
   ctx.strokeRect(xBottomPlayer + widthInfoPlayer + padding, yBottomPlayer, 1200, heightInfoPlayer + padding);
-  const handBottomPlayer = [];
+
   for (let i = 0, k = 0; i < basicHand.length; i += 1, k += 1) {
     const img = new Image();
     img.src = basicHand[i];
+    let y;
     img.onload = function loadCardsBottom() {
-      ctx.drawImage(
-        img,
-        xBottomPlayer + widthInfoPlayer + padding + (widthInfoPlayer / 2 + padding) * k,
-        yBottomPlayer,
-        50,
-        70,
-      );
+      if (xBottomPlayer + widthInfoPlayer + padding + (widthInfoPlayer / 2 + padding) * k <= 1200) {
+        y = yBottomPlayer;
+      } else {
+        k = 0;
+        y = yBottomPlayer + heightInfoPlayer / 2 + padding;
+      }
+      ctx.drawImage(img, xBottomPlayer + widthInfoPlayer + padding + (widthInfoPlayer / 2 + padding) * k, y, 50, 70);
+      handBottomPlayer.push({
+        name: basicHand[i],
+        left: xBottomPlayer + widthInfoPlayer + padding + (widthInfoPlayer / 2 + padding) * k,
+        top: y,
+        width: 50,
+        height: 70,
+      });
     };
-    handBottomPlayer.push({
-      name: basicHand[i],
-      left: xBottomPlayer + widthInfoPlayer + padding + (widthInfoPlayer / 2 + padding) * k,
-      top: yBottomPlayer,
-      width: 50,
-      height: 70,
-    });
   }
 
   board.addEventListener("click", (event) => {
@@ -248,4 +324,48 @@ export default function createBoard() {
       }
     });
   });
+}
+
+export function drawNewCard(newCard) {
+  const widthBoard = wrapperBoard.offsetWidth;
+  const heightBoard = wrapperBoard.offsetHeight;
+  const widthCard = 50;
+  const heightCard = 70;
+
+  const xBottomPlayer = Math.ceil(widthBoard * 0.1);
+  const yBottomPlayer = Math.ceil(heightBoard * 0.8);
+  console.log(handBottomPlayer);
+  let x = handBottomPlayer[handBottomPlayer.length - 1].left;
+  let y = handBottomPlayer[handBottomPlayer.length - 1].top;
+  const newImg = new Image();
+
+  for (let i = 0; i < allCards.length; i += 1) {
+    if (allCards[i].name === newCard.name) newImg.src = allCards[i].url;
+  }
+  console.log(x, y, xBottomPlayer, yBottomPlayer, padding);
+  newImg.onload = function addCardsBottom() {
+    if (x + padding + widthCard <= xBottomPlayer + 1200) {
+      handBottomPlayer.push({
+        name: newCard.url,
+        left: x + widthCard + padding,
+        top: y,
+        width: 50,
+        height: 70,
+      });
+
+      ctx.drawImage(newImg, x + widthCard + padding, y, widthCard, heightCard);
+    } else {
+      x = xBottomPlayer + widthCard * 2 + padding;
+      y = y + padding + heightCard;
+      handBottomPlayer.push({
+        name: newCard.url,
+        left: x,
+        top: y,
+        width: 50,
+        height: 70,
+      });
+
+      ctx.drawImage(newImg, x, y, widthCard, heightCard);
+    }
+  };
 }
