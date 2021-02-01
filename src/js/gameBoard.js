@@ -342,6 +342,22 @@ export function drawNewCard(newCard) {
     if (allCards[i].name === newCard.name) newImg.src = allCards[i].url;
   }
 
+  switch (newCard.name) {
+    case "telecentre":
+      stealMoney.classList.remove("hidden");
+      break;
+    case "port":
+      portBonus.classList.remove("hidden");
+      break;
+    case "railwayStation":
+      throwCubes2.classList.remove("hidden");
+      break;
+    case "businessCenter":
+      swapCards.classList.remove("hidden");
+      break;
+    default:
+  }
+
   newImg.onload = function addCardsBottom() {
     if (x + padding + widthCard <= xBottomPlayer + 1200) {
       handBottomPlayer.push({
