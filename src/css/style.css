@@ -45,3 +45,46 @@ h1, h2, h3, h4, h5, p {
 .red {
   color: red;
 }
+
+/*     auth    */
+
+.auth-login {
+  width: 95vw;
+  height: 5vh;
+  background-color: red;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#auth-container {
+  position: absolute;
+  width: 30vw;
+  height: 50vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+
+  background-color: purple;
+}
+
+#google-auth-btn {
+  width: 100%;
+}
+
+.user-icon{
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.align-items-center{
+  align-items: center;
+}

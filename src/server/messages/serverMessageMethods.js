@@ -9,13 +9,25 @@ serverMessageMethods.sendRooms = (webSocket, roomsArray) => {
   webSocket.send(response);
 };
 
-serverMessageMethods.sendMessage = (curRoom, webSocket, jsonFromClient, webSocketOpetState) => {
+serverMessageMethods.registrationAccept = (curUser) => {
+  const registrationData = {
+    method: "registrationAccept",
+    id: curUser.getUserID(),
+    name: curUser.getUserName(),
+    photoAddress: curUser.getUserPhotoAdress(),
+  }
+  curUser.getWs().send(JSON.stringify(registrationData));
+}
+
+serverMessageMethods.sendMessage = (curRoom, curUser, jsonFromClient, webSocketOpetState) => {
   const serverMessage = {
     method: "message",
     content: jsonFromClient.content,
+    sender: curUser.getUserID(),
   };
+  // const roomUsers = curRoom.getUsers();
   curRoom.clients().forEach((client) => {
-    if (client !== webSocket) {
+    if (client !== curUser.getWs()) {
       if (client.readyState === webSocketOpetState) {
         client.send(JSON.stringify(serverMessage));
       } else {
@@ -25,13 +37,38 @@ serverMessageMethods.sendMessage = (curRoom, webSocket, jsonFromClient, webSocke
   });
 };
 
-serverMessageMethods.userRoomAccept = (webSocket, roomID) => {
+serverMessageMethods.userRoomAccept = (webSocket, roomID, curRoom) => {
+  const roomUsers = curRoom.getUsers().filter((user) => user.getWs() !== webSocket);
+  const infoAboutOtherUsers = roomUsers.map((user) => {
+    const userInfo = {
+      id: user.getUserID(),
+      name: user.getUserName(),
+      photoAddress: user.getUserPhotoAdress(),
+    };
+    return userInfo;
+  });
   const serverAcceptUserRoomMessage = {
     method: "userRoomAccept",
     content: roomID,
+    infoAboutOtherUsers,
   };
   webSocket.send(JSON.stringify(serverAcceptUserRoomMessage));
 };
+
+serverMessageMethods.newUserInRoom = (room, newUser) => {
+  const roomUsers = room.getUsers().filter((user) => user !== newUser);
+  const newUserInfo = {
+    method: "newUserInRoom",
+    roomID: room.getRoomID(),
+    id: newUser.getUserID(),
+    name: newUser.getUserName(),
+    photoAddress: newUser.getUserPhotoAdress(),
+  };
+
+  roomUsers.forEach((user) => {
+    user.getWs().send(JSON.stringify(newUserInfo));
+  });
+}
 
 serverMessageMethods.userRoomReject = (webSocket, roomID) => {
   const serverRejectUserRoomMessage = {

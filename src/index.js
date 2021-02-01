@@ -8,6 +8,8 @@ import handleCliCommand, { handlerServerMachiCoroResponse } from "./js/machiCoro
 
 import createEl, { configurateButton, hideElement, unhideElement } from "./js/createEl";
 
+import initAuth from "./js/auth";
+
 // Log message to console
 logMessage("Welcome to Expack!");
 
@@ -30,8 +32,23 @@ const createRoomBtn = document.getElementById("createRoomBtn");
 const chatRooms = document.getElementById("chatRooms");
 const chatRoomsId = [];
 
+const registrationData = {};
 let roomID;
+let infoAboutUsersInRoom;
+const roomUserImages = [];
 // let ownRoomID;
+
+function getUserNameUsingUUID(UUID) {
+  console.log(roomUserImages);
+  if (registrationData.id === UUID) {
+    return registrationData.name;
+  }
+  return infoAboutUsersInRoom.find((user) => user.id === UUID).name;
+}
+
+function getUserPhotoUsingUUID(UUID) {
+  return roomUserImages[UUID];
+}
 
 function changeHttpUrlOnWs(url) {
   return url.replace(/^http([s])?/, "ws$1");
@@ -41,10 +58,18 @@ const HOST = changeHttpUrlOnWs(window.location.href);
 logMessage(HOST);
 const ws = new WebSocket(HOST);
 
-function acceptMessege(newMessage) {
-  const p = createEl("p");
-  p.textContent += newMessage;
-  messages.appendChild(p);
+initAuth();
+
+function acceptMessege(newMessage, sender) {
+  const div = createEl("div", "flex flex-wrap align-items-center", "", messages);
+  const img = getUserPhotoUsingUUID(sender).cloneNode();
+  img.width = 20;
+  img.height = 20;
+
+  div.appendChild(img);
+  const p = createEl("p", "", "", div);
+  p.innerHTML = `   ${getUserNameUsingUUID(sender)}[${sender}]: ${newMessage}`;
+  // messages.appendChild(getUserPhotoUsingUUID(sender));
   messages.scrollTop = messages.scrollHeight;
 }
 
@@ -108,6 +133,7 @@ function isGameCliCommand(clientMessage) {
 
 ws.onopen = () => {
   logMessage("websocket start");
+  clientMessageMethods.registerUser(ws, userID, userName, userPhotoAdress);
 };
 
 ws.onmessage = (event) => {
@@ -118,9 +144,21 @@ ws.onmessage = (event) => {
     logMessage("JSON DATA");
     logMessage(jsonData);
     switch (jsonData.method) {
+      case "registrationAccept": {
+        registrationData.id = jsonData.id;
+        registrationData.name = jsonData.name;
+        registrationData.photoAddress = jsonData.photoAddress;
+        const img = new Image();
+        img.src = registrationData.photoAddress;
+        /* img.width = 20;
+        img.height = 20; */
+        roomUserImages[registrationData.id] = img;
+        console.log(img);
+        break;
+      }
       case "message": {
         logMessage("get info from server");
-        acceptMessege(jsonData.content);
+        acceptMessege(jsonData.content, jsonData.sender);
         break;
       }
       case "rooms": {
@@ -131,7 +169,44 @@ ws.onmessage = (event) => {
       case "userRoomAccept": {
         roomID = jsonData.content;
         logMessage("roomID", roomID);
+        logMessage("----------------------------------------------------");
+        logMessage("----------------------------------------------------");
+        logMessage("----------------------------------------------------");
+        logMessage(jsonData.infoAboutOtherUsers);
+        infoAboutUsersInRoom = jsonData.infoAboutOtherUsers;
+        jsonData.infoAboutOtherUsers.forEach((user) => {
+          const img = new Image();
+          img.src = user.photoAddress;
+          /* img.width = 20;
+          img.height - 20; */
+          roomUserImages[user.id] = img;
+        });
         enterChat();
+        break;
+      }
+
+      case "newUserInRoom": {
+        if (jsonData.roomID === roomID) {
+          const newUser = {
+            id: jsonData.id,
+            name: jsonData.name,
+            photoAddress: jsonData.photoAddress,
+          };
+          const img = new Image();
+          img.src = newUser.photoAddress;
+          /* img.width = 20;
+          img.height = 20; */
+          roomUserImages[newUser.id] = img;
+          logMessage("----------------------------------------------------");
+          logMessage("----------------------------------------------------");
+          logMessage("----------------------------------------------------");
+          logMessage(newUser);
+          infoAboutUsersInRoom.push(newUser);
+          logMessage("----------------------------------------------------");
+          logMessage("----------------------------------------------------");
+          logMessage("----------------------------------------------------");
+          logMessage(infoAboutUsersInRoom);
+        }
         break;
       }
       case "userRoomReject": {
@@ -168,14 +243,14 @@ sendBtn.onclick = () => {
 
   if (isGameCliCommand(messageBox.value)) {
     handleCliCommand(ws, messageBox.value, roomID);
-    acceptMessege(messageBox.value);
+    acceptMessege(messageBox.value, registrationData.id);
     messageBox.value = "";
     return;
   }
 
   if (roomID) {
     clientMessageMethods.sendMessage(ws, messageBox.value, roomID);
-    acceptMessege(messageBox.value);
+    acceptMessege(messageBox.value, registrationData.id);
     messageBox.value = "";
   } else {
     logMessage("no room");
