@@ -11,20 +11,14 @@
 </head>
 
 <body>
-  <!-- <% if (user) { %>
-    <h2>I have a game state!</h2>
-    <script>
-        window.machiCoroClient = <%= user %>            
-    </script>
-  <% } %> -->
   <div class="hide" id = "auth-container">
     <% if(user){ %>
-    <% } else{ %>  
-      <button id = "google-auth-btn">
-        <a href="auth/google" class="">
+    <% } else{ %>
+      <a href="auth/google" class=""> 
+        <button id = "google-auth-btn">
           google
-        </a>
-      </button>
+        </button>
+      </a>
    <% } %>
   </div>
   <div class="popup">
