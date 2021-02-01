@@ -32,9 +32,23 @@ const createRoomBtn = document.getElementById("createRoomBtn");
 const chatRooms = document.getElementById("chatRooms");
 const chatRoomsId = [];
 
+const registrationData = {};
 let roomID;
 let infoAboutUsersInRoom;
+const roomUserImages = [];
 // let ownRoomID;
+
+function getUserNameUsingUUID(UUID) {
+  console.log(roomUserImages);
+  if (registrationData.id === UUID) {
+    return registrationData.name;
+  }
+  return infoAboutUsersInRoom.find((user) => user.id === UUID).name;
+}
+
+function getUserPhotoUsingUUID(UUID) {
+  return roomUserImages[UUID];
+}
 
 function changeHttpUrlOnWs(url) {
   return url.replace(/^http([s])?/, "ws$1");
@@ -46,10 +60,16 @@ const ws = new WebSocket(HOST);
 
 initAuth();
 
-function acceptMessege(newMessage) {
-  const p = createEl("p");
-  p.textContent += newMessage;
-  messages.appendChild(p);
+function acceptMessege(newMessage, sender) {
+  const div = createEl("div", "flex flex-wrap align-items-center", "", messages);
+  const img = getUserPhotoUsingUUID(sender).cloneNode();
+  img.width = 20;
+  img.height = 20;
+
+  div.appendChild(img);
+  const p = createEl("p", "", "", div);
+  p.innerHTML = `   ${getUserNameUsingUUID(sender)}[${sender}]: ${newMessage}`;
+  // messages.appendChild(getUserPhotoUsingUUID(sender));
   messages.scrollTop = messages.scrollHeight;
 }
 
@@ -124,9 +144,21 @@ ws.onmessage = (event) => {
     logMessage("JSON DATA");
     logMessage(jsonData);
     switch (jsonData.method) {
+      case "registrationAccept": {
+        registrationData.id = jsonData.id;
+        registrationData.name = jsonData.name;
+        registrationData.photoAddress = jsonData.photoAddress;
+        const img = new Image();
+        img.src = registrationData.photoAddress;
+        /* img.width = 20;
+        img.height = 20; */
+        roomUserImages[registrationData.id] = img;
+        console.log(img);
+        break;
+      }
       case "message": {
         logMessage("get info from server");
-        acceptMessege(jsonData.content);
+        acceptMessege(jsonData.content, jsonData.sender);
         break;
       }
       case "rooms": {
@@ -142,6 +174,13 @@ ws.onmessage = (event) => {
         logMessage("----------------------------------------------------");
         logMessage(jsonData.infoAboutOtherUsers);
         infoAboutUsersInRoom = jsonData.infoAboutOtherUsers;
+        jsonData.infoAboutOtherUsers.forEach((user) => {
+          const img = new Image();
+          img.src = user.photoAddress;
+          /* img.width = 20;
+          img.height - 20; */
+          roomUserImages[user.id] = img;
+        });
         enterChat();
         break;
       }
@@ -153,6 +192,11 @@ ws.onmessage = (event) => {
             name: jsonData.name,
             photoAddress: jsonData.photoAddress,
           };
+          const img = new Image();
+          img.src = newUser.photoAddress;
+          /* img.width = 20;
+          img.height = 20; */
+          roomUserImages[newUser.id] = img;
           logMessage("----------------------------------------------------");
           logMessage("----------------------------------------------------");
           logMessage("----------------------------------------------------");
@@ -199,14 +243,14 @@ sendBtn.onclick = () => {
 
   if (isGameCliCommand(messageBox.value)) {
     handleCliCommand(ws, messageBox.value, roomID);
-    acceptMessege(messageBox.value);
+    acceptMessege(messageBox.value, registrationData.id);
     messageBox.value = "";
     return;
   }
 
   if (roomID) {
     clientMessageMethods.sendMessage(ws, messageBox.value, roomID);
-    acceptMessege(messageBox.value);
+    acceptMessege(messageBox.value, registrationData.id);
     messageBox.value = "";
   } else {
     logMessage("no room");

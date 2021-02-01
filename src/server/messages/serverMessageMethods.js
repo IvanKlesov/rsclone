@@ -9,13 +9,25 @@ serverMessageMethods.sendRooms = (webSocket, roomsArray) => {
   webSocket.send(response);
 };
 
-serverMessageMethods.sendMessage = (curRoom, webSocket, jsonFromClient, webSocketOpetState) => {
+serverMessageMethods.registrationAccept = (curUser) => {
+  const registrationData = {
+    method: "registrationAccept",
+    id: curUser.getUserID(),
+    name: curUser.getUserName(),
+    photoAddress: curUser.getUserPhotoAdress(),
+  }
+  curUser.getWs().send(JSON.stringify(registrationData));
+}
+
+serverMessageMethods.sendMessage = (curRoom, curUser, jsonFromClient, webSocketOpetState) => {
   const serverMessage = {
     method: "message",
     content: jsonFromClient.content,
+    sender: curUser.getUserID(),
   };
+  // const roomUsers = curRoom.getUsers();
   curRoom.clients().forEach((client) => {
-    if (client !== webSocket) {
+    if (client !== curUser.getWs()) {
       if (client.readyState === webSocketOpetState) {
         client.send(JSON.stringify(serverMessage));
       } else {

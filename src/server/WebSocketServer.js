@@ -57,7 +57,8 @@ export class WebSocketServer {
       switch (jsonData.method) {
         case "message": {
           const curRoom = this.findRoomLinkByRoomID(jsonData.roomID);
-          serverMessageMethods.sendMessage(curRoom, ws, jsonData, WebSocket.OPEN);
+          const curUser = this.findCurrentUserByWebsocket(ws);
+          serverMessageMethods.sendMessage(curRoom, curUser, jsonData, WebSocket.OPEN);
           break;
         }
         case "registerUser": {
@@ -70,7 +71,8 @@ export class WebSocketServer {
           if (jsonData.userPhotoAdress) {
             curUser.setUserPhotoAdress(jsonData.userPhotoAdress)
           }
-            break
+          serverMessageMethods.registrationAccept(curUser);
+          break;
         }
         case "getRooms": {
           serverMessageMethods.sendRooms(ws, this.rooms);
