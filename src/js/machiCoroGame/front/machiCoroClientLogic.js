@@ -11,6 +11,7 @@ import {
   sendAcceptThrowMessage,
 } from "./machiCoroClientMessages";
 import createBoard, { drawNewCard } from "../../front/gameBoard";
+import clientPlayer from "../../front/clientPlayer";
 
 function printInfoAboutBuyAction() {
   return "it is your turn \n/buy name -> buy something;\n/hold - hold turn";
@@ -22,18 +23,22 @@ export function handlerServerMachiCoroResponse(jsonData) {
   const { method } = jsonData;
   switch (method) {
     case "gameStarted": {
-      createBoard();
       return "game was started";
     }
     case "startGameError": {
       return "error with game start";
     }
     case "userGameInfo": {
+      // playerNum = uuid
       const userGameInfo = `get Info about this user from server\n
       You are Player ${jsonData.playerNum}
       User Money:${jsonData.money}\n
       Cards: ${jsonData.cards}
       ${jsonData.turn === "you" ? printInfoAboutBuyAction() : "it is turn of ".concat(jsonData.turn)}`;
+
+      clientPlayer.getRegistrationData().cards = jsonData.cards;
+      clientPlayer.getRegistrationData().money = jsonData.money;
+      createBoard();
       return userGameInfo;
     }
     case "throwCube": {
@@ -66,9 +71,17 @@ export function handlerServerMachiCoroResponse(jsonData) {
     }
 
     case "allUsersInfo": {
+      // allUsersInfo userInfo.index === uuid
+      // clientPlayer.getRegistrationData().cards = jsonData.cards;
+      // clientPlayer.getRegistrationData().money = jsonData.money;
       const result = jsonData.content;
       const info = result.reduce(
-        (acc, userInfo) => acc.concat(`Player${userInfo.index}\n\t`).concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`),
+        (acc, userInfo) => {
+          clientPlayer.getInfoAboutUsersInRoomArray()[userInfo.index].cards = userInfo.cards;
+          clientPlayer.getInfoAboutUsersInRoomArray()[userInfo.index].money = userInfo.money;
+          
+          return acc.concat(`Player${userInfo.index}\n\t`).concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`);
+        },
         "",
       );
       return info;

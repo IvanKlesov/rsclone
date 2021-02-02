@@ -1,50 +1,3 @@
-import avatar from "../../assets/images/avatar.png";
-import bakery from "../../assets/images/startСards/bakery.png";
-/* import cityHall from "../../assets/images/startСards/cityHall.png"; */
-import wheatField from "../../assets/images/startСards/wheatField.png";
-/* import shirtAmusementPark from "../../assets/images/attractions/shirtAmusementPark.png";
-import shirtAirport from "../../assets/images/attractions/shirtAirport.png";
-import shirtPort from "../../assets/images/attractions/shirtPort.png";
-import shirtRadioTower from "../../assets/images/attractions/shirtRadioTower.png";
-import shirtRailwayStation from "../../assets/images/attractions/shirtRailwayStation.png";
-import shirtShoppingCenter from "../../assets/images/attractions/shirtShoppingCenter.png"; */
-
-import wheatField2 from "../../assets/images/ordinaryBuildings/wheatField.png";
-import farm from "../../assets/images/ordinaryBuildings/farm.png";
-import flowerGarden from "../../assets/images/ordinaryBuildings/flowerGarden.png";
-import forest from "../../assets/images/ordinaryBuildings/forest.png";
-import longboat from "../../assets/images/ordinaryBuildings/longboat.png";
-import mine from "../../assets/images/ordinaryBuildings/mine.png";
-import appleOrchard from "../../assets/images/ordinaryBuildings/appleOrchard.png";
-import trawler from "../../assets/images/ordinaryBuildings/trawler.png";
-
-import bakery2 from "../../assets/images/ordinaryBuildings/bakery.png";
-import store from "../../assets/images/ordinaryBuildings/store.png";
-import flowerStore from "../../assets/images/ordinaryBuildings/flowerStore.png";
-import cheeseDairy from "../../assets/images/ordinaryBuildings/cheeseDairy.png";
-import furnitureFactory from "../../assets/images/ordinaryBuildings/furnitureFactory.png";
-import vegetableMarket from "../../assets/images/ordinaryBuildings/vegetableMarket.png";
-import groceryWarehouse from "../../assets/images/ordinaryBuildings/groceryWarehouse.png";
-
-import sushiBar from "../../assets/images/ordinaryBuildings/sushiBar.png";
-import cafe from "../../assets/images/ordinaryBuildings/cafe.png";
-import pizzeria from "../../assets/images/ordinaryBuildings/pizzeria.png";
-import diner from "../../assets/images/ordinaryBuildings/diner.png";
-import restaurant from "../../assets/images/ordinaryBuildings/restaurant.png";
-
-import businessCenter from "../../assets/images/uniqueBuildings/businessCenter.png";
-import stadium from "../../assets/images/uniqueBuildings/stadium.png";
-import telecentre from "../../assets/images/uniqueBuildings/telecentre.png";
-import publishingHouse from "../../assets/images/uniqueBuildings/publishingHouse.png";
-import tax from "../../assets/images/uniqueBuildings/tax.png";
-
-import port from "../../assets/images/attractions/port.png";
-import railwayStation from "../../assets/images/attractions/railwayStation.png";
-import shoppingCenter from "../../assets/images/attractions/shoppingCenter.png";
-import amusementPark from "../../assets/images/attractions/amusementPark.png";
-import radioTower from "../../assets/images/attractions/radioTower.png";
-import airport from "../../assets/images/attractions/airport.png";
-
 import clientPlayer from "./clientPlayer";
 import {
   sendStartMessage,
@@ -54,6 +7,9 @@ import {
   sendStealMessage,
   sendAcceptPortBonusMessage,
 } from "../machiCoroGame/front/machiCoroClientMessages";
+
+import allCards from "./allCards";
+import avatar from "../../assets/images/avatar.png";
 
 const fullCardWrapper = document.querySelector(".full-card-wrapper");
 const fullCard = document.querySelector(".full-card");
@@ -110,8 +66,8 @@ portBonus.addEventListener("click", () => {
 
 const basicHand = [
   /* cityHall, */
-  wheatField,
-  bakery,
+  "wheatField",
+  "bakery",
   /*   shirtPort,
     shirtRailwayStation,
     shirtShoppingCenter,
@@ -120,39 +76,7 @@ const basicHand = [
     shirtAirport, */
 ];
 
-const allCards = [
-  { name: "wheatField", url: wheatField2 },
-  { name: "farm", url: farm },
-  { name: "flowerGarden", url: flowerGarden },
-  { name: "forest", url: forest },
-  { name: "longboat", url: longboat },
-  { name: "mine", url: mine },
-  { name: "appleOrchard", url: appleOrchard },
-  { name: "trawler", url: trawler },
-  { name: "bakery", url: bakery2 },
-  { name: "store", url: store },
-  { name: "flowerStore", url: flowerStore },
-  { name: "cheeseDairy", url: cheeseDairy },
-  { name: "furnitureFactory", url: furnitureFactory },
-  { name: "vegetableMarket", url: vegetableMarket },
-  { name: "groceryWarehouse", url: groceryWarehouse },
-  { name: "sushiBar", url: sushiBar },
-  { name: "cafe", url: cafe },
-  { name: "pizzeria", url: pizzeria },
-  { name: "diner", url: diner },
-  { name: "restaurant", url: restaurant },
-  { name: "businessCenter", url: businessCenter },
-  { name: "stadium", url: stadium },
-  { name: "telecentre", url: telecentre },
-  { name: "publishingHouse", url: publishingHouse },
-  { name: "tax", url: tax },
-  { name: "port", url: port },
-  { name: "railwayStation", url: railwayStation },
-  { name: "shoppingCenter", url: shoppingCenter },
-  { name: "amusementPark", url: amusementPark },
-  { name: "radioTower", url: radioTower },
-  { name: "airport", url: airport },
-];
+const opponentsUUID = [];
 
 function showFullCard(url) {
   if (fullCard.children.length > 0) {
@@ -175,6 +99,17 @@ const handBottomPlayer = [];
 const padding = 20;
 
 export default function createBoard() {
+  console.log("33333333333333333333333333333333333333");
+  console.log(clientPlayer.getInfoAboutUsersInRoomArray());
+  opponentsUUID[0] = clientPlayer.getInfoAboutUsersInRoomArray()[0].id;
+  if (clientPlayer.getInfoAboutUsersInRoomArray()[1]) {
+    opponentsUUID[1] = clientPlayer.getInfoAboutUsersInRoomArray()[1].id;
+  }
+
+  if (clientPlayer.getInfoAboutUsersInRoomArray()[2]) {
+    opponentsUUID[2] = clientPlayer.getInfoAboutUsersInRoomArray()[2].id;
+  }
+
   const widthBoard = wrapperBoard.offsetWidth;
   const heightBoard = wrapperBoard.offsetHeight;
   const widthInfoPlayer = 100;
@@ -187,9 +122,10 @@ export default function createBoard() {
 
   // Игрок сверху
   const xTopPlayer = Math.ceil(widthBoard * 0.35);
+  const firstOpponent = clientPlayer.getInfoAboutUsersInRoomArray().find((opponent) => opponent.id === opponentsUUID[0]);
   ctx.strokeRect(xTopPlayer, 0, widthInfoPlayer, heightInfoPlayer);
   const imgTopPlayer = new Image();
-  imgTopPlayer.src = avatar;
+  imgTopPlayer.src = firstOpponent.photoAddress || avatar;
   imgTopPlayer.onload = function loadAvatarTop() {
     ctx.drawImage(imgTopPlayer, xTopPlayer, 0, widthInfoPlayer, heightInfoPlayer - 40);
   };
@@ -199,14 +135,15 @@ export default function createBoard() {
 
   ctx.strokeRect(xTopPlayer + widthInfoPlayer + padding, 0, 400, 140);
 
-  for (let i = 0, k = 1; i < basicHand.length; i += 1, k += 1) {
+  const firstUserCards = firstOpponent.cards || basicHand;
+  for (let i = 0, k = 1; i < firstUserCards.length; i += 1, k += 1) {
     const img = new Image();
-    img.src = basicHand[i];
+    img.src = allCards[firstUserCards[i]];
     img.onload = function loadCardsTop() {
       ctx.drawImage(img, xTopPlayer + widthInfoPlayer + padding * k, 0, 100, 140);
     };
     handTopPlayer.push({
-      name: basicHand[i],
+      name: allCards[firstUserCards[i]],
       left: xTopPlayer + widthInfoPlayer + padding * k,
       top: 0,
       width: 100,
@@ -221,9 +158,10 @@ export default function createBoard() {
     // игрок слева
     const xLeftPlayer = Math.ceil(widthBoard * 0.1);
     const yLeftPlayer = Math.ceil(heightBoard * 0.25);
+    const secondOpponent = clientPlayer.getInfoAboutUsersInRoomArray().find((opponent) => opponent.id === opponentsUUID[1]);
     ctx.strokeRect(xLeftPlayer, yLeftPlayer, widthInfoPlayer, heightInfoPlayer);
     const imgLeftPlayer = new Image();
-    imgLeftPlayer.src = avatar;
+    imgLeftPlayer.src = secondOpponent.photoAddress || avatar;
     imgLeftPlayer.onload = function loadAvatarLeft() {
       ctx.drawImage(imgLeftPlayer, xLeftPlayer, yLeftPlayer, widthInfoPlayer, heightInfoPlayer - 40);
     };
@@ -233,14 +171,15 @@ export default function createBoard() {
 
     ctx.strokeRect(xLeftPlayer, yLeftPlayer + heightInfoPlayer + padding, 400, 140);
 
-    for (let i = 0, k = 0; i < basicHand.length; i += 1, k += 1) {
+    const secondUserCards = secondOpponent.cards ? secondOpponent.cards : basicHand;
+    for (let i = 0, k = 0; i < secondUserCards.length; i += 1, k += 1) {
       const img = new Image();
-      img.src = basicHand[i];
+      img.src = allCards[secondUserCards[i]];
       img.onload = function loadCardsLeft() {
         ctx.drawImage(img, xLeftPlayer + padding * k, yLeftPlayer + heightInfoPlayer + padding, 100, 140);
       };
       handLeftPlayer.push({
-        name: basicHand[i],
+        name: allCards[secondUserCards[i]],
         left: xLeftPlayer + padding * k,
         top: yLeftPlayer + heightInfoPlayer + padding,
         width: 100,
@@ -253,9 +192,11 @@ export default function createBoard() {
     // игрок справа
     const xRightPlayer = Math.ceil(widthBoard * 0.8);
     const yRightPlayer = Math.ceil(heightBoard * 0.25);
+    const thirdOpponent = clientPlayer.getInfoAboutUsersInRoomArray().find((opponent) => opponent.id === opponentsUUID[2]);
+
     ctx.strokeRect(xRightPlayer, yRightPlayer, widthInfoPlayer, heightInfoPlayer);
     const imgRightPlayer = new Image();
-    imgRightPlayer.src = avatar;
+    imgRightPlayer.src = thirdOpponent.photoAddress || avatar;
     imgRightPlayer.onload = function loadAvatarRight() {
       ctx.drawImage(imgRightPlayer, xRightPlayer, yRightPlayer, widthInfoPlayer, heightInfoPlayer - 40);
     };
@@ -265,14 +206,16 @@ export default function createBoard() {
 
     ctx.strokeRect(xRightPlayer - 300, yRightPlayer + heightInfoPlayer + padding, 400, 140);
 
-    for (let i = 0, k = 0; i < basicHand.length; i += 1, k += 1) {
+
+    const thirdUserCards = thirdOpponent.cards ? thirdOpponent.cards : basicHand;
+    for (let i = 0, k = 0; i < thirdUserCards.length; i += 1, k += 1) {
       const img = new Image();
-      img.src = basicHand[i];
+      img.src = allCards[thirdUserCards[i]];
       img.onload = function loadCardsRight() {
         ctx.drawImage(img, xRightPlayer - 300 + padding * k, yRightPlayer + heightInfoPlayer + padding, 100, 140);
       };
       handRightPlayer.push({
-        name: basicHand[i],
+        name: allCards[thirdUserCards[i]],
         left: xRightPlayer - 300 + padding * k,
         top: yRightPlayer + heightInfoPlayer + padding,
         width: 100,
@@ -296,9 +239,10 @@ export default function createBoard() {
 
   ctx.strokeRect(xBottomPlayer + widthInfoPlayer + padding, yBottomPlayer, 1200, heightInfoPlayer + padding);
 
-  for (let i = 0, k = 0; i < basicHand.length; i += 1, k += 1) {
+  const yourHand = clientPlayer.getRegistrationData().cards;
+  for (let i = 0, k = 0; i < yourHand.length; i += 1, k += 1) {
     const img = new Image();
-    img.src = basicHand[i];
+    img.src = allCards[yourHand[i]];
     let y;
     img.onload = function loadCardsBottom() {
       if (xBottomPlayer + widthInfoPlayer + padding + (widthInfoPlayer / 2 + padding) * k <= 1200) {
@@ -309,7 +253,7 @@ export default function createBoard() {
       }
       ctx.drawImage(img, xBottomPlayer + widthInfoPlayer + padding + (widthInfoPlayer / 2 + padding) * k, y, 50, 70);
       handBottomPlayer.push({
-        name: basicHand[i],
+        name: allCards[yourHand[i]],
         left: xBottomPlayer + widthInfoPlayer + padding + (widthInfoPlayer / 2 + padding) * k,
         top: y,
         width: 50,
@@ -345,9 +289,7 @@ export function drawNewCard(newCardName) {
   let y = handBottomPlayer[handBottomPlayer.length - 1].top;
   const newImg = new Image();
 
-  for (let i = 0; i < allCards.length; i += 1) {
-    if (allCards[i].name === newCardName) newImg.src = allCards[i].url;
-  }
+  newImg.src = allCards[newCardName];
 
   switch (newCardName) {
     case "telecentre":

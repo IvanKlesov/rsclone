@@ -7,7 +7,7 @@ export class Room {
     this.id = uuid();
     this.name = name;
     this.users = [];
-    this.maxUsersCount = 5;
+    this.maxUsersCount = 4;
     this.owner = undefined;
   }
 
