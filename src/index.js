@@ -1,6 +1,5 @@
 import logMessage from "./js/logger";
 import "./js/popup";
-import createBoard from "./js/gameBoard";
 import "./css/main.css";
 import { clientMessageMethods } from "./server/messages/clientMessageMethods";
 import handleCliCommand, { handlerServerMachiCoroResponse } from "./js/machiCoroGame/front/machiCoroClientLogic";
@@ -100,7 +99,6 @@ function configurateChatRoomButtons(rooms) {
         clientMessageMethods.setRoom(ws, id);
         hideElement(chatRooms);
         gameContent.classList.remove("hidden");
-        createBoard();
       });
     }
   });
@@ -185,7 +183,6 @@ ws.onmessage = (event) => {
           roomUserImages[user.id] = img;
         });
         enterChat();
-
         break;
       }
 
@@ -198,8 +195,6 @@ ws.onmessage = (event) => {
           };
           const img = new Image();
           img.src = newUser.photoAddress;
-          /* img.width = 20;
-          img.height = 20; */
           roomUserImages[newUser.id] = img;
           logMessage("----------------------------------------------------");
           logMessage("----------------------------------------------------");
@@ -233,7 +228,6 @@ ws.onmessage = (event) => {
         enterChat();
         hideElement(chatRooms);
         gameContent.classList.remove("hidden");
-        createBoard();
         break;
       }
       default: {

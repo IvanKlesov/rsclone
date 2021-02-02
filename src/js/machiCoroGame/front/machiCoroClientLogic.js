@@ -1,5 +1,6 @@
 import logMessage from "../../logger";
 import { machiCoroClientMessageMethods } from "../back/machiCoroMessages/machiCoroClientMessageMethods";
+import createBoard from "../../gameBoard";
 
 export function sendStartMessage(ws, roomID) {
   machiCoroClientMessageMethods.startGame(ws, roomID);
@@ -59,6 +60,7 @@ export function handlerServerMachiCoroResponse(jsonData) {
   const { method } = jsonData;
   switch (method) {
     case "gameStarted": {
+      createBoard();
       return "game was started";
     }
     case "startGameError": {
