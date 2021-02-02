@@ -69,8 +69,8 @@ portBonus.addEventListener("click", () => {
 
 const basicHand = [
   /* cityHall, */
-  "wheatField",
   "bakery",
+  "wheatField",
   /*   shirtPort,
     shirtRailwayStation,
     shirtShoppingCenter,
@@ -113,6 +113,29 @@ export default function createBoard() {
     opponentsUUID[2] = clientPlayer.getInfoAboutUsersInRoomArray()[2].id;
   }
 
+  drawBoard();
+
+  board.addEventListener("click", (event) => {
+    const box = board.getBoundingClientRect();
+
+    const x = event.clientX - box.left;
+    const y = event.clientY - box.top;
+
+    handBottomPlayer.forEach((card) => {
+      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
+        showFullCard(card.name);
+        fullCardWrapper.classList.remove("hidden");
+      }
+    });
+  });
+}
+
+export function drawBoard() {
+  handTopPlayer.lengh = 0;
+  handLeftPlayer.legnth = 0;
+  handRightPlayer.length = 0;
+  handBottomPlayer.length = 0;
+
   const widthBoard = wrapperBoard.offsetWidth;
   const heightBoard = wrapperBoard.offsetHeight;
   const widthInfoPlayer = 100;
@@ -134,7 +157,7 @@ export default function createBoard() {
   };
   ctx.font = "18px serif";
   ctx.fillText("Player 1", xTopPlayer + 10, heightInfoPlayer - 25);
-  ctx.fillText("Coin:", xTopPlayer + 10, heightInfoPlayer - 5);
+  ctx.fillText(`Coin: ${firstOpponent.money || 3}`, xTopPlayer + 10, heightInfoPlayer - 5);
 
   ctx.strokeRect(xTopPlayer + widthInfoPlayer + padding, 0, 400, 140);
 
@@ -170,7 +193,7 @@ export default function createBoard() {
     };
     ctx.font = "18px serif";
     ctx.fillText("Player 2", xLeftPlayer + 10, yLeftPlayer + heightInfoPlayer - 25);
-    ctx.fillText("Coin:", xLeftPlayer + 10, yLeftPlayer + heightInfoPlayer - 5);
+    ctx.fillText(`Coin: ${secondOpponent.money || 3}`, xLeftPlayer + 10, yLeftPlayer + heightInfoPlayer - 5);
 
     ctx.strokeRect(xLeftPlayer, yLeftPlayer + heightInfoPlayer + padding, 400, 140);
 
@@ -205,7 +228,7 @@ export default function createBoard() {
     };
     ctx.font = "18px serif";
     ctx.fillText("Player 3", xRightPlayer + 10, yRightPlayer + heightInfoPlayer - 25);
-    ctx.fillText("Coin:", xRightPlayer + 10, yRightPlayer + heightInfoPlayer - 5);
+    ctx.fillText(`Coin: ${thirdOpponent.money || 3}`, xRightPlayer + 10, yRightPlayer + heightInfoPlayer - 5);
 
     ctx.strokeRect(xRightPlayer - 300, yRightPlayer + heightInfoPlayer + padding, 400, 140);
 
@@ -238,11 +261,11 @@ export default function createBoard() {
   };
   ctx.font = "18px serif";
   ctx.fillText("Player 4", xBottomPlayer + 10, yBottomPlayer + heightInfoPlayer - 20);
-  ctx.fillText("Coin:", xBottomPlayer + 10, yBottomPlayer + heightInfoPlayer);
+  ctx.fillText(`Coin: ${clientPlayer.getRegistrationData().money || 3}`, xBottomPlayer + 10, yBottomPlayer + heightInfoPlayer);
 
   ctx.strokeRect(xBottomPlayer + widthInfoPlayer + padding, yBottomPlayer, 1200, heightInfoPlayer + padding);
 
-  const yourHand = clientPlayer.getRegistrationData().cards;
+  const yourHand = clientPlayer.getRegistrationData().cards || basicHand;;
   for (let i = 0, k = 0; i < yourHand.length; i += 1, k += 1) {
     const img = new Image();
     img.src = allCards[yourHand[i]];
@@ -264,20 +287,6 @@ export default function createBoard() {
       });
     };
   }
-
-  board.addEventListener("click", (event) => {
-    const box = board.getBoundingClientRect();
-
-    const x = event.clientX - box.left;
-    const y = event.clientY - box.top;
-
-    handBottomPlayer.forEach((card) => {
-      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
-        showFullCard(card.name);
-        fullCardWrapper.classList.remove("hidden");
-      }
-    });
-  });
 }
 
 export function drawNewCard(newCardName) {

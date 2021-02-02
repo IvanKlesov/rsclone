@@ -10,7 +10,7 @@ import {
   sendRejectPortBonusMessage,
   sendAcceptThrowMessage,
 } from "./machiCoroClientMessages";
-import createBoard, { drawNewCard, hideStartGameButton } from "../../front/gameBoard";
+import createBoard, { drawNewCard, hideStartGameButton, drawBoard } from "../../front/gameBoard";
 import clientPlayer from "../../front/clientPlayer";
 
 function printInfoAboutBuyAction() {
@@ -23,6 +23,7 @@ export function handlerServerMachiCoroResponse(jsonData) {
   const { method } = jsonData;
   switch (method) {
     case "gameStarted": {
+      createBoard();
       hideStartGameButton();
       return "game was started";
     }
@@ -39,7 +40,7 @@ export function handlerServerMachiCoroResponse(jsonData) {
 
       clientPlayer.getRegistrationData().cards = jsonData.cards;
       clientPlayer.getRegistrationData().money = jsonData.money;
-      createBoard();
+      drawBoard();
       return userGameInfo;
     }
     case "throwCube": {
