@@ -37,6 +37,7 @@ const registrationData = {};
 let roomID;
 let infoAboutUsersInRoom;
 const roomUserImages = [];
+clientPlayer.setRoomUserImages(roomUserImages);
 // let ownRoomID;
 
 function getUserNameUsingUUID(UUID) {
@@ -151,6 +152,7 @@ ws.onmessage = (event) => {
         registrationData.id = jsonData.id;
         registrationData.name = jsonData.name;
         registrationData.photoAddress = jsonData.photoAddress;
+        clientPlayer.setRegistrationData(registrationData);
 
         const img = new Image();
         img.src = registrationData.photoAddress;
@@ -177,6 +179,7 @@ ws.onmessage = (event) => {
         logMessage("----------------------------------------------------");
         logMessage(jsonData.infoAboutOtherUsers);
         infoAboutUsersInRoom = jsonData.infoAboutOtherUsers;
+        clientPlayer.setInfoAboutUsersInRoomArray(infoAboutUsersInRoom);
         jsonData.infoAboutOtherUsers.forEach((user) => {
           const img = new Image();
           img.src = user.photoAddress;

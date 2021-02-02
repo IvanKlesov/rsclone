@@ -214,64 +214,71 @@ export default function createBoard() {
     });
   }
 
-  // игрок слева
-  const xLeftPlayer = Math.ceil(widthBoard * 0.1);
-  const yLeftPlayer = Math.ceil(heightBoard * 0.25);
-  ctx.strokeRect(xLeftPlayer, yLeftPlayer, widthInfoPlayer, heightInfoPlayer);
-  const imgLeftPlayer = new Image();
-  imgLeftPlayer.src = avatar;
-  imgLeftPlayer.onload = function loadAvatarLeft() {
-    ctx.drawImage(imgLeftPlayer, xLeftPlayer, yLeftPlayer, widthInfoPlayer, heightInfoPlayer - 40);
-  };
-  ctx.font = "18px serif";
-  ctx.fillText("Player 2", xLeftPlayer + 10, yLeftPlayer + heightInfoPlayer - 25);
-  ctx.fillText("Coin:", xLeftPlayer + 10, yLeftPlayer + heightInfoPlayer - 5);
+  console.log("111111111111111111111111111111111111111111111");
+  console.log(clientPlayer.getInfoAboutUsersInRoomArray());
 
-  ctx.strokeRect(xLeftPlayer, yLeftPlayer + heightInfoPlayer + padding, 400, 140);
-
-  for (let i = 0, k = 0; i < basicHand.length; i += 1, k += 1) {
-    const img = new Image();
-    img.src = basicHand[i];
-    img.onload = function loadCardsLeft() {
-      ctx.drawImage(img, xLeftPlayer + padding * k, yLeftPlayer + heightInfoPlayer + padding, 100, 140);
+  if (clientPlayer.getInfoAboutUsersInRoomArray().length >= 2) {
+    // игрок слева
+    const xLeftPlayer = Math.ceil(widthBoard * 0.1);
+    const yLeftPlayer = Math.ceil(heightBoard * 0.25);
+    ctx.strokeRect(xLeftPlayer, yLeftPlayer, widthInfoPlayer, heightInfoPlayer);
+    const imgLeftPlayer = new Image();
+    imgLeftPlayer.src = avatar;
+    imgLeftPlayer.onload = function loadAvatarLeft() {
+      ctx.drawImage(imgLeftPlayer, xLeftPlayer, yLeftPlayer, widthInfoPlayer, heightInfoPlayer - 40);
     };
-    handLeftPlayer.push({
-      name: basicHand[i],
-      left: xLeftPlayer + padding * k,
-      top: yLeftPlayer + heightInfoPlayer + padding,
-      width: 100,
-      height: 140,
-    });
+    ctx.font = "18px serif";
+    ctx.fillText("Player 2", xLeftPlayer + 10, yLeftPlayer + heightInfoPlayer - 25);
+    ctx.fillText("Coin:", xLeftPlayer + 10, yLeftPlayer + heightInfoPlayer - 5);
+
+    ctx.strokeRect(xLeftPlayer, yLeftPlayer + heightInfoPlayer + padding, 400, 140);
+
+    for (let i = 0, k = 0; i < basicHand.length; i += 1, k += 1) {
+      const img = new Image();
+      img.src = basicHand[i];
+      img.onload = function loadCardsLeft() {
+        ctx.drawImage(img, xLeftPlayer + padding * k, yLeftPlayer + heightInfoPlayer + padding, 100, 140);
+      };
+      handLeftPlayer.push({
+        name: basicHand[i],
+        left: xLeftPlayer + padding * k,
+        top: yLeftPlayer + heightInfoPlayer + padding,
+        width: 100,
+        height: 140,
+      });
+    }
   }
 
-  // игрок справа
-  const xRightPlayer = Math.ceil(widthBoard * 0.8);
-  const yRightPlayer = Math.ceil(heightBoard * 0.25);
-  ctx.strokeRect(xRightPlayer, yRightPlayer, widthInfoPlayer, heightInfoPlayer);
-  const imgRightPlayer = new Image();
-  imgRightPlayer.src = avatar;
-  imgRightPlayer.onload = function loadAvatarRight() {
-    ctx.drawImage(imgRightPlayer, xRightPlayer, yRightPlayer, widthInfoPlayer, heightInfoPlayer - 40);
-  };
-  ctx.font = "18px serif";
-  ctx.fillText("Player 3", xRightPlayer + 10, yRightPlayer + heightInfoPlayer - 25);
-  ctx.fillText("Coin:", xRightPlayer + 10, yRightPlayer + heightInfoPlayer - 5);
-
-  ctx.strokeRect(xRightPlayer - 300, yRightPlayer + heightInfoPlayer + padding, 400, 140);
-
-  for (let i = 0, k = 0; i < basicHand.length; i += 1, k += 1) {
-    const img = new Image();
-    img.src = basicHand[i];
-    img.onload = function loadCardsRight() {
-      ctx.drawImage(img, xRightPlayer - 300 + padding * k, yRightPlayer + heightInfoPlayer + padding, 100, 140);
+  if (clientPlayer.getInfoAboutUsersInRoomArray().length >= 3) {
+    // игрок справа
+    const xRightPlayer = Math.ceil(widthBoard * 0.8);
+    const yRightPlayer = Math.ceil(heightBoard * 0.25);
+    ctx.strokeRect(xRightPlayer, yRightPlayer, widthInfoPlayer, heightInfoPlayer);
+    const imgRightPlayer = new Image();
+    imgRightPlayer.src = avatar;
+    imgRightPlayer.onload = function loadAvatarRight() {
+      ctx.drawImage(imgRightPlayer, xRightPlayer, yRightPlayer, widthInfoPlayer, heightInfoPlayer - 40);
     };
-    handRightPlayer.push({
-      name: basicHand[i],
-      left: xRightPlayer - 300 + padding * k,
-      top: yRightPlayer + heightInfoPlayer + padding,
-      width: 100,
-      height: 140,
-    });
+    ctx.font = "18px serif";
+    ctx.fillText("Player 3", xRightPlayer + 10, yRightPlayer + heightInfoPlayer - 25);
+    ctx.fillText("Coin:", xRightPlayer + 10, yRightPlayer + heightInfoPlayer - 5);
+
+    ctx.strokeRect(xRightPlayer - 300, yRightPlayer + heightInfoPlayer + padding, 400, 140);
+
+    for (let i = 0, k = 0; i < basicHand.length; i += 1, k += 1) {
+      const img = new Image();
+      img.src = basicHand[i];
+      img.onload = function loadCardsRight() {
+        ctx.drawImage(img, xRightPlayer - 300 + padding * k, yRightPlayer + heightInfoPlayer + padding, 100, 140);
+      };
+      handRightPlayer.push({
+        name: basicHand[i],
+        left: xRightPlayer - 300 + padding * k,
+        top: yRightPlayer + heightInfoPlayer + padding,
+        width: 100,
+        height: 140,
+      });
+    }
   }
 
   // нижний игрок
@@ -279,7 +286,7 @@ export default function createBoard() {
   const yBottomPlayer = Math.ceil(heightBoard * 0.8);
   ctx.strokeRect(xBottomPlayer, yBottomPlayer, widthInfoPlayer, heightInfoPlayer + padding);
   const imgBottomPlayer = new Image();
-  imgBottomPlayer.src = avatar;
+  imgBottomPlayer.src = clientPlayer.getRegistrationData().photoAddress || avatar;
   imgBottomPlayer.onload = function loadAvatarBottom() {
     ctx.drawImage(imgBottomPlayer, xBottomPlayer, yBottomPlayer, widthInfoPlayer, heightInfoPlayer - 40);
   };
@@ -326,7 +333,7 @@ export default function createBoard() {
   });
 }
 
-export function drawNewCard( newCardName) {
+export function drawNewCard(newCardName) {
   const widthBoard = wrapperBoard.offsetWidth;
 
   const widthCard = 50;

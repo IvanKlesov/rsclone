@@ -14,4 +14,28 @@ export default class clientPlayer {
   static getRoomID() {
     return this.roomID;
   }
+
+  static setRegistrationData(registrationData) {
+    this.registrationData = registrationData;
+  }
+
+  static getRegistrationData() {
+    return this.registrationData;
+  }
+
+  static setInfoAboutUsersInRoomArray(infoAboutUsersInRoomArray) {
+    this.infoAboutUsersInRoomArray = infoAboutUsersInRoomArray;
+  }
+
+  static getInfoAboutUsersInRoomArray() {
+    return this.infoAboutUsersInRoomArray;
+  }
+
+  static setRoomUserImages(roomUserImages) {
+    this.roomUserImages = roomUserImages;
+  }
+
+  static getRoomUserImages() {
+    return this.roomUserImages;
+  }
 }
