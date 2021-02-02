@@ -109,15 +109,15 @@ portBonus.addEventListener("click", () => {
 });
 
 const basicHand = [
-  cityHall,
+  /* cityHall, */
   wheatField,
   bakery,
-  shirtPort,
-  shirtRailwayStation,
-  shirtShoppingCenter,
-  shirtAmusementPark,
-  shirtRadioTower,
-  shirtAirport,
+  /*   shirtPort,
+    shirtRailwayStation,
+    shirtShoppingCenter,
+    shirtAmusementPark,
+    shirtRadioTower,
+    shirtAirport, */
 ];
 
 const allCards = [
@@ -384,7 +384,7 @@ export function drawNewCard(newCard) {
     }
   };
 
-  board.addEventListener("click", (event) => {
+  /* board.addEventListener("click", (event) => {
     const box = board.getBoundingClientRect();
 
     const newX = event.clientX - box.left;
@@ -399,5 +399,5 @@ export function drawNewCard(newCard) {
       showFullCard(handBottomPlayer[handBottomPlayer.length - 1].name);
       fullCardWrapper.classList.remove("hidden");
     }
-  });
+  }); */
 }

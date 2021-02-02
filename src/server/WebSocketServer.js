@@ -67,9 +67,9 @@ export class WebSocketServer {
           if (jsonData.userID) {
             curUser.setOauthID(jsonData.userID);
           }
-          curUser.setUserName(jsonData.userName)
+          curUser.setUserName(jsonData.userName);
           if (jsonData.userPhotoAdress) {
-            curUser.setUserPhotoAdress(jsonData.userPhotoAdress)
+            curUser.setUserPhotoAdress(jsonData.userPhotoAdress);
           }
           serverMessageMethods.registrationAccept(curUser);
           break;

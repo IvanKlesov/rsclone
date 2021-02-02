@@ -153,12 +153,11 @@ ws.onmessage = (event) => {
         registrationData.id = jsonData.id;
         registrationData.name = jsonData.name;
         registrationData.photoAddress = jsonData.photoAddress;
+
         const img = new Image();
         img.src = registrationData.photoAddress;
-        /* img.width = 20;
-        img.height = 20; */
         roomUserImages[registrationData.id] = img;
-        console.log(img);
+
         break;
       }
       case "message": {
@@ -183,8 +182,6 @@ ws.onmessage = (event) => {
         jsonData.infoAboutOtherUsers.forEach((user) => {
           const img = new Image();
           img.src = user.photoAddress;
-          /* img.width = 20;
-          img.height - 20; */
           roomUserImages[user.id] = img;
         });
         enterChat();
@@ -234,6 +231,9 @@ ws.onmessage = (event) => {
         roomID = id;
         clientPlayer.setRoomID(roomID);
         enterChat();
+        hideElement(chatRooms);
+        gameContent.classList.remove("hidden");
+        createBoard();
         break;
       }
       default: {
