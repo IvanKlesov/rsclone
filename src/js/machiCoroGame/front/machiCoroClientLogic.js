@@ -75,11 +75,18 @@ export function handlerServerMachiCoroResponse(jsonData) {
       // clientPlayer.getRegistrationData().cards = jsonData.cards;
       // clientPlayer.getRegistrationData().money = jsonData.money;
       const result = jsonData.content;
+      console.log("4444444444444444444444444444444444444444");
+      console.log(clientPlayer.getInfoAboutUsersInRoomArray());
+      const clPlArray = clientPlayer.getInfoAboutUsersInRoomArray();
       const info = result.reduce(
         (acc, userInfo) => {
-          clientPlayer.getInfoAboutUsersInRoomArray()[userInfo.index].cards = userInfo.cards;
-          clientPlayer.getInfoAboutUsersInRoomArray()[userInfo.index].money = userInfo.money;
-          
+          for (let i = 0; i < clPlArray.length; i += 1) {
+            if (clPlArray[i].id === userInfo.index) {
+              clPlArray[i].cards = userInfo.cards;
+              clPlArray[i].money = userInfo.money;
+              break;
+            }
+          }
           return acc.concat(`Player${userInfo.index}\n\t`).concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`);
         },
         "",
