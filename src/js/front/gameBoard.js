@@ -25,8 +25,11 @@ startGame.addEventListener("click", () => {
   const ws = clientPlayer.getWs();
   const roomID = clientPlayer.getRoomID();
   sendStartMessage(ws, roomID);
-  startGame.classList.add("hidden");
 });
+
+export function hideStartGameButton() {
+  startGame.classList.add("hidden");
+}
 
 holdTurn.addEventListener("click", () => {
   const ws = clientPlayer.getWs();
