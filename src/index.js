@@ -1,12 +1,12 @@
 import logMessage from "./js/logger";
-import "./js/popup";
+import "./js/front/popup";
 import "./css/main.css";
 import { clientMessageMethods } from "./server/messages/clientMessageMethods";
 import handleCliCommand, { handlerServerMachiCoroResponse } from "./js/machiCoroGame/front/machiCoroClientLogic";
 
 import createEl, { configurateButton, hideElement, unhideElement } from "./js/createEl";
 
-import initAuth from "./js/auth";
+import initAuth from "./js/front/auth";
 import clientPlayer from "./js/front/clientPlayer";
 
 // Log message to console

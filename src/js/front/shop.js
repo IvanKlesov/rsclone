@@ -1,5 +1,5 @@
-import clientPlayer from "./front/clientPlayer";
-import { sendBuyMessage } from "./machiCoroGame/front/machiCoroClientLogic";
+import clientPlayer from "./clientPlayer";
+import { sendBuyMessage } from "../machiCoroGame/front/machiCoroClientMessages";
 
 let currentColor;
 const blueCards = [
