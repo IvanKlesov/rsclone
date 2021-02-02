@@ -1,6 +1,6 @@
 import logMessage from "../../logger";
 import { machiCoroClientMessageMethods } from "../back/machiCoroMessages/machiCoroClientMessageMethods";
-import createBoard from "../../gameBoard";
+import createBoard, { drawNewCard } from "../../gameBoard";
 
 export function sendStartMessage(ws, roomID) {
   machiCoroClientMessageMethods.startGame(ws, roomID);
@@ -87,6 +87,7 @@ export function handlerServerMachiCoroResponse(jsonData) {
     case "purchaseInfo": {
       const itIsYourTurn = jsonData.turn === "you";
       if (itIsYourTurn) {
+        drawNewCard(jsonData.buyResponse);
         return `It is Your turn.You buy ${jsonData.buyResponse}`;
       }
       return `It is turn of player${jsonData.turn}. Player${jsonData.turn} buy ${jsonData.buyResponse}`;

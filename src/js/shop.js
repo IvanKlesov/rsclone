@@ -1,6 +1,5 @@
 import clientPlayer from "./front/clientPlayer";
 import { sendBuyMessage } from "./machiCoroGame/front/machiCoroClientLogic";
-import { drawNewCard } from "./gameBoard";
 
 let currentColor;
 const blueCards = [
@@ -209,7 +208,6 @@ export default function createShop(color) {
 
     elements.forEach((element) => {
       if (y > element.top && y < element.top + element.height && x > element.left && x < element.left + element.width) {
-        drawNewCard(element);
         shop.classList.add("hidden");
         console.log("отправляем :", element.name);
         const ws = clientPlayer.getWs();

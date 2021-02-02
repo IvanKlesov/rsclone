@@ -326,7 +326,7 @@ export default function createBoard() {
   });
 }
 
-export function drawNewCard(newCard) {
+export function drawNewCard( newCardName) {
   const widthBoard = wrapperBoard.offsetWidth;
 
   const widthCard = 50;
@@ -339,10 +339,10 @@ export function drawNewCard(newCard) {
   const newImg = new Image();
 
   for (let i = 0; i < allCards.length; i += 1) {
-    if (allCards[i].name === newCard.name) newImg.src = allCards[i].url;
+    if (allCards[i].name === newCardName) newImg.src = allCards[i].url;
   }
 
-  switch (newCard.name) {
+  switch (newCardName) {
     case "telecentre":
       stealMoney.classList.remove("hidden");
       break;
