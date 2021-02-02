@@ -8,7 +8,8 @@ import {
   sendAcceptPortBonusMessage,
 } from "../machiCoroGame/front/machiCoroClientMessages";
 
-import allCards from "./allCards";
+import { allCards } from "./allCards";
+import { allSounds, playAudio } from "./allSounds";
 import avatar from "../../assets/images/avatar.png";
 
 const fullCardWrapper = document.querySelector(".full-card-wrapper");
@@ -20,6 +21,10 @@ const throwCubes2 = document.querySelector(".btn-throw2");
 const swapCards = document.querySelector(".btn-swap");
 const stealMoney = document.querySelector(".btn-steal");
 const portBonus = document.querySelector(".btn-port-bonus");
+
+const audioClick = document.createElement("audio");
+audioClick.classList.add("audio-click");
+audioClick.src = allSounds[1];
 
 startGame.addEventListener("click", () => {
   const ws = clientPlayer.getWs();
@@ -101,35 +106,6 @@ const handRightPlayer = [];
 const handBottomPlayer = [];
 const padding = 20;
 
-export default function createBoard() {
-  console.log("33333333333333333333333333333333333333");
-  console.log(clientPlayer.getInfoAboutUsersInRoomArray());
-  opponentsUUID[0] = clientPlayer.getInfoAboutUsersInRoomArray()[0].id;
-  if (clientPlayer.getInfoAboutUsersInRoomArray()[1]) {
-    opponentsUUID[1] = clientPlayer.getInfoAboutUsersInRoomArray()[1].id;
-  }
-
-  if (clientPlayer.getInfoAboutUsersInRoomArray()[2]) {
-    opponentsUUID[2] = clientPlayer.getInfoAboutUsersInRoomArray()[2].id;
-  }
-
-  drawBoard();
-
-  board.addEventListener("click", (event) => {
-    const box = board.getBoundingClientRect();
-
-    const x = event.clientX - box.left;
-    const y = event.clientY - box.top;
-
-    handBottomPlayer.forEach((card) => {
-      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
-        showFullCard(card.name);
-        fullCardWrapper.classList.remove("hidden");
-      }
-    });
-  });
-}
-
 export function drawBoard() {
   handTopPlayer.lengh = 0;
   handLeftPlayer.legnth = 0;
@@ -148,7 +124,9 @@ export function drawBoard() {
 
   // Игрок сверху
   const xTopPlayer = Math.ceil(widthBoard * 0.35);
-  const firstOpponent = clientPlayer.getInfoAboutUsersInRoomArray().find((opponent) => opponent.id === opponentsUUID[0]);
+  const firstOpponent = clientPlayer
+    .getInfoAboutUsersInRoomArray()
+    .find((opponent) => opponent.id === opponentsUUID[0]);
   ctx.strokeRect(xTopPlayer, 0, widthInfoPlayer, heightInfoPlayer);
   const imgTopPlayer = new Image();
   imgTopPlayer.src = firstOpponent.photoAddress || avatar;
@@ -184,7 +162,9 @@ export function drawBoard() {
     // игрок слева
     const xLeftPlayer = Math.ceil(widthBoard * 0.1);
     const yLeftPlayer = Math.ceil(heightBoard * 0.25);
-    const secondOpponent = clientPlayer.getInfoAboutUsersInRoomArray().find((opponent) => opponent.id === opponentsUUID[1]);
+    const secondOpponent = clientPlayer
+      .getInfoAboutUsersInRoomArray()
+      .find((opponent) => opponent.id === opponentsUUID[1]);
     ctx.strokeRect(xLeftPlayer, yLeftPlayer, widthInfoPlayer, heightInfoPlayer);
     const imgLeftPlayer = new Image();
     imgLeftPlayer.src = secondOpponent.photoAddress || avatar;
@@ -218,7 +198,9 @@ export function drawBoard() {
     // игрок справа
     const xRightPlayer = Math.ceil(widthBoard * 0.8);
     const yRightPlayer = Math.ceil(heightBoard * 0.25);
-    const thirdOpponent = clientPlayer.getInfoAboutUsersInRoomArray().find((opponent) => opponent.id === opponentsUUID[2]);
+    const thirdOpponent = clientPlayer
+      .getInfoAboutUsersInRoomArray()
+      .find((opponent) => opponent.id === opponentsUUID[2]);
 
     ctx.strokeRect(xRightPlayer, yRightPlayer, widthInfoPlayer, heightInfoPlayer);
     const imgRightPlayer = new Image();
@@ -231,7 +213,6 @@ export function drawBoard() {
     ctx.fillText(`Coin: ${thirdOpponent.money || 3}`, xRightPlayer + 10, yRightPlayer + heightInfoPlayer - 5);
 
     ctx.strokeRect(xRightPlayer - 300, yRightPlayer + heightInfoPlayer + padding, 400, 140);
-
 
     const thirdUserCards = thirdOpponent.cards ? thirdOpponent.cards : basicHand;
     for (let i = 0, k = 0; i < thirdUserCards.length; i += 1, k += 1) {
@@ -261,11 +242,15 @@ export function drawBoard() {
   };
   ctx.font = "18px serif";
   ctx.fillText("Player 4", xBottomPlayer + 10, yBottomPlayer + heightInfoPlayer - 20);
-  ctx.fillText(`Coin: ${clientPlayer.getRegistrationData().money || 3}`, xBottomPlayer + 10, yBottomPlayer + heightInfoPlayer);
+  ctx.fillText(
+    `Coin: ${clientPlayer.getRegistrationData().money || 3}`,
+    xBottomPlayer + 10,
+    yBottomPlayer + heightInfoPlayer,
+  );
 
   ctx.strokeRect(xBottomPlayer + widthInfoPlayer + padding, yBottomPlayer, 1200, heightInfoPlayer + padding);
 
-  const yourHand = clientPlayer.getRegistrationData().cards || basicHand;;
+  const yourHand = clientPlayer.getRegistrationData().cards || basicHand;
   for (let i = 0, k = 0; i < yourHand.length; i += 1, k += 1) {
     const img = new Image();
     img.src = allCards[yourHand[i]];
@@ -287,6 +272,36 @@ export function drawBoard() {
       });
     };
   }
+}
+
+export default function createBoard() {
+  console.log(clientPlayer.getInfoAboutUsersInRoomArray());
+  opponentsUUID[0] = clientPlayer.getInfoAboutUsersInRoomArray()[0].id;
+  if (clientPlayer.getInfoAboutUsersInRoomArray()[1]) {
+    opponentsUUID[1] = clientPlayer.getInfoAboutUsersInRoomArray()[1].id;
+  }
+
+  if (clientPlayer.getInfoAboutUsersInRoomArray()[2]) {
+    opponentsUUID[2] = clientPlayer.getInfoAboutUsersInRoomArray()[2].id;
+  }
+
+  drawBoard();
+
+  board.addEventListener("click", (event) => {
+    const box = board.getBoundingClientRect();
+
+    const x = event.clientX - box.left;
+    const y = event.clientY - box.top;
+
+    handBottomPlayer.forEach((card) => {
+      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
+        showFullCard(card.name);
+        console.log("33333333333333333333333333333333333333");
+        playAudio(audioClick);
+        fullCardWrapper.classList.remove("hidden");
+      }
+    });
+  });
 }
 
 export function drawNewCard(newCardName) {

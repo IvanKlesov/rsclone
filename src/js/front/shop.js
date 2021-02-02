@@ -1,5 +1,6 @@
 import clientPlayer from "./clientPlayer";
 import { sendBuyMessage } from "../machiCoroGame/front/machiCoroClientMessages";
+import { playAudio } from "./allSounds";
 
 let currentColor;
 const blueCards = [
@@ -75,6 +76,7 @@ export default function createShop(color) {
   canvasShop.classList.add("canvas-shop");
   shopContent.appendChild(canvasShop);
   const ctx = canvasShop.getContext("2d");
+  const audioClick = document.querySelector(".audio-click");
   const padding = 20;
   const border = 7;
   const elements = [];
@@ -209,6 +211,7 @@ export default function createShop(color) {
     elements.forEach((element) => {
       if (y > element.top && y < element.top + element.height && x > element.left && x < element.left + element.width) {
         shop.classList.add("hidden");
+        playAudio(audioClick);
         console.log("отправляем :", element.name);
         const ws = clientPlayer.getWs();
         const roomID = clientPlayer.getRoomID();
