@@ -14,6 +14,7 @@ import avatar from "../../assets/images/avatar.png";
 
 const fullCardWrapper = document.querySelector(".full-card-wrapper");
 const fullCard = document.querySelector(".full-card");
+const stealWrapper = document.querySelector(".steal-wrapper");
 const startGame = document.querySelector(".btn-start");
 const holdTurn = document.querySelector(".btn-hold");
 const throwCubes = document.querySelector(".btn-throw");
@@ -21,6 +22,10 @@ const throwCubes2 = document.querySelector(".btn-throw2");
 const swapCards = document.querySelector(".btn-swap");
 const stealMoney = document.querySelector(".btn-steal");
 const portBonus = document.querySelector(".btn-port-bonus");
+const stealPlayer1 = document.querySelector(".steal-player1");
+const stealPlayer2 = document.querySelector(".steal-player2");
+const stealPlayer3 = document.querySelector(".steal-player3");
+const backStealPlayer = document.querySelector(".back-steal-player");
 
 const audioClick = document.createElement("audio");
 audioClick.classList.add("audio-click");
@@ -61,9 +66,32 @@ swapCards.addEventListener("click", () => {
 });
 
 stealMoney.addEventListener("click", () => {
+  stealWrapper.classList.remove("hidden");
+});
+
+stealPlayer1.addEventListener("click", () => {
   const ws = clientPlayer.getWs();
   const roomID = clientPlayer.getRoomID();
-  sendStealMessage(ws, roomID, "stealAccept");
+  sendStealMessage(ws, roomID, opponentsUUID[0]);
+  stealWrapper.classList.add("hidden");
+});
+
+stealPlayer2.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendStealMessage(ws, roomID, opponentsUUID[1]);
+  stealWrapper.classList.add("hidden");
+});
+
+stealPlayer3.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendStealMessage(ws, roomID, opponentsUUID[2]);
+  stealWrapper.classList.add("hidden");
+});
+
+backStealPlayer.addEventListener("click", () => {
+  stealWrapper.classList.add("hidden");
 });
 
 portBonus.addEventListener("click", () => {
@@ -296,7 +324,6 @@ export default function createBoard() {
     handBottomPlayer.forEach((card) => {
       if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
         showFullCard(card.name);
-        console.log("33333333333333333333333333333333333333");
         playAudio(audioClick);
         fullCardWrapper.classList.remove("hidden");
       }
