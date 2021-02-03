@@ -198,30 +198,68 @@ p {
 /*     auth    */
 
 .auth-login {
-  width: 95vw;
-  height: 5vh;
-  background-color: red;
+  position: absolute;
+  top: 2%;
+  right: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px;
   display: flex;
   justify-content: flex-end;
 }
 
+#login,
+#google-auth-btn,
+#back-google-auth-btn {
+  width: 180px;
+  height: 50px;
+  padding: 10px;
+  margin: 10px auto;
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  color: #ffffff;
+  background-color: #00acdc;
+  font-family: "Oswald", sans-serif;
+  font-size: 20px;
+  text-transform: capitalize;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+#login:hover,
+#google-auth-btn:hover,
+#back-google-auth-btn:hover {
+  background-color: rgba(218, 55, 58);
+}
+
+.auth-login-header {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
+  text-transform: capitalize;
+  margin: 5px auto;
+  text-align: center;
+}
+
 #auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: absolute;
-  width: 30vw;
-  height: 50vh;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 30%;
+  height: 30%;
+  top: 35%;
+  left: 35%;
+  border: 7px solid #ffffff;
+  border-radius: 20px;
+  background-color: #00acdc;
   z-index: 6;
-
-  background-color: purple;
 }
 
-#google-auth-btn {
-  width: 100%;
-}
-
-.user-icon{
+.user-icon {
   max-width: 50px;
   max-height: 50px;
 }
@@ -234,6 +272,6 @@ p {
   flex-wrap: wrap;
 }
 
-.align-items-center{
+.align-items-center {
   align-items: center;
 }
