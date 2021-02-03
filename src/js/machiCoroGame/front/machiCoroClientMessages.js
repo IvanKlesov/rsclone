@@ -1,5 +1,6 @@
 import logMessage from "../../logger";
 import { machiCoroClientMessageMethods } from "../back/machiCoroMessages/machiCoroClientMessageMethods";
+import { opponentsUUID } from "../../front/gameBoardConsts";
 
 export function sendStartMessage(ws, roomID) {
   machiCoroClientMessageMethods.startGame(ws, roomID);
@@ -25,16 +26,22 @@ export function sendSwapCardsMessage(ws, roomID, commandString) {
   }
 
   const secondUserID = commandStringSplit[1];
+  if (secondUserID < 0 || secondUserID - 1 >= 3) {
+    return;
+  }
   const firstUserCard = commandStringSplit[2];
   const secondUserCasrd = commandStringSplit[3];
   logMessage(`secondUserID ${secondUserID}`);
   logMessage(`firstUserCard ${firstUserCard}`);
   logMessage(`secondUserCasrd ${secondUserCasrd}`);
-  machiCoroClientMessageMethods.swap(ws, roomID, secondUserID, firstUserCard, secondUserCasrd);
+  machiCoroClientMessageMethods.swap(ws, roomID, opponentsUUID[secondUserID - 1], firstUserCard, secondUserCasrd);
 }
 
 export function sendStealMessage(ws, roomID, secondUserID) {
-  machiCoroClientMessageMethods.steal(ws, roomID, secondUserID);
+  if (secondUserID < 0 || secondUserID - 1 >= 3) {
+    return;
+  }
+  machiCoroClientMessageMethods.steal(ws, roomID, opponentsUUID[secondUserID - 1]);
 }
 
 export function sendAcceptPortBonusMessage(ws, roomID) {
