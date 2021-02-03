@@ -19,10 +19,6 @@ const btnBackSwap = document.querySelector(".btn-back-swap");
 const swapHeader = document.querySelector(".swap-header");
 
 function swapYourCard(idOpponent, cardOpponent) {
-<<<<<<< HEAD
-  console.log(idOpponent, cardOpponent);
-=======
->>>>>>> fcc4d4d1a660ae53c2bc618ae5ab3ebefa04debf
   const yourHand = clientPlayer.getRegistrationData().cards || basicHand;
   const cardsForSwap = [];
   for (let i = 0; i < yourHand.length; i += 1) {
@@ -88,10 +84,6 @@ function swapYourCard(idOpponent, cardOpponent) {
         const ws = clientPlayer.getWs();
         const roomID = clientPlayer.getRoomID();
         const commandString = `${idOpponent} ${card.name} ${cardOpponent}`;
-<<<<<<< HEAD
-        console.log(idOpponent, cardOpponent, card.name);
-=======
->>>>>>> fcc4d4d1a660ae53c2bc618ae5ab3ebefa04debf
         sendSwapCardsMessage(ws, roomID, commandString);
         swapCardsWrapper.classList.add("hidden");
       }
