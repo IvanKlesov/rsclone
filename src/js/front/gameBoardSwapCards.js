@@ -1,32 +1,42 @@
 import { sendSwapCardsMessage } from "../machiCoroGame/front/machiCoroClientMessages";
 import {
-  padding,
-  handBottomPlayer,
-  handTopPlayer,
-  handLeftPlayer,
-  handRightPlayer,
-
-  opponentsUUID,
-
-  swapCardsWrapper,
-  swapWrapper,
+  padding, opponentsUUID, swapCardsWrapper, swapWrapper,
 } from "./gameBoardConsts";
 import clientPlayer from "./clientPlayer";
+import { allCards } from "./allCards";
 
 const swapPlayer1 = document.querySelector(".swap-player1");
 const swapPlayer2 = document.querySelector(".swap-player2");
 const swapPlayer3 = document.querySelector(".swap-player3");
+const cardSwap = [
+  "wheatField",
+  "farm",
+  "flowerGarden",
+  "forest",
+  "longboat",
+  "mine",
+  "appleOrchard",
+  "trawler",
+  "bakery",
+  "store",
+  "flowerStore",
+  "cheeseDairy",
+  "furnitureFactory",
+  "vegetableMarket",
+  "groceryWarehouse",
+  "sushiBar",
+  "cafe",
+  "pizzeria",
+  "diner",
+  "restaurant",
+];
 
 function swapYourCard(idOpponent, cardOpponent) {
+  const yourHand = clientPlayer.getRegistrationData().cards || basicHand;
   const cardsForSwap = [];
-  for (let i = 0; i < handBottomPlayer.length; i += 1) {
-    const arr = handBottomPlayer[i].name.split("/");
-    if (arr[4] === "ordinaryBuildings" || arr[4] === "startСards") {
-      const obj = {
-        url: handBottomPlayer[i].name,
-        name: arr[4].substring(0, arr[4].length - 4),
-      };
-      cardsForSwap.push(obj);
+  for (let i = 0; i < yourHand.length; i += 1) {
+    if (cardSwap.includes(yourHand[i])) {
+      cardsForSwap.push(yourHand[i]);
     }
   }
 
@@ -38,7 +48,7 @@ function swapYourCard(idOpponent, cardOpponent) {
   const widthCards = 180;
   const heightCards = 275;
   // check line and height calculatin
-  const lineCanvas = Math.ceil((playerHand.length * (widthCards + padding)) / widthCanvas);
+  const lineCanvas = Math.ceil((cardsForSwap.length * (widthCards + padding)) / widthCanvas);
   const heightCanvas = lineCanvas * (heightCards + padding);
   const activeCards = [];
 
@@ -51,16 +61,17 @@ function swapYourCard(idOpponent, cardOpponent) {
   let y = 0;
 
   for (let j = 0; j < cardsForSwap.length; j += 1) {
+    const img = new Image();
+    img.src = allCards[cardsForSwap[j]];
     activeCards.push({
       name: cardsForSwap[j].name,
-      url: cardsForSwap[j].url,
       left: x,
       top: y,
       width: 180,
       height: 275,
     });
 
-    ctx.drawImage(cardsForSwap[j], x, y, 180, 275);
+    ctx.drawImage(img, x, y, 180, 275);
     x += widthCards + padding;
     if (x > widthCanvas) {
       x = 0;
@@ -74,32 +85,33 @@ function swapYourCard(idOpponent, cardOpponent) {
     const yEvent = event.clientY - box.top;
 
     activeCards.forEach((card) => {
-      if (yEvent > card.top && yEvent < card.top + card.height
-        && xEvent > card.left && xEvent < card.left + card.width) {
+      if (
+        yEvent > card.top
+        && yEvent < card.top + card.height
+        && xEvent > card.left
+        && xEvent < card.left + card.width
+      ) {
         const ws = clientPlayer.getWs();
         const roomID = clientPlayer.getRoomID();
-        const commandString = `${idOpponent} ${card.name} ${cardOpponent.name}`;
+        const commandString = `${idOpponent} ${card.name} ${cardOpponent}`;
         sendSwapCardsMessage(ws, roomID, commandString);
+        swapCardsWrapper.classList.add("hidden");
       }
     });
   });
 }
 
-function drawHandOpponents(playerHand, idOpponent) {
+function drawHandOpponents(idOpponent) {
+  const firstOpponent = clientPlayer.getInfoAboutUsersInRoomArray().find((opponent) => opponent.id === idOpponent);
+  const opponentsCards = firstOpponent.cards || basicHand;
   const cardsForSwap = [];
-  for (let i = 0; i < playerHand.length; i += 1) {
-    const arr = playerHand[i].name.split("/");
-    if (arr[4] === "ordinaryBuildings" || arr[4] === "startСards") {
-      const obj = {
-        url: playerHand[i].name,
-        name: arr[4].substring(0, arr[4].length - 4),
-      };
-
-      cardsForSwap.push(obj);
+  for (let i = 0; i < opponentsCards.length; i += 1) {
+    if (cardSwap.includes(opponentsCards[i])) {
+      cardsForSwap.push(opponentsCards[i]);
     }
   }
 
-  console.log(playerHand, cardsForSwap);
+  console.log(cardsForSwap);
   const opponentCanvas = document.querySelector(".cards-opponents");
   const ctx = opponentCanvas.getContext("2d");
   const swapCards = document.querySelector(".swap-cards-content");
@@ -108,7 +120,7 @@ function drawHandOpponents(playerHand, idOpponent) {
   const widthCards = 180;
   const heightCards = 275;
   // check line and height calculatin
-  const lineCanvas = Math.ceil((playerHand.length * (widthCards + padding)) / widthCanvas);
+  const lineCanvas = Math.ceil((cardsForSwap.length * (widthCards + padding)) / widthCanvas);
   const heightCanvas = lineCanvas * (heightCards + padding);
   const activeCards = [];
 
@@ -121,16 +133,17 @@ function drawHandOpponents(playerHand, idOpponent) {
   let y = 0;
 
   for (let j = 0; j < cardsForSwap.length; j += 1) {
+    const img = new Image();
+    img.src = allCards[cardsForSwap[j]];
     activeCards.push({
-      name: cardsForSwap[j].name,
-      url: cardsForSwap[j].url,
+      name: cardsForSwap[j],
       left: x,
       top: y,
       width: 180,
       height: 275,
     });
 
-    ctx.drawImage(cardsForSwap[j], x, y, 180, 275);
+    ctx.drawImage(img, x, y, 180, 275);
     x += widthCards + padding;
     if (x > widthCanvas) {
       x = 0;
@@ -145,10 +158,13 @@ function drawHandOpponents(playerHand, idOpponent) {
     const yEvent = event.clientY - box.top;
 
     activeCards.forEach((card) => {
-      if (yEvent > card.top && yEvent < card.top + card.height
-        && xEvent > card.left && xEvent < card.left + card.width) {
-        // cardOpponent = opponentCanvas ?????
-        swapYourCard(idOpponent, opponentCanvas);// cardOpponent);
+      if (
+        yEvent > card.top
+        && yEvent < card.top + card.height
+        && xEvent > card.left
+        && xEvent < card.left + card.width
+      ) {
+        swapYourCard(idOpponent, card.name);
       }
     });
   });
@@ -157,17 +173,17 @@ function drawHandOpponents(playerHand, idOpponent) {
 swapPlayer1.addEventListener("click", () => {
   swapCardsWrapper.classList.remove("hidden");
   swapWrapper.classList.add("hidden");
-  drawHandOpponents(handTopPlayer, opponentsUUID[0]);
+  drawHandOpponents(opponentsUUID[0]);
 });
 
 swapPlayer2.addEventListener("click", () => {
   swapCardsWrapper.classList.remove("hidden");
   swapWrapper.classList.add("hidden");
-  drawHandOpponents(handLeftPlayer, opponentsUUID[1]);
+  drawHandOpponents(opponentsUUID[1]);
 });
 
 swapPlayer3.addEventListener("click", () => {
   swapCardsWrapper.classList.remove("hidden");
   swapWrapper.classList.add("hidden");
-  drawHandOpponents(handRightPlayer, opponentsUUID[2]);
+  drawHandOpponents(opponentsUUID[2]);
 });
