@@ -202,7 +202,7 @@ export default class MachiCoroGame {
       return;
     }
 
-    const randNum = this.generateRandNumbers(6);
+    const randNum = 6;//this.generateRandNumbers(6);
     if (numberOfCubes === 2) {
       if (!this.isUserHaveCard(ws, this.userNumTurn, "railwayStation")) {
         return;
@@ -269,8 +269,8 @@ export default class MachiCoroGame {
     return true;
   }
 
-  isSecondUserExist(ws, secondUserID) {
-    if (!this.users[secondUserID]) {
+  isSecondUserExist(ws, secondUserUUID) {
+    if (this.users.findIndex((user) => user.getUserID() === secondUserUUID) === -1) {
       machiCoroServerMessageMethods.sendError(ws, "can't find second user");
       return false;
     }
@@ -278,7 +278,8 @@ export default class MachiCoroGame {
   }
 
   isSecondUserDontEqualsToActiveUser(ws, secondUserID, methodName) {
-    if (ws === this.users[secondUserID].getWs()) {
+    const userIndex = this.users.findIndex((user) => user.getUserID() === secondUserID);
+    if (ws === this.users[userIndex].getWs()) {
       machiCoroServerMessageMethods.sendError(ws, `you can't ${methodName} with yourself`);
       return false;
     }
@@ -367,14 +368,14 @@ export default class MachiCoroGame {
     }
   }
 
-  isConditionForSpecialCardPassed(ws, activationNumbersArray, possibility, secondUserID, possibilityName, cardName) {
+  isConditionForSpecialCardPassed(ws, activationNumbersArray, possibility, secondUserUUID, possibilityName, cardName) {
     if (!this.isUserUsePortOrRadioTowerBonus(ws)
       || !this.isUserThrowCubesInThisTurn(ws)
       || !this.isResultOfCubesThrowActivateCard(ws, activationNumbersArray)
       || !this.isThisUserTurn(ws)
       || !this.isUserDontUsePossibility(ws, possibility)
-      || !this.isSecondUserExist(ws, secondUserID)
-      || !this.isSecondUserDontEqualsToActiveUser(ws, secondUserID, possibilityName)
+      || !this.isSecondUserExist(ws, secondUserUUID)
+      || !this.isSecondUserDontEqualsToActiveUser(ws, secondUserUUID, possibilityName)
       || !this.isUserHaveCard(ws, this.userNumTurn, cardName)
       || this.isWin(this.users[this.userNumTurn])) {
       return false;
@@ -414,16 +415,19 @@ export default class MachiCoroGame {
       secondUserID, firstUserCardName, secondUserCardName);
   }
 
-  steal(ws, secondUserID) {
+  steal(ws, secondUserUUID) {
     if (!this.isConditionForSpecialCardPassed(ws, telecentreActivationNumbers,
-      this.userUseStealPossibility, secondUserID, "steal", "telecentre")) {
+      this.userUseStealPossibility, secondUserUUID, "steal", "telecentre")) {
       return;
     }
+    const secondUserIndex = this.users.findIndex((user) => user.getUserID() === secondUserUUID);
 
     this.updateUserMoney(this.users[this.userNumTurn], 5);
-    this.updateUserMoney(this.users[secondUserID], -5);
+    this.updateUserMoney(this.users[secondUserIndex], -5);
     this.userUseStealPossibility = true;
-    machiCoroServerMessageMethods.stealAccept(this.users, this.userNumTurn, secondUserID);
+    machiCoroServerMessageMethods.stealAccept(this.users, this.userNumTurn, secondUserUUID);
+    machiCoroServerMessageMethods.sendAllOtherUserGameInfo(this.users, this.userNumTurn);
+    machiCoroServerMessageMethods.sendUserGameInfo(this.users, this.users[this.userNumTurn]);
   }
 
   isConditionForUsingPortBonusCompleted(ws) {
