@@ -1,6 +1,13 @@
 import { sendSwapCardsMessage } from "../machiCoroGame/front/machiCoroClientMessages";
 import {
-  padding, opponentsUUID, swapCardsWrapper, swapWrapper,
+  padding,
+  opponentsUUID,
+  swapCardsWrapper,
+  swapWrapper,
+  cardsCanExchanged,
+  border,
+  widthCards,
+  heightCards,
 } from "./gameBoardConsts";
 import clientPlayer from "./clientPlayer";
 import { allCards } from "./allCards";
@@ -8,45 +15,28 @@ import { allCards } from "./allCards";
 const swapPlayer1 = document.querySelector(".swap-player1");
 const swapPlayer2 = document.querySelector(".swap-player2");
 const swapPlayer3 = document.querySelector(".swap-player3");
-const cardSwap = [
-  "wheatField",
-  "farm",
-  "flowerGarden",
-  "forest",
-  "longboat",
-  "mine",
-  "appleOrchard",
-  "trawler",
-  "bakery",
-  "store",
-  "flowerStore",
-  "cheeseDairy",
-  "furnitureFactory",
-  "vegetableMarket",
-  "groceryWarehouse",
-  "sushiBar",
-  "cafe",
-  "pizzeria",
-  "diner",
-  "restaurant",
-];
+const btnBackSwap = document.querySelector(".btn-back-swap");
+const swapHeader = document.querySelector(".swap-header");
 
 function swapYourCard(idOpponent, cardOpponent) {
   const yourHand = clientPlayer.getRegistrationData().cards || basicHand;
   const cardsForSwap = [];
   for (let i = 0; i < yourHand.length; i += 1) {
-    if (cardSwap.includes(yourHand[i])) {
+    if (cardsCanExchanged.includes(yourHand[i])) {
       cardsForSwap.push(yourHand[i]);
     }
   }
 
-  const opponentCanvas = document.querySelector(".cards-opponents");
-  const ctx = opponentCanvas.getContext("2d");
+  swapHeader.textContent = "Выберите свою карту";
   const swapCards = document.querySelector(".swap-cards-content");
-  const border = 7;
+  if (document.querySelector(".cards-opponents")) {
+    swapCards.removeChild(document.querySelector(".cards-opponents"));
+  }
+  const opponentCanvas = document.createElement("canvas");
+  opponentCanvas.classList.add("cards-opponents");
+  swapCards.appendChild(opponentCanvas);
+  const ctx = opponentCanvas.getContext("2d");
   const widthCanvas = swapCards.offsetWidth - (border * 2 + padding * 2);
-  const widthCards = 180;
-  const heightCards = 275;
   // check line and height calculatin
   const lineCanvas = Math.ceil((cardsForSwap.length * (widthCards + padding)) / widthCanvas);
   const heightCanvas = lineCanvas * (heightCards + padding);
@@ -106,19 +96,22 @@ function drawHandOpponents(idOpponent) {
   const opponentsCards = firstOpponent.cards || basicHand;
   const cardsForSwap = [];
   for (let i = 0; i < opponentsCards.length; i += 1) {
-    if (cardSwap.includes(opponentsCards[i])) {
+    if (cardsCanExchanged.includes(opponentsCards[i])) {
       cardsForSwap.push(opponentsCards[i]);
     }
   }
 
-  console.log(cardsForSwap);
-  const opponentCanvas = document.querySelector(".cards-opponents");
-  const ctx = opponentCanvas.getContext("2d");
+  swapHeader.textContent = "Выберите карту оппонента";
   const swapCards = document.querySelector(".swap-cards-content");
-  const border = 7;
+  if (document.querySelector(".cards-opponents")) {
+    swapCards.removeChild(document.querySelector(".cards-opponents"));
+  }
+  const opponentCanvas = document.createElement("canvas");
+  opponentCanvas.classList.add("cards-opponents");
+  swapCards.appendChild(opponentCanvas);
+  const ctx = opponentCanvas.getContext("2d");
+
   const widthCanvas = swapCards.offsetWidth - (border * 2 + padding * 2);
-  const widthCards = 180;
-  const heightCards = 275;
   // check line and height calculatin
   const lineCanvas = Math.ceil((cardsForSwap.length * (widthCards + padding)) / widthCanvas);
   const heightCanvas = lineCanvas * (heightCards + padding);
@@ -186,4 +179,8 @@ swapPlayer3.addEventListener("click", () => {
   swapCardsWrapper.classList.remove("hidden");
   swapWrapper.classList.add("hidden");
   drawHandOpponents(opponentsUUID[2]);
+});
+
+btnBackSwap.addEventListener("click", () => {
+  swapCardsWrapper.classList.add("hidden");
 });
