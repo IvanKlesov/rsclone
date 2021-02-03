@@ -44,7 +44,6 @@ export function handlerServerMachiCoroResponse(jsonData) {
       return userGameInfo;
     }
     case "throwCube": {
-      // const throwResult = "";
       logMessage("throwCubeResult handled");
       const point = jsonData.throwCubeResult;
       if (jsonData.turn === "you") {
@@ -94,6 +93,15 @@ export function handlerServerMachiCoroResponse(jsonData) {
     }
 
     case "gameFinalStat": {
+      return jsonData.content;
+    }
+    case "machiCoroRadioRequest": {
+      return jsonData.content;
+    }
+    case "machiCoroPortRequest": {
+      return jsonData.content;
+    }
+    case "machiCoroPortRadioRequest": {
       return jsonData.content;
     }
 

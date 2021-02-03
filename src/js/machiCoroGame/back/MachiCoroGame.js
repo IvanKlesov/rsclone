@@ -296,14 +296,14 @@ export default class MachiCoroGame {
   }
 
   sendRequestForAcceptPortBonus(ws, additionalInfo = "") {
-    machiCoroServerMessageMethods.sendError(ws,
+    machiCoroServerMessageMethods.sendRequestForPortBonusAccept(ws,
       "You have card port.You can get 2 throw point bonus."
         .concat("Send /acceptPortBonus or /rejectPortBonus command;")
         .concat(additionalInfo));
   }
 
   sendRequestForAcceptRethrowCubes(ws) {
-    machiCoroServerMessageMethods.sendError(ws, "You have card radiTower.You can rethrow cubes."
+    machiCoroServerMessageMethods.sendRequestForRadioBonusAccept(ws, "You have card radiTower.You can rethrow cubes."
       .concat("To rethrow send /throw. To accept current result")
       .concat(" send /acceptThrow command"));
   }
@@ -311,7 +311,9 @@ export default class MachiCoroGame {
   isUserUsePortOrRadioTowerBonus(ws, additionalConditionForRadio = true) {
     if (this.userThrowRequestForPortBonus) {
       if (this.users[this.userNumTurn].getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
-        this.sendRequestForAcceptPortBonus(ws, "also you can rethrow cube(s)");
+        machiCoroServerMessageMethods.sendRequestForPortRadioBonusAccept(ws, "You have card radiTower.You can rethrow cubes."
+        .concat("To rethrow send /throw. To accept current result")
+        .concat(" send /acceptThrow command.Also you can rethrow cube(s)"));
       } else {
         this.sendRequestForAcceptPortBonus(ws);
       }

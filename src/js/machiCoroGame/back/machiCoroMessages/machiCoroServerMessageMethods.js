@@ -218,4 +218,28 @@ machiCoroServerMessageMethods.sendError = (ws, errorMessage) => {
   ws.send(JSON.stringify(message));
 };
 
+machiCoroServerMessageMethods.sendRequestForRadioBonusAccept = (ws, attention) => {
+  const message = {
+    method: "machiCoroRadioRequest",
+    content: attention,
+  };
+  ws.send(JSON.stringify(message));
+};
+
+machiCoroServerMessageMethods.sendRequestForPortBonusAccept = (ws, attention) => {
+  const message = {
+    method: "machiCoroPortRequest",
+    content: attention,
+  };
+  ws.send(JSON.stringify(message));
+};
+
+machiCoroServerMessageMethods.sendRequestForPortRadioBonusAccept = (ws, attention) => {
+  const message = {
+    method: "machiCoroPortRadioRequest",
+    content: attention,
+  };
+  ws.send(JSON.stringify(message));
+};
+
 export default machiCoroServerMessageMethods;
