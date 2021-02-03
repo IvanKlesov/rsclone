@@ -383,11 +383,12 @@ export default class MachiCoroGame {
     return true;
   }
 
-  swapUserCards(ws, secondUserID, firstUserCardName, secondUserCardName) {
+  swapUserCards(ws, secondUserUUID, firstUserCardName, secondUserCardName) {
     if (!this.isConditionForSpecialCardPassed(ws, businessCenterActivationNumbers,
-      this.userUseSwapPossibility, secondUserID, "swap", "businessCenter")) {
+      this.userUseSwapPossibility, secondUserUUID, "swap", "businessCenter")) {
       return;
     }
+    const secondUserID = this.users.findIndex((user) => user.getUserID() === secondUserUUID);
     const firstMachiCoroUser = this.users[this.userNumTurn].getMachiCoroUser();
     const secondMachiCoroUser = this.users[secondUserID].getMachiCoroUser();
 
@@ -413,6 +414,8 @@ export default class MachiCoroGame {
     this.userUseSwapPossibility = true;
     machiCoroServerMessageMethods.swapAccept(this.users, this.userNumTurn,
       secondUserID, firstUserCardName, secondUserCardName);
+    machiCoroServerMessageMethods.sendAllOtherUserGameInfo(this.users, this.userNumTurn);
+    machiCoroServerMessageMethods.sendUserGameInfo(this.users, this.users[this.userNumTurn]);
   }
 
   steal(ws, secondUserUUID) {
