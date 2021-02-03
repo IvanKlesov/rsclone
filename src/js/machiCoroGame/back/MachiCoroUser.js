@@ -135,7 +135,13 @@ export default class MachiCoroUser {
   }
 
   isUserWin() {
-    return this.hasAirport && this.hasRailwayStation && this.hasAmusementPark
-      && this.hasPort && this.hasRadioTower && this.hasShoppingCenter;
+    return (
+      this.hasAirport
+      && this.hasRailwayStation
+      && this.hasAmusementPark
+      && this.hasPort
+      && this.hasRadioTower
+      && this.hasShoppingCenter
+    );
   }
 }

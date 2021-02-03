@@ -25,7 +25,12 @@ require("./gameBoardSwapCards");
 const fullCardWrapper = document.querySelector(".full-card-wrapper");
 const fullCard = document.querySelector(".full-card");
 const stealWrapper = document.querySelector(".steal-wrapper");
+<<<<<<< HEAD
 
+=======
+const swapWrapper = document.querySelector(".swap-wrapper");
+const swapCardsWrapper = document.querySelector(".swap-cards-wrapper");
+>>>>>>> c6777daf36afec546981c564323655f8105bfd50
 const startGame = document.querySelector(".btn-start");
 const holdTurn = document.querySelector(".btn-hold");
 const throwCubes = document.querySelector(".btn-throw");
@@ -37,8 +42,96 @@ const stealPlayer1 = document.querySelector(".steal-player1");
 const stealPlayer2 = document.querySelector(".steal-player2");
 const stealPlayer3 = document.querySelector(".steal-player3");
 const backStealPlayer = document.querySelector(".back-steal-player");
+<<<<<<< HEAD
 const backSwapPlayer = document.querySelector(".back-swap-player");
 const backSwap = document.querySelector(".back-swap");
+=======
+const swapPlayer1 = document.querySelector(".swap-player1");
+const swapPlayer2 = document.querySelector(".swap-player2");
+const swapPlayer3 = document.querySelector(".swap-player3");
+const backSwapPlayer = document.querySelector(".back-swap-player");
+const backSwap = document.querySelector(".back-swap");
+
+const audioClick = document.createElement("audio");
+audioClick.classList.add("audio-click");
+audioClick.src = allSounds[1];
+
+startGame.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendStartMessage(ws, roomID);
+});
+
+export function hideStartGameButton() {
+  startGame.classList.add("hidden");
+}
+
+holdTurn.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendHoldMessage(ws, roomID);
+});
+
+throwCubes.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendThrowCubeMessage(ws, roomID, 1);
+});
+
+throwCubes2.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendThrowCubeMessage(ws, roomID, 2);
+});
+
+swapCards.addEventListener("click", () => {
+  swapWrapper.classList.remove("hidden");
+});
+
+backSwapPlayer.addEventListener("click", () => {
+  swapWrapper.classList.add("hidden");
+});
+
+backSwap.addEventListener("click", () => {
+  swapWrapper.classList.remove("hidden");
+  swapCardsWrapper.classList.add("hidden");
+});
+
+stealMoney.addEventListener("click", () => {
+  stealWrapper.classList.remove("hidden");
+});
+
+stealPlayer1.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendStealMessage(ws, roomID, opponentsUUID[0]);
+  stealWrapper.classList.add("hidden");
+});
+
+stealPlayer2.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendStealMessage(ws, roomID, opponentsUUID[1]);
+  stealWrapper.classList.add("hidden");
+});
+
+stealPlayer3.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendStealMessage(ws, roomID, opponentsUUID[2]);
+  stealWrapper.classList.add("hidden");
+});
+
+backStealPlayer.addEventListener("click", () => {
+  stealWrapper.classList.add("hidden");
+});
+
+portBonus.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendAcceptPortBonusMessage(ws, roomID);
+});
+>>>>>>> c6777daf36afec546981c564323655f8105bfd50
 
 const basicHand = [
   /* cityHall, */
@@ -251,32 +344,52 @@ export default function createBoard() {
     handBottomPlayer.forEach((card) => {
       if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
         showFullCard(card.name);
+<<<<<<< HEAD
         const song = audioSystem.createAudio(allSounds[click]);
         song = audioSystem.playAudio();
+=======
+        playAudio(audioClick);
+        fullCardWrapper.classList.remove("hidden");
+>>>>>>> c6777daf36afec546981c564323655f8105bfd50
       }
     });
 
     handTopPlayer.forEach((card) => {
       if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
         showFullCard(card.name);
+<<<<<<< HEAD
         const song = audioSystem.createAudio(allSounds[click]);
         song = audioSystem.playAudio();
+=======
+        playAudio(audioClick);
+        fullCardWrapper.classList.remove("hidden");
+>>>>>>> c6777daf36afec546981c564323655f8105bfd50
       }
     });
 
     handLeftPlayer.forEach((card) => {
       if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
         showFullCard(card.name);
+<<<<<<< HEAD
         const song = audioSystem.createAudio(allSounds[click]);
         song = audioSystem.playAudio();
+=======
+        playAudio(audioClick);
+        fullCardWrapper.classList.remove("hidden");
+>>>>>>> c6777daf36afec546981c564323655f8105bfd50
       }
     });
 
     handRightPlayer.forEach((card) => {
       if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
         showFullCard(card.name);
+<<<<<<< HEAD
         const song = audioSystem.createAudio(allSounds[click]);
         song = audioSystem.playAudio();
+=======
+        playAudio(audioClick);
+        fullCardWrapper.classList.remove("hidden");
+>>>>>>> c6777daf36afec546981c564323655f8105bfd50
       }
     });
   });
@@ -339,6 +452,7 @@ export function drawNewCard(newCardName) {
     }
   };
 }
+<<<<<<< HEAD
 
 startGame.addEventListener("click", () => {
   const ws = clientPlayer.getWs();
@@ -415,3 +529,172 @@ portBonus.addEventListener("click", () => {
   const roomID = clientPlayer.getRoomID();
   sendAcceptPortBonusMessage(ws, roomID);
 });
+=======
+
+function drawHandOpponents(playerHand, idOpponent) {
+  const cardsForSwap = [];
+  for (let i = 0; i < playerHand.length; i += 1) {
+    const arr = playerHand[i].name.split("/");
+    if (arr[4] === "ordinaryBuildings" || arr[4] === "startСards") {
+      const obj = {
+        url: playerHand[i].name,
+        name: arr[4].substring(0, arr[4].length - 4),
+      };
+
+      cardsForSwap.push(obj);
+    }
+  }
+
+  console.log(playerHand, cardsForSwap);
+  const opponentCanvas = document.querySelector(".cards-opponents");
+  const ctx = opponentCanvas.getContext("2d");
+  const swapCards = document.querySelector(".swap-cards-content");
+  const border = 7;
+  const widthCanvas = swapCards.offsetWidth - (border * 2 + padding * 2);
+  const widthCards = 180;
+  const heightCards = 275;
+  const lineCanvas = Math.ceil((playerHand.length * (widthCards + padding)) / widthCanvas);
+  const heightCanvas = heightCanvas * (heightCards + padding);
+  const activeCards = [];
+
+  opponentCanvas.setAttribute("width", widthCanvas);
+  opponentCanvas.setAttribute("height", heightCanvas);
+
+  ctx.clearRect(0, 0, opponentCanvas.width, opponentCanvas.height);
+
+  const x = 0;
+  const y = 0;
+
+  for (let j = 0; j < cardsForSwap.length; j += 1) {
+    activeCards.push({
+      name: cardsForSwap[j].name,
+      name: cardsForSwap[j].url,
+      left: x,
+      top: y,
+      width: 180,
+      height: 275,
+    });
+
+    ctx.drawImage(cardsForSwap[j], x, y, 180, 275);
+    x += widthCards + padding;
+    if (x > widthCanvas) {
+      x = 0;
+      y += heightCards + padding;
+    }
+  }
+  console.log(activeCards);
+  opponentCanvas.addEventListener("click", (event) => {
+    const box = opponentCanvas.getBoundingClientRect();
+
+    const x = event.clientX - box.left;
+    const y = event.clientY - box.top;
+
+    activeCards.forEach((card) => {
+      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
+        swapYourCard(idOpponent, cardOpponent);
+      }
+    });
+  });
+}
+
+function swapYourCard(idOpponent, cardOpponent) {
+  const cardsForSwap = [];
+  for (let i = 0; i < handBottomPlayer.length; i += 1) {
+    const arr = handBottomPlayer[i].name.split("/");
+    if (arr[4] === "ordinaryBuildings" || arr[4] === "startСards") {
+      const obj = {
+        url: handBottomPlayer[i].name,
+        name: arr[4].substring(0, arr[4].length - 4),
+      };
+      cardsForSwap.push(obj);
+    }
+  }
+
+  const opponentCanvas = document.querySelector(".cards-opponents");
+  const ctx = opponentCanvas.getContext("2d");
+  const swapCards = document.querySelector(".swap-cards-content");
+  const border = 7;
+  const widthCanvas = swapCards.offsetWidth - (border * 2 + padding * 2);
+  const widthCards = 180;
+  const heightCards = 275;
+  const lineCanvas = Math.ceil((playerHand.length * (widthCards + padding)) / widthCanvas);
+  const heightCanvas = heightCanvas * (heightCards + padding);
+  const activeCards = [];
+
+  opponentCanvas.setAttribute("width", widthCanvas);
+  opponentCanvas.setAttribute("height", heightCanvas);
+
+  ctx.clearRect(0, 0, opponentCanvas.width, opponentCanvas.height);
+
+  const x = 0;
+  const y = 0;
+
+  for (let j = 0; j < cardsForSwap.length; j += 1) {
+    activeCards.push({
+      name: cardsForSwap[j].name,
+      name: cardsForSwap[j].url,
+      left: x,
+      top: y,
+      width: 180,
+      height: 275,
+    });
+
+    ctx.drawImage(cardsForSwap[j], x, y, 180, 275);
+    x += widthCards + padding;
+    if (x > widthCanvas) {
+      x = 0;
+      y += heightCards + padding;
+    }
+  }
+  opponentCanvas.addEventListener("click", (event) => {
+    const box = opponentCanvas.getBoundingClientRect();
+
+    const x = event.clientX - box.left;
+    const y = event.clientY - box.top;
+
+    activeCards.forEach((card) => {
+      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
+        const ws = clientPlayer.getWs();
+        const roomID = clientPlayer.getRoomID();
+        const commandString = `${idOpponent} ${card.name} ${cardOpponent.name}`;
+        sendSwapCardsMessage(ws, roomID, commandString);
+      }
+    });
+  });
+}
+
+swapPlayer1.addEventListener("click", () => {
+  swapCardsWrapper.classList.remove("hidden");
+  swapWrapper.classList.add("hidden");
+  drawHandOpponents(handTopPlayer, opponentsUUID[0]);
+});
+
+swapPlayer2.addEventListener("click", () => {
+  swapCardsWrapper.classList.remove("hidden");
+  swapWrapper.classList.add("hidden");
+  drawHandOpponents(handLeftPlayer, opponentsUUID[1]);
+});
+
+swapPlayer3.addEventListener("click", () => {
+  swapCardsWrapper.classList.remove("hidden");
+  swapWrapper.classList.add("hidden");
+  drawHandOpponents(handRightPlayer, opponentsUUID[2]);
+});
+
+/* board.addEventListener("click", (event) => {
+    const box = board.getBoundingClientRect();
+
+    const newX = event.clientX - box.left;
+    const newY = event.clientY - box.top;
+
+    if (
+      newY > handBottomPlayer[handBottomPlayer.length - 1].top
+      && newY < handBottomPlayer[handBottomPlayer.length - 1].top + handBottomPlayer[handBottomPlayer.length - 1].height
+      && newX > handBottomPlayer[handBottomPlayer.length - 1].left
+      && newX < handBottomPlayer[handBottomPlayer.length - 1].left + handBottomPlayer[handBottomPlayer.length - 1].width
+    ) {
+      showFullCard(handBottomPlayer[handBottomPlayer.length - 1].name);
+      fullCardWrapper.classList.remove("hidden");
+    }
+  }); */
+>>>>>>> c6777daf36afec546981c564323655f8105bfd50

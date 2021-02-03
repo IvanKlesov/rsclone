@@ -37,7 +37,16 @@ body {
 .btn-throw2,
 .btn-swap,
 .btn-steal,
-.btn-port-bonus {
+.btn-port-bonus,
+.steal-player1,
+.steal-player2,
+.steal-player3,
+.back-steal-player,
+.swap-player1,
+.swap-player2,
+.swap-player3,
+.back-swap-player,
+.back-swap {
   width: 180px;
   height: 50px;
   padding: 10px;
@@ -59,11 +68,27 @@ body {
 .btn-throw2:hover,
 .btn-swap:hover,
 .btn-steal:hover,
-.btn-port-bonus:hover {
+.btn-port-bonus:hover,
+.steal-player1:hover,
+.steal-player2:hover,
+.steal-player3:hover,
+.back-steal-player:hover,
+.swap-player1:hover,
+.swap-player2:hover,
+.swap-player3:hover,
+.back-swap-player:hover,
+.back-swap:hover {
   background-color: rgba(218, 55, 58);
 }
 
-.full-card-wrapper {
+.back-swap {
+  display: block;
+}
+
+.full-card-wrapper,
+.steal-wrapper,
+.swap-wrapper,
+.swap-cards-wrapper {
   position: fixed;
   width: 100%;
   height: 100%;
@@ -73,7 +98,9 @@ body {
   z-index: 5;
 }
 
-.full-card {
+.full-card,
+.steal-content,
+.swap-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -86,6 +113,7 @@ body {
   background-color: rgba(0, 172, 220, 1);
   border: 7px solid #ffffff;
   border-radius: 20px;
+  color: #ffffff;
 }
 
 .full-card-btn {
@@ -104,4 +132,30 @@ body {
 
 .full-card-btn:hover {
   background-color: rgba(218, 55, 58);
+}
+
+.swap-cards-content {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  background-color: rgba(0, 172, 220, 1);
+  border: 7px solid #ffffff;
+  border-radius: 20px;
+  overflow-y: Auto;
+  overflow-x: hidden;
+}
+
+.swap-cards-content h2 {
+  font-size: 56px;
+  font-weight: bold;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 10px auto;
+  text-align: center;
+}
+
+.cards-opponents {
+  margin: 20px;
 }
