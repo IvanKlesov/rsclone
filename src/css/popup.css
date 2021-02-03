@@ -433,6 +433,168 @@ ol {
   background-color: rgba(218, 55, 58);
 }
 
+/* Settings */
+
+.settings-categorie-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #00acdc;
+  font-family: "Roboto", sans-serif;
+}
+
+.settings-categorie {
+  position: absolute;
+  left: 30%;
+  top: 30%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 40%;
+}
+
+.settings-categorie h2 {
+  font-size: 72px;
+  font-weight: bold;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 50px auto;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.sound,
+.volume-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  font-size: 24px;
+}
+
+.volume-wrapper {
+  margin-bottom: 40px;
+}
+
+.sound-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.sound-item {
+  display: inline-block;
+}
+.sound-item input[type="radio"] {
+  display: none;
+}
+.sound-item label {
+  display: inline-block;
+  padding: 0px 15px;
+  line-height: 34px;
+  border: 1px solid #ffffff;
+  border-right: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sound .item-1 label {
+  border-radius: 6px 0 0 6px;
+}
+.sound .item-2 label {
+  border-radius: 0 6px 6px 0;
+  border-right: 2px solid #ffffff;
+}
+
+/* Checked */
+.sound .item-1 input[type="radio"]:checked + label {
+  background: #ffc5c5;
+}
+.sound .item-2 input[type="radio"]:checked + label {
+  background: #bbffbb;
+}
+
+.volume {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 40%;
+}
+
+.btn-minus,
+.btn-plus {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #00acdc;
+  color: #ffffff;
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.btn-minus {
+  margin-right: 20px;
+}
+
+.btn-plus {
+  margin-left: 20px;
+}
+
+.btn-minus:hover,
+.btn-plus:hover {
+  background: #ffffff;
+  color: #00acdc;
+}
+
+.volume-control {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.volume-low,
+.volume-middle,
+.volume-max {
+  display: inline-block;
+  width: 20px;
+  border: 1px solid white;
+  margin-left: 1px;
+}
+
+.volume-low {
+  height: 30px;
+  background-color: white;
+}
+
+.volume-middle {
+  height: 40px;
+  background-color: white;
+}
+
+.volume-max {
+  height: 50px;
+}
+
+.btn-back-settings {
+  width: 200px;
+  height: 60px;
+  padding: 10px;
+  margin: 0 auto 20px;
+  border: none;
+  border-radius: 20px;
+  color: #00acdc;
+  font-family: "Oswald", sans-serif;
+  font-size: 24px;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.btn-back-settings:hover {
+  background-color: rgba(218, 55, 58);
+}
+
 /* Media */
 
 @media (max-width: 1440px) {

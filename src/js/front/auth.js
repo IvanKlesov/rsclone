@@ -12,4 +12,8 @@ export default function initAuth() {
       authContainer.classList.add("hide");
     });
   }
+
+  backGoogleAuthBtn.addEventListener("click", () => {
+    authContainer.classList.add("hide");
+  });
 }
