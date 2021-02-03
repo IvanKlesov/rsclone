@@ -42,7 +42,7 @@ export class User {
     return this.machiCoroUser.getFullInfoAboutMachiCoroUser();
   }
 
-  setOauthID (newOauthID) {
+  setOauthID(newOauthID) {
     this.oauthID = newOauthID;
   }
 

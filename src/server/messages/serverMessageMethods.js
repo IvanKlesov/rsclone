@@ -15,9 +15,9 @@ serverMessageMethods.registrationAccept = (curUser) => {
     id: curUser.getUserID(),
     name: curUser.getUserName(),
     photoAddress: curUser.getUserPhotoAdress(),
-  }
+  };
   curUser.getWs().send(JSON.stringify(registrationData));
-}
+};
 
 serverMessageMethods.sendMessage = (curRoom, curUser, jsonFromClient, webSocketOpetState) => {
   const serverMessage = {
@@ -68,7 +68,7 @@ serverMessageMethods.newUserInRoom = (room, newUser) => {
   roomUsers.forEach((user) => {
     user.getWs().send(JSON.stringify(newUserInfo));
   });
-}
+};
 
 serverMessageMethods.userRoomReject = (webSocket, roomID) => {
   const serverRejectUserRoomMessage = {

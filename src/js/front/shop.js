@@ -1,17 +1,48 @@
+import clientPlayer from "./clientPlayer";
+import { sendBuyMessage } from "../machiCoroGame/front/machiCoroClientMessages";
+
 let currentColor;
-const blueCards = ["wheatField", "farm", "flowerGarden", "forest", "longboat", "mine", "appleOrchard", "trawler"];
-const greenCards = [
-  "bakery",
-  "store",
-  "flowerStore",
-  "cheeseDairy",
-  "furnitureFactory",
-  "vegetableMarket",
-  "groceryWarehouse",
+const blueCards = [
+  { name: "wheatField", url: "../assets/images/ordinaryBuildings/wheatField.png" },
+  { name: "farm", url: "../assets/images/ordinaryBuildings/farm.png" },
+  { name: "flowerGarden", url: "../assets/images/ordinaryBuildings/flowerGarden.png" },
+  { name: "forest", url: "../assets/images/ordinaryBuildings/forest.png" },
+  { name: "longboat", url: "../assets/images/ordinaryBuildings/longboat.png" },
+  { name: "mine", url: "../assets/images/ordinaryBuildings/mine.png" },
+  { name: "appleOrchard", url: "../assets/images/ordinaryBuildings/appleOrchard.png" },
+  { name: "trawler", url: "../assets/images/ordinaryBuildings/trawler.png" },
 ];
-const redCards = ["sushiBar", "cafe", "pizzeria", "diner", "restaurant"];
-const purpleCards = ["businessCenter", "stadium", "telecentre", "publishingHouse", "tax"];
-const attractionCards = ["port", "railwayStation", "shoppingCenter", "amusementPark", "radioTower", "airport"];
+const greenCards = [
+  { name: "bakery", url: "../assets/images/ordinaryBuildings/bakery.png" },
+  { name: "store", url: "../assets/images/ordinaryBuildings/store.png" },
+  { name: "flowerStore", url: "../assets/images/ordinaryBuildings/flowerStore.png" },
+  { name: "cheeseDairy", url: "../assets/images/ordinaryBuildings/cheeseDairy.png" },
+  { name: "furnitureFactory", url: "../assets/images/ordinaryBuildings/furnitureFactory.png" },
+  { name: "vegetableMarket", url: "../assets/images/ordinaryBuildings/vegetableMarket.png" },
+  { name: "groceryWarehouse", url: "../assets/images/ordinaryBuildings/groceryWarehouse.png" },
+];
+const redCards = [
+  { name: "sushiBar", url: "../assets/images/ordinaryBuildings/sushiBar.png" },
+  { name: "cafe", url: "../assets/images/ordinaryBuildings/cafe.png" },
+  { name: "pizzeria", url: "../assets/images/ordinaryBuildings/pizzeria.png" },
+  { name: "diner", url: "../assets/images/ordinaryBuildings/diner.png" },
+  { name: "restaurant", url: "../assets/images/ordinaryBuildings/restaurant.png" },
+];
+const purpleCards = [
+  { name: "businessCenter", url: "../assets/images/uniqueBuildings/businessCenter.png" },
+  { name: "stadium", url: "../assets/images/uniqueBuildings/stadium.png" },
+  { name: "telecentre", url: "../assets/images/uniqueBuildings/telecentre.png" },
+  { name: "publishingHouse", url: "../assets/images/uniqueBuildings/publishingHouse.png" },
+  { name: "tax", url: "../assets/images/uniqueBuildings/tax.png" },
+];
+const attractionCards = [
+  { name: "port", url: "../assets/images/attractions/port.png" },
+  { name: "railwayStation", url: "../assets/images/attractions/railwayStation.png" },
+  { name: "shoppingCenter", url: "../assets/images/attractions/shoppingCenter.png" },
+  { name: "amusementPark", url: "../assets/images/attractions/amusementPark.png" },
+  { name: "radioTower", url: "../assets/images/attractions/radioTower.png" },
+  { name: "airport", url: "../assets/images/attractions/airport.png" },
+];
 
 export default function createShop(color) {
   currentColor = color;
@@ -39,6 +70,7 @@ export default function createShop(color) {
   if (document.querySelector(".canvas-shop")) {
     shopContent.removeChild(document.querySelector(".canvas-shop"));
   }
+  const shop = document.querySelector(".shop");
   const canvasShop = document.createElement("canvas");
   canvasShop.classList.add("canvas-shop");
   shopContent.appendChild(canvasShop);
@@ -90,7 +122,7 @@ export default function createShop(color) {
   canvasShop.setAttribute("width", widthShop);
   canvasShop.setAttribute("height", heightShop);
 
-  ctx.clearRect(0, 0, canvasShop.width, canvasShop.height, countImgLine);
+  ctx.clearRect(0, 0, canvasShop.width, canvasShop.height);
 
   function drawShop() {
     let x = margin;
@@ -99,7 +131,8 @@ export default function createShop(color) {
       switch (currentColor) {
         case ".picture-blue":
           elements.push({
-            name: blueCards[i],
+            name: blueCards[i].name,
+            url: blueCards[i].url,
             left: x,
             top: y,
             width: 180,
@@ -108,7 +141,8 @@ export default function createShop(color) {
           break;
         case ".picture-green":
           elements.push({
-            name: greenCards[i],
+            name: greenCards[i].name,
+            url: greenCards[i].url,
             left: x,
             top: y,
             width: 180,
@@ -117,7 +151,8 @@ export default function createShop(color) {
           break;
         case ".picture-red":
           elements.push({
-            name: redCards[i],
+            name: redCards[i].name,
+            url: redCards[i].url,
             left: x,
             top: y,
             width: 180,
@@ -126,7 +161,8 @@ export default function createShop(color) {
           break;
         case ".picture-purple":
           elements.push({
-            name: purpleCards[i],
+            name: purpleCards[i].name,
+            url: purpleCards[i].url,
             left: x,
             top: y,
             width: 180,
@@ -135,7 +171,8 @@ export default function createShop(color) {
           break;
         case ".picture-attractions":
           elements.push({
-            name: attractionCards[i],
+            name: attractionCards[i].name,
+            url: attractionCards[i].url,
             left: x,
             top: y,
             width: 180,
@@ -144,7 +181,8 @@ export default function createShop(color) {
           break;
         default:
           elements.push({
-            name: blueCards[i],
+            name: blueCards[i].name,
+            url: blueCards[i].url,
             left: x,
             top: y,
             width: 180,
@@ -170,7 +208,11 @@ export default function createShop(color) {
 
     elements.forEach((element) => {
       if (y > element.top && y < element.top + element.height && x > element.left && x < element.left + element.width) {
-        alert(element.name);
+        shop.classList.add("hidden");
+        console.log("отправляем :", element.name);
+        const ws = clientPlayer.getWs();
+        const roomID = clientPlayer.getRoomID();
+        sendBuyMessage(ws, roomID, element.name);
       }
     });
   });

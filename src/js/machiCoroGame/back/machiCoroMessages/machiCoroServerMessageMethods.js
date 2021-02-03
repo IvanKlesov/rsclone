@@ -128,12 +128,12 @@ machiCoroServerMessageMethods.stealAccept = (users, activeUserID, secondUserID) 
   // duplicating
   const message = {
     method: "stealAccept",
-    content: `player${users[activeUserID].getUserID()} steal money(5) from player${users[secondUserID].getUserID()}`,
+    content: `player${users[activeUserID].getUserID()} steal money(5) from player${secondUserID}`,
   };
 
   const messageToActiveUser = {
     method: "stealAccept",
-    content: `you steal money(5) from player${users[secondUserID].getUserID()}`,
+    content: `you steal money(5) from player${secondUserID}`,
   };
 
   const messageToSecondUser = {
@@ -145,7 +145,7 @@ machiCoroServerMessageMethods.stealAccept = (users, activeUserID, secondUserID) 
     const curUserWs = user.getWs();
     if (idx === activeUserID) {
       curUserWs.send(JSON.stringify(messageToActiveUser));
-    } else if (idx === secondUserID) {
+    } else if (user.getUserID() === secondUserID) {
       curUserWs.send(JSON.stringify(messageToSecondUser));
     } else {
       curUserWs.send(JSON.stringify(message));
@@ -214,6 +214,30 @@ machiCoroServerMessageMethods.sendError = (ws, errorMessage) => {
   const message = {
     method: "machiCoroError",
     content: errorMessage,
+  };
+  ws.send(JSON.stringify(message));
+};
+
+machiCoroServerMessageMethods.sendRequestForRadioBonusAccept = (ws, attention) => {
+  const message = {
+    method: "machiCoroRadioRequest",
+    content: attention,
+  };
+  ws.send(JSON.stringify(message));
+};
+
+machiCoroServerMessageMethods.sendRequestForPortBonusAccept = (ws, attention) => {
+  const message = {
+    method: "machiCoroPortRequest",
+    content: attention,
+  };
+  ws.send(JSON.stringify(message));
+};
+
+machiCoroServerMessageMethods.sendRequestForPortRadioBonusAccept = (ws, attention) => {
+  const message = {
+    method: "machiCoroPortRadioRequest",
+    content: attention,
   };
   ws.send(JSON.stringify(message));
 };

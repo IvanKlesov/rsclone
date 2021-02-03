@@ -1,352 +1,455 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Express and Webpack App</title>
+    <link rel="shortcut icon" href="#" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet" />
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Express and Webpack App</title>
-  <link rel="shortcut icon" href="#" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet" />
-</head>
-
-<body>
-  <div class="hide" id = "auth-container">
-    <% if(user){ %>
-    <% } else{ %>
-      <a href="auth/google" class=""> 
-        <button id = "google-auth-btn">
-          google
+  <body>
+    <div class="hide" id = "auth-container">
+      <% if(user){ %>
+      <% } else{ %>
+        <a href="auth/google" class="">
+          <button id = "google-auth-btn">
+            google
+          </button>
+        </a>
+        <button id = "back-google-auth-btn">
+          back
         </button>
-      </a>
-   <% } %>
-  </div>
-  <div class="popup">
-    <div class="/auth-login">
-    <script>
-      <% if (user) {%>
-            var userID = <%- user.id %>;
-            var userName = '<%- user.displayName %>';
-            var userPhotoAdress = '<%- user.photos[0].value %>';
-      <%} else {%>
-        var userID = undefined;
-        var userName = "anonym";
-        var userPhotoAdress = undefined;
-      <%}%>
-    </script>
-    
-    <%if (user) {%>
-    <%var name = user.displayName%>
-    <%var pathToPhoto = user.photos[0].value%>
-    <img src= <%= pathToPhoto %> class = "user-icon" alt="user photo">
-    <a href="/logout">
-      <button id = "login" class = "">logout</button>
-    </a>
-    <%} else {%>
-        <%var name = "anonym"%>
-        <img src= "../assets/svg/user_icon-icons.com_57997.svg" class = "user-icon" alt="user photo">
+      <% } %>
+    </div>
+    <div class="popup">
+      <div class="auth-login">
+      <script>
+        <% if (user) {%>
+          var userID = <%- user.id %>;
+          var userName = '<%- user.displayName %>';
+          var userPhotoAdress = '<%- user.photos[0].value %>';
+        <%} else {%>
+          var userID = undefined;
+          var userName = "anonym";
+          var userPhotoAdress = undefined;
+        <%}%>
+      </script>
+
+        <%if (user) {%>
+          <%var name = user.displayName%>
+          <%var pathToPhoto = user.photos[0].value%>
+          <img src= <%= pathToPhoto %> class = "user-icon" alt="user photo">
+          <a href="/logout">
+            <button id = "login" class = "">logout</button>
+          </a>
+        <%} else {%>
+          <%var name = "anonym"%>
+          <img src= "../assets/svg/user_icon-icons.com_57997.svg" class = "user-icon" alt="user photo">
           <button id = "login">login</button>
-    <%}%>
-      <h2><%- name %></h2>
-    </div>
-    <div class="main-menu">
-      <h2>Мачи Коро</h2>
-      <ul>
-        <li class="new-game">Новая игра</li>
-        <li class="cards">Карты</li>
-        <li class="rules">Правила Игры</li>
-        <li class="settings">Настройки</li>
-      </ul>
-    </div>
-    <div class="all-cards hidden">
-      <h2>Карты</h2>
-      <h4>Достопримечательности</h4>
-      <div class="attractions">
-        <img class="picture picture-attractions" src="../assets/images/attractions/port.png" alt="Порт" />
-        <img class="picture picture-attractions" src="../assets/images/attractions/railwayStation.png" alt="Вокзал" />
-        <img class="picture picture-attractions" src="../assets/images/attractions/shoppingCenter.png"
-          alt="Торговый центр" />
-        <img class="picture picture-attractions" src="../assets/images/attractions/amusementPark.png"
-          alt="Парк аттракционов" />
-        <img class="picture picture-attractions" src="../assets/images/attractions/radioTower.png" alt="Радиовышка" />
-        <img class="picture picture-attractions" src="../assets/images/attractions/airport.png" alt="Аэропорт" />
+        <%}%>
+        <h2 class="auth-login-header"><%- name %></h2>
       </div>
-      <h4>Обычные постройки</h4>
-      <div class="ordinary-buildings slider">
-        <div class="slider-wrapper">
-          <div class="slider-item">
-            "<img class="picture-red" src="../assets/images/ordinaryBuildings/sushiBar.png" alt="Суши-бар" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-blue" src="../assets/images/ordinaryBuildings/wheatField.png" alt="Пшеничное поле" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-blue" src="../assets/images/ordinaryBuildings/farm.png" alt="Ферма" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-green" src="../assets/images/ordinaryBuildings/bakery.png" alt="Пекарня" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-red" src="../assets/images/ordinaryBuildings/cafe.png" alt="Кафе" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-green" src="../assets/images/ordinaryBuildings/store.png" alt="Магазин" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-blue" src="../assets/images/ordinaryBuildings/flowerGarden.png" alt="Цветник" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-blue" src="../assets/images/ordinaryBuildings/forest.png" alt="Лес" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-green" src="../assets/images/ordinaryBuildings/flowerStore.png"
-              alt="Цветочный магазин" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-red" src="../assets/images/ordinaryBuildings/pizzeria.png" alt="Пиццерия" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-green" src="../assets/images/ordinaryBuildings/cheeseDairy.png" alt="Сыроварня" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-green" src="../assets/images/ordinaryBuildings/furnitureFactory.png"
-              alt="Мебельная фабрика" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-blue" src="../assets/images/ordinaryBuildings/longboat.png" alt="Баркас" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-red" src="../assets/images/ordinaryBuildings/diner.png" alt="Закусочная" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-blue" src="../assets/images/ordinaryBuildings/mine.png" alt="Шахта" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-red" src="../assets/images/ordinaryBuildings/restaurant.png" alt="Ресторан" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-blue" src="../assets/images/ordinaryBuildings/appleOrchard.png" alt="Яблоневый сад" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-green" src="../assets/images/ordinaryBuildings/vegetableMarket.png"
-              alt="Овощной рынок" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-green" src="../assets/images/ordinaryBuildings/groceryWarehouse.png"
-              alt="Продуктовый склад" />
-          </div>
-          <div class="slider-item">
-            <img class="picture-blue" src="../assets/images/ordinaryBuildings/trawler.png" alt="Траулер" />
-          </div>
+      <div class="main-menu">
+        <h2>Мачи Коро</h2>
+        <ul>
+          <li class="new-game">Новая игра</li>
+          <li class="cards">Карты</li>
+          <li class="rules">Правила Игры</li>
+          <li class="settings">Настройки</li>
+        </ul>
+        <div class="footer-wrapper">
+        <div class="footer">
+        <div class="creators">
+          <h4>
+            <a href="https://github.com/IvanKlesov">Ivan Klesov</a>
+          </h4>
+          <h4>
+            <a href="https://github.com/vetaniExist">Alexander Hurynovich</a>
+          </h4>
         </div>
+        <div class="footer-logo">
+          <a href="https://rs.school/js/">
+            <img src="../assets/svg/rs-school-js.svg" />
+          </a>
+        </div>
+        <h4>2021 г.</h4>
+      </div>
+      </div>
+      </div>
+      <div class="all-cards hidden">
+        <h2>Карты</h2>
+        <h4>Достопримечательности</h4>
+        <div class="attractions">
+          <img class="picture picture-attractions" src="../assets/images/attractions/port.png" alt="Порт" />
+          <img class="picture picture-attractions" src="../assets/images/attractions/railwayStation.png" alt="Вокзал" />
+          <img
+            class="picture picture-attractions"
+            src="../assets/images/attractions/shoppingCenter.png"
+            alt="Торговый центр"
+          />
+          <img
+            class="picture picture-attractions"
+            src="../assets/images/attractions/amusementPark.png"
+            alt="Парк аттракционов"
+          />
+          <img class="picture picture-attractions" src="../assets/images/attractions/radioTower.png" alt="Радиовышка" />
+          <img class="picture picture-attractions" src="../assets/images/attractions/airport.png" alt="Аэропорт" />
+        </div>
+        <h4>Обычные постройки</h4>
+        <div class="ordinary-buildings slider">
+          <div class="slider-wrapper">
+            <div class="slider-item">
+              "<img class="picture-red" src="../assets/images/ordinaryBuildings/sushiBar.png" alt="Суши-бар" />
+            </div>
+            <div class="slider-item">
+              <img class="picture-blue" src="../assets/images/ordinaryBuildings/wheatField.png" alt="Пшеничное поле" />
+            </div>
+            <div class="slider-item">
+              <img class="picture-blue" src="../assets/images/ordinaryBuildings/farm.png" alt="Ферма" />
+            </div>
+            <div class="slider-item">
+              <img class="picture-green" src="../assets/images/ordinaryBuildings/bakery.png" alt="Пекарня" />
+            </div>
+            <div class="slider-item">
+              <img class="picture-red" src="../assets/images/ordinaryBuildings/cafe.png" alt="Кафе" />
+            </div>
+            <div class="slider-item">
+              <img class="picture-green" src="../assets/images/ordinaryBuildings/store.png" alt="Магазин" />
+            </div>
+            <div class="slider-item">
+              <img class="picture-blue" src="../assets/images/ordinaryBuildings/flowerGarden.png" alt="Цветник" />
+            </div>
+            <div class="slider-item">
+              <img class="picture-blue" src="../assets/images/ordinaryBuildings/forest.png" alt="Лес" />
+            </div>
+            <div class="slider-item">
+              <img
+                class="picture-green"
+                src="../assets/images/ordinaryBuildings/flowerStore.png"
+                alt="Цветочный магазин"
+              />
+            </div>
+            <div class="slider-item">
+              <img class="picture-red" src="../assets/images/ordinaryBuildings/pizzeria.png" alt="Пиццерия" />
+            </div>
+            <div class="slider-item">
+              <img class="picture-green" src="../assets/images/ordinaryBuildings/cheeseDairy.png" alt="Сыроварня" />
+            </div>
+            <div class="slider-item">
+              <img
+                class="picture-green"
+                src="../assets/images/ordinaryBuildings/furnitureFactory.png"
+                alt="Мебельная фабрика"
+              />
+            </div>
+            <div class="slider-item">
+              <img class="picture-blue" src="../assets/images/ordinaryBuildings/longboat.png" alt="Баркас" />
+            </div>
+            <div class="slider-item">
+              <img class="picture-red" src="../assets/images/ordinaryBuildings/diner.png" alt="Закусочная" />
+            </div>
+            <div class="slider-item">
+              <img class="picture-blue" src="../assets/images/ordinaryBuildings/mine.png" alt="Шахта" />
+            </div>
+            <div class="slider-item">
+              <img class="picture-red" src="../assets/images/ordinaryBuildings/restaurant.png" alt="Ресторан" />
+            </div>
+            <div class="slider-item">
+              <img class="picture-blue" src="../assets/images/ordinaryBuildings/appleOrchard.png" alt="Яблоневый сад" />
+            </div>
+            <div class="slider-item">
+              <img
+                class="picture-green"
+                src="../assets/images/ordinaryBuildings/vegetableMarket.png"
+                alt="Овощной рынок"
+              />
+            </div>
+            <div class="slider-item">
+              <img
+                class="picture-green"
+                src="../assets/images/ordinaryBuildings/groceryWarehouse.png"
+                alt="Продуктовый склад"
+              />
+            </div>
+            <div class="slider-item">
+              <img class="picture-blue" src="../assets/images/ordinaryBuildings/trawler.png" alt="Траулер" />
+            </div>
+          </div>
 
-        <a class="slider-control slider-control-left" href="#" role="button"> </a>
-        <a class="slider-control slider-control-right slider-control-show" href="#" role="button"> </a>
-      </div>
-      <h4>Стартовые карты</h4>
-      <div class="start-cards">
-        <img class="picture" src="../assets/images/startСards/cityHall.png" alt="Мэрия" />
-        <img class="picture" src="../assets/images/startСards/wheatField.png" alt="Пшеничное поле" />
-        <img class="picture" src="../assets/images/startСards/bakery.png" alt="Пекарня" />
-      </div>
-      <h4>Уникальные постройки</h4>
-      <div class="unique-buildings">
-        <img class="picture picture-purple" src="../assets/images/uniqueBuildings/businessCenter.png"
-          alt="Деловой центр" />
-        <img class="picture picture-purple" src="../assets/images/uniqueBuildings/stadium.png" alt="Стадион" />
-        <img class="picture picture-purple" src="../assets/images/uniqueBuildings/telecentre.png" alt="Телецентр" />
-        <img class="picture picture-purple" src="../assets/images/uniqueBuildings/publishingHouse.png"
-          alt="Издательство" />
-        <img class="picture picture-purple" src="../assets/images/uniqueBuildings/tax.png" alt="Налоговая" />
-      </div>
-      <button class="btn-back-cards">Назад</button>
-    </div>
-    <div class="rules-categorie hidden">
-      <div class="description-game">
-        <h4>Описание игры</h4>
-        <p>
-          Вам предстоит стать мэром небольшого городка, который может стать самым процветающим в округе. Стройте кафе
-          и магазины, налаживайте производство и увеличивайте поступления в городской бюджет. Но помните, что
-          мэры-конкуренты не дремлют - они тоже мечтают построить самый лучший город на земле. Вам предстоит
-          нешуточная гонка, и победит в ней тот, кто первым украсит свои улицы достопримечательностями.
-        </p>
-      </div>
-      <div>
-        <h4>Подготовка к игре</h4>
-        <div class="preparation-game-wrapper">
-          <div class="preparation-game">
-            <ul>
-              <li>
-                Каждый игрок получает 6 карт достопримечательностей ("Порт", "Вокзал", "Торговый центр", "Парк
-                аттракционов", "Радиовышка", "Аэропорт") и их кладёт перед собой лицевой стороной вниз.
-              </li>
-              <li>
-                Каждый игрок получает набор стартовых карт состоящий из 1 карты достопримечательности и 2 предприятий
-                ("Мэрия", "Пшеничное поле", "Пекарня" соотвественно) и кладет их перед собой лицевой стороной вверх.
-              </li>
-              <li>Каждый игрок получает 3 монеты номиналом "1". Все остальные монеты формируют банк.</li>
-              <li>Карты резерва формируют магазин предприятий и размещаются в центре игрового стола.</li>
-            </ul>
-          </div>
-          <div class="preparation-game-img">
-            <img src="../assets/images/machi-koro.jpg" alt="Мачи Коро" />
-          </div>
+          <a class="slider-control slider-control-left" href="#" role="button"> </a>
+          <a class="slider-control slider-control-right slider-control-show" href="#" role="button"> </a>
         </div>
+        <h4>Стартовые карты</h4>
+        <div class="start-cards">
+          <img class="picture" src="../assets/images/startСards/cityHall.png" alt="Мэрия" />
+          <img class="picture" src="../assets/images/startСards/wheatField.png" alt="Пшеничное поле" />
+          <img class="picture" src="../assets/images/startСards/bakery.png" alt="Пекарня" />
+        </div>
+        <h4>Уникальные постройки</h4>
+        <div class="unique-buildings">
+          <img
+            class="picture picture-purple"
+            src="../assets/images/uniqueBuildings/businessCenter.png"
+            alt="Деловой центр"
+          />
+          <img class="picture picture-purple" src="../assets/images/uniqueBuildings/stadium.png" alt="Стадион" />
+          <img class="picture picture-purple" src="../assets/images/uniqueBuildings/telecentre.png" alt="Телецентр" />
+          <img
+            class="picture picture-purple"
+            src="../assets/images/uniqueBuildings/publishingHouse.png"
+            alt="Издательство"
+          />
+          <img class="picture picture-purple" src="../assets/images/uniqueBuildings/tax.png" alt="Налоговая" />
+        </div>
+        <button class="btn-back-cards">Назад</button>
       </div>
-      <div class="game-progress">
-        <h4>Ход игры</h4>
-        <p>
-          Очередность ходов игроков определяет великий рандом перед началом игры. Ход активного игрока состоит из двух
-          фаз.
-        </p>
-        <ol>
-          <li>Фаза доходов</li>
-          <li>Фаза строительства</li>
-        </ol>
-        <h4>Фаза доходов</h4>
-        <p>
-          В фазе доходов активный игрок бросает 1 кубик. Если в городе активного игрока есть "Вокзал", игрок может
-          выбрать сколько кубиков бросить: 1 или 2.
-        </p>
-        <p>
-          По результатам броска все игроки (не только активный) могут получить доход. Число в верхней части карты в
-          городе игрока указывает, какой результат на кубиках приводит к срабатыванию эффекта карты. А в тексте внизу
-          карты указано, когда срабатывает эффект карты (в свой ход, в чужой или в ход любого игрока). От эффекта
-          карты также зависит, откуда игрок берет монеты: из банка или у соперника.
-        </p>
-        <div class="enterprises">
-          <div class="enterprises-blue">
-            <div class="enterprises-blue-header">
-              <h4>Синие карты:</h4>
-              <h4>сырьевые предприятия</h4>
+      <div class="rules-categorie hidden">
+        <div class="description-game">
+          <h4>Описание игры</h4>
+          <p>
+            Вам предстоит стать мэром небольшого городка, который может стать самым процветающим в округе. Стройте кафе
+            и магазины, налаживайте производство и увеличивайте поступления в городской бюджет. Но помните, что
+            мэры-конкуренты не дремлют - они тоже мечтают построить самый лучший город на земле. Вам предстоит
+            нешуточная гонка, и победит в ней тот, кто первым украсит свои улицы достопримечательностями.
+          </p>
+        </div>
+        <div>
+          <h4>Подготовка к игре</h4>
+          <div class="preparation-game-wrapper">
+            <div class="preparation-game">
+              <ul>
+                <li>
+                  Каждый игрок получает 6 карт достопримечательностей ("Порт", "Вокзал", "Торговый центр", "Парк
+                  аттракционов", "Радиовышка", "Аэропорт") и их кладёт перед собой лицевой стороной вниз.
+                </li>
+                <li>
+                  Каждый игрок получает набор стартовых карт состоящий из 1 карты достопримечательности и 2 предприятий
+                  ("Мэрия", "Пшеничное поле", "Пекарня" соотвественно) и кладет их перед собой лицевой стороной вверх.
+                </li>
+                <li>Каждый игрок получает 3 монеты номиналом "1". Все остальные монеты формируют банк.</li>
+                <li>Карты резерва формируют магазин предприятий и размещаются в центре игрового стола.</li>
+              </ul>
             </div>
-            <div class="enterprises-blue-card">
-              <div class="enterprises-card-img">
-                <img src="../assets/images/startСards/wheatField.png" alt="Синие предприятие" />
-              </div>
-              <div class="enterprises-card-description">
-                <p>Приносят владельцу доход из банка в ход любого игрока.</p>
-              </div>
-            </div>
-          </div>
-          <div class="enterprises-green">
-            <div class="enterprises-green-header">
-              <h4>Зеленые карты:</h4>
-              <h4>магазины, фабрики, рынки</h4>
-            </div>
-            <div class="enterprises-green-card">
-              <div class="enterprises-card-img">
-                <img src="../assets/images/startСards/bakery.png" alt="Зеленое предприятие" />
-              </div>
-              <div class="enterprises-card-description">
-                <p>Приносят владельцу доход из банка только в свой ход.</p>
-              </div>
-            </div>
-          </div>
-          <div class="enterprises-red">
-            <div class="enterprises-red-header">
-              <h4>Красные карты:</h4>
-              <h4>заведения общепита</h4>
-            </div>
-            <div class="enterprises-red-card">
-              <div class="enterprises-card-img">
-                <img src="../assets/images/ordinaryBuildings/cafe.png" alt="Красное предприятие" />
-              </div>
-              <div class="enterprises-card-description">
-                <p>Приносят владельцу доход из средств активного игрока.</p>
-              </div>
-            </div>
-          </div>
-          <div class="enterprises-purple">
-            <div class="enterprises-purple-header">
-              <h4>Фиолетовые карты:</h4>
-              <h4>крупные предприятия</h4>
-            </div>
-            <div class="enterprises-purple-card">
-              <div class="enterprises-card-img">
-                <img src="../assets/images/uniqueBuildings/stadium.png" alt="Фиолетовое предприятие" />
-              </div>
-              <div class="enterprises-card-description">
-                <p>Приносят владельцу доход из средств соперников, но только в свой ход.</p>
-              </div>
+            <div class="preparation-game-img">
+              <img src="../assets/images/machi-koro.jpg" alt="Мачи Коро" />
             </div>
           </div>
         </div>
-        <h4>Фаза строительства</h4>
-        <p>В фазе строительства активный игрок может совершить одно из трех действий:</p>
-        <ol>
-          <li>Построить 1 новое предприятие</li>
-          <li>Построить 1 достопримечательность</li>
-          <li>Отказаться от строительства</li>
-        </ol>
-        <p>
-          Выбрав постройку нового предприятия, активный игрок оплачивает в банк цену строительства выбранного
-          предприятия, после чего получает соотвествующую карту из магазина предприятий и размещает у себя в городе.
-          Теперь эта карта может приносить ему доход (в случае срабатывания эффекта).
-        </p>
-        <p>
-          Важно: игрок может разместить в своем городе только 1 фиолетовое предприятие каждого вида. Если карта
-          другого цвета, то таких предприятий можно построить в городе сколько угодно.
-        </p>
-        <p>
-          Выбрав постройку достопримечательности, активный игрок оплачивает в банк цену строительства выбранной
-          достопримечательности, после чего переворачивает соответствующую карту у себя в городе лицевой стороной
-          вверх. С этого момента он может применять эффект этой карты.
-        </p>
-        <p>Важно: пока карта достопримечательности не куплена, ее эффект для игрока недоступен.</p>
-        <p>Выбрав отказ от строительства, активный игрок ничего не делает.</p>
-        <p>После того как фаза строительства завершена, ход передается следующему игроку.</p>
-        <h4>Конец игры</h4>
-        <p>
-          Игра завершается, как только один из игроков построил последнюю достопримечательность в своем городе. Этот
-          игрок объявляется победителем.
-        </p>
-        <h4>Прочие правила</h4>
-        <p>
-          Если у игрока недостаточно средств, чтобы расплатиться с соперником за эффект карты, то он отдаёт то, что
-          есть, а остаток долга списывается. Игрок, недополучивший средства, не получает никакой компенсации из других
-          источников. Если у игрока нет монет, чтобы отдать сопернику, он ничего не платит.
-        </p>
-        <p>
-          Когда игрок в один ход должен и получить доход (карты зеленого и синего цветов), и заплатить сопернику за
-          эффект его карты (карта красного цвета), он сначала платит сопернику, а потом получает доход.
-        </p>
-        <p>
-          Если в магазине предприятий закончилось карта одного из предприятий, то это предприятие больше нельзя
-          построить.
-        </p>
+        <div class="game-progress">
+          <h4>Ход игры</h4>
+          <p>
+            Очередность ходов игроков определяет великий рандом перед началом игры. Ход активного игрока состоит из двух
+            фаз.
+          </p>
+          <ol>
+            <li>Фаза доходов</li>
+            <li>Фаза строительства</li>
+          </ol>
+          <h4>Фаза доходов</h4>
+          <p>
+            В фазе доходов активный игрок бросает 1 кубик. Если в городе активного игрока есть "Вокзал", игрок может
+            выбрать сколько кубиков бросить: 1 или 2.
+          </p>
+          <p>
+            По результатам броска все игроки (не только активный) могут получить доход. Число в верхней части карты в
+            городе игрока указывает, какой результат на кубиках приводит к срабатыванию эффекта карты. А в тексте внизу
+            карты указано, когда срабатывает эффект карты (в свой ход, в чужой или в ход любого игрока). От эффекта
+            карты также зависит, откуда игрок берет монеты: из банка или у соперника.
+          </p>
+          <div class="enterprises">
+            <div class="enterprises-blue">
+              <div class="enterprises-blue-header">
+                <h4>Синие карты:</h4>
+                <h4>сырьевые предприятия</h4>
+              </div>
+              <div class="enterprises-blue-card">
+                <div class="enterprises-card-img">
+                  <img src="../assets/images/startСards/wheatField.png" alt="Синие предприятие" />
+                </div>
+                <div class="enterprises-card-description">
+                  <p>Приносят владельцу доход из банка в ход любого игрока.</p>
+                </div>
+              </div>
+            </div>
+            <div class="enterprises-green">
+              <div class="enterprises-green-header">
+                <h4>Зеленые карты:</h4>
+                <h4>магазины, фабрики, рынки</h4>
+              </div>
+              <div class="enterprises-green-card">
+                <div class="enterprises-card-img">
+                  <img src="../assets/images/startСards/bakery.png" alt="Зеленое предприятие" />
+                </div>
+                <div class="enterprises-card-description">
+                  <p>Приносят владельцу доход из банка только в свой ход.</p>
+                </div>
+              </div>
+            </div>
+            <div class="enterprises-red">
+              <div class="enterprises-red-header">
+                <h4>Красные карты:</h4>
+                <h4>заведения общепита</h4>
+              </div>
+              <div class="enterprises-red-card">
+                <div class="enterprises-card-img">
+                  <img src="../assets/images/ordinaryBuildings/cafe.png" alt="Красное предприятие" />
+                </div>
+                <div class="enterprises-card-description">
+                  <p>Приносят владельцу доход из средств активного игрока.</p>
+                </div>
+              </div>
+            </div>
+            <div class="enterprises-purple">
+              <div class="enterprises-purple-header">
+                <h4>Фиолетовые карты:</h4>
+                <h4>крупные предприятия</h4>
+              </div>
+              <div class="enterprises-purple-card">
+                <div class="enterprises-card-img">
+                  <img src="../assets/images/uniqueBuildings/stadium.png" alt="Фиолетовое предприятие" />
+                </div>
+                <div class="enterprises-card-description">
+                  <p>Приносят владельцу доход из средств соперников, но только в свой ход.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h4>Фаза строительства</h4>
+          <p>В фазе строительства активный игрок может совершить одно из трех действий:</p>
+          <ol>
+            <li>Построить 1 новое предприятие</li>
+            <li>Построить 1 достопримечательность</li>
+            <li>Отказаться от строительства</li>
+          </ol>
+          <p>
+            Выбрав постройку нового предприятия, активный игрок оплачивает в банк цену строительства выбранного
+            предприятия, после чего получает соотвествующую карту из магазина предприятий и размещает у себя в городе.
+            Теперь эта карта может приносить ему доход (в случае срабатывания эффекта).
+          </p>
+          <p>
+            Важно: игрок может разместить в своем городе только 1 фиолетовое предприятие каждого вида. Если карта
+            другого цвета, то таких предприятий можно построить в городе сколько угодно.
+          </p>
+          <p>
+            Выбрав постройку достопримечательности, активный игрок оплачивает в банк цену строительства выбранной
+            достопримечательности, после чего переворачивает соответствующую карту у себя в городе лицевой стороной
+            вверх. С этого момента он может применять эффект этой карты.
+          </p>
+          <p>Важно: пока карта достопримечательности не куплена, ее эффект для игрока недоступен.</p>
+          <p>Выбрав отказ от строительства, активный игрок ничего не делает.</p>
+          <p>После того как фаза строительства завершена, ход передается следующему игроку.</p>
+          <h4>Конец игры</h4>
+          <p>
+            Игра завершается, как только один из игроков построил последнюю достопримечательность в своем городе. Этот
+            игрок объявляется победителем.
+          </p>
+          <h4>Прочие правила</h4>
+          <p>
+            Если у игрока недостаточно средств, чтобы расплатиться с соперником за эффект карты, то он отдаёт то, что
+            есть, а остаток долга списывается. Игрок, недополучивший средства, не получает никакой компенсации из других
+            источников. Если у игрока нет монет, чтобы отдать сопернику, он ничего не платит.
+          </p>
+          <p>
+            Когда игрок в один ход должен и получить доход (карты зеленого и синего цветов), и заплатить сопернику за
+            эффект его карты (карта красного цвета), он сначала платит сопернику, а потом получает доход.
+          </p>
+          <p>
+            Если в магазине предприятий закончилось карта одного из предприятий, то это предприятие больше нельзя
+            построить.
+          </p>
+        </div>
+        <button class="btn-back-rules">Назад</button>
       </div>
-      <button class="btn-back-rules">Назад</button>
     </div>
-  </div>
-  <div class="shop hidden">
-    <button class="btn-back-shop">
-      <img src="../assets/images/cancel.png" alt="Закрыть" />
-    </button>
-    <div class="shop-content">
-      <h2>Магазин</h2>
-      <div class="shop-button">
-        <button class="shop-blue">Синие</button>
-        <button class="shop-green">Зеленые</button>
-        <button class="shop-red">Красные</button>
-        <button class="shop-purple">Фиолетовые</button>
-        <button class="shop-attractions">Достопримечательности</button>
+    <div class="shop hidden">
+      <button class="btn-back-shop">
+        <img src="../assets/images/cancel.png" alt="Закрыть" />
+      </button>
+      <div class="shop-content">
+        <h2>Магазин</h2>
+        <div class="shop-button">
+          <button class="shop-blue">Синие</button>
+          <button class="shop-green">Зеленые</button>
+          <button class="shop-red">Красные</button>
+          <button class="shop-purple">Фиолетовые</button>
+          <button class="shop-attractions">Достопримечательности</button>
+        </div>
       </div>
     </div>
-  </div>
-  <button class="btn-shop">Магазин</button>
-  <h1>Real Time Messaging</h1>
-  <div id="chatRooms">
-    <input type="text" id="createRoomInput" class="hide" placeholder="Type your new room name here" />
-    <button id="createRoomBtn" class="hide">create room</button>
-    <br />
-  </div>
-  <pre id="messages" class="hide"></pre>
+    <div class="chat hidden">
+      <div class="chat-content">
+        <h4>Чат матча</h4>
+        <pre id="messages" class="hide"></pre>
+        <input type="text" id="messageBox" class="hide" placeholder="Type your message here" />
+        <div class="chat-btn">
+          <button id="send" class="hide" title="Send Message!">Отправить сообщение</button>
+          <button id="getOutRoomBtn" class="hide" title="get out from room">Выйти из комнаты</button>
+          <button class="close-chat" title="close chat">Закрыть чат</button>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btn hidden">
+      <button id="chatRoomsBtn" title="get chat rooms">Войти в лобби</button>
+      <button class="back-to-menu">Главное меню</button>
+    </div>
+    <div id="chatRooms">
+      <div class="chatRooms-input">
+      <input type="text" id="createRoomInput" class="hide" placeholder="Type your new room name here" />
+      <button id="createRoomBtn" class="hide">Create room</button>
+      </div>
+      <div class="chat-new-rooms">
+      </div>
+    </div>
+    <div class="full-card-wrapper hidden">
+      <div class="full-card">
+        <button class="full-card-btn">Назад</button>
+      </div>
+    </div>
+    <div class="steal-wrapper hidden">
+      <div class="steal-content">
+        <h2>Выберите игрока</h2>
+        <button class="steal-player1">Первый игрок</button>
+        <button class="steal-player2">Второй игрок</button>
+        <button class="steal-player3">Третий игрок</button>
+        <button class="back-steal-player">Назад</button>
+      </div>
+    </div>
+    <div class="swap-wrapper hidden">
+      <div class="swap-content">
+        <h2>Выберите игрока</h2>
+        <button class="swap-player1">Первый игрок</button>
+        <button class="swap-player2">Второй игрок</button>
+        <button class="swap-player3">Третий игрок</button>
+        <button class="back-swap-player">Назад</button>
+      </div>
+    </div>
+    <div class="swap-cards-wrapper hidden">
+      <button class="btn-back-swap">
+        <img src="../assets/images/cancel.png" alt="Закрыть" />
+      </button>
+      <div class="swap-cards-content">
+        <h2 class="swap-header">Выберите карту оппонента</h2>
+        <button class="back-swap">Назад</button>
 
-  <input type="text" id="messageBox" class="hide" placeholder="Type your message here" />
-  <button id="send" class="hide" title="Send Message!">Send Message</button>
-  <button id="chatRoomsBtn" title="get chat rooms">get chat rooms</button>
-  <button id="getOutRoomBtn" class="hide" title="get out from room">get out from room</button>
-</body>
-
+      </div>
+    </div>
+    <main class="game-content hidden">
+      <div class="game-board-wrapper">
+        <canvas class="game-board"></canvas>
+      </div>
+      <div class="functional-panel">
+        <button class="btn-start">Старт игры</button>
+        <button class="btn-throw">Бросок кубика</button>
+        <button class="btn-throw2 hidden">Бросок кубиков</button>
+        <button class="btn-hold">Завершить ход</button>
+        <button class="btn-swap hidden">Обмен картами</button>
+        <button class="btn-steal hidden">Бонус телецентра</button>
+        <button class="btn-port-bonus hidden">Бонус порта</button>
+        <button class="btn-shop">Магазин</button>
+        <button class="btn-chat">Чат</button>
+      </div>
+    </main>
+  </body>
 </html>

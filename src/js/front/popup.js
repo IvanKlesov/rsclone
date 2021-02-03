@@ -19,6 +19,15 @@ const shopGreen = document.querySelector(".shop-green");
 const shopRed = document.querySelector(".shop-red");
 const shopPurple = document.querySelector(".shop-purple");
 const showAttractions = document.querySelector(".shop-attractions");
+const chat = document.querySelector(".chat");
+const btnChat = document.querySelector(".btn-chat");
+const closeChat = document.querySelector(".close-chat");
+const closeRoom = document.getElementById("getOutRoomBtn");
+const gameContent = document.querySelector(".game-content");
+const backToMenu = document.querySelector(".back-to-menu");
+const navBtn = document.querySelector(".nav-btn");
+const fullCardBtn = document.querySelector(".full-card-btn");
+const fullCardWrapper = document.querySelector(".full-card-wrapper");
 
 function openCategories(categorie) {
   mainMenu.classList.add("hidden");
@@ -81,4 +90,25 @@ shopPurple.addEventListener("click", () => {
 
 showAttractions.addEventListener("click", () => {
   createShop(".picture-attractions");
+});
+
+btnChat.addEventListener("click", () => {
+  chat.classList.remove("hidden");
+});
+
+closeChat.addEventListener("click", () => {
+  chat.classList.add("hidden");
+});
+
+closeRoom.addEventListener("click", () => {
+  gameContent.classList.add("hidden");
+});
+
+backToMenu.addEventListener("click", () => {
+  popup.classList.remove("hidden");
+  navBtn.classList.add("hidden");
+});
+
+fullCardBtn.addEventListener("click", () => {
+  fullCardWrapper.classList.add("hidden");
 });

@@ -1,53 +1,17 @@
 import logMessage from "../../logger";
-import { machiCoroClientMessageMethods } from "../back/machiCoroMessages/machiCoroClientMessageMethods";
-
-function sendStartMessage(ws, roomID) {
-  machiCoroClientMessageMethods.startGame(ws, roomID);
-}
-
-function sendBuyMessage(ws, roomID, willBuy) {
-  machiCoroClientMessageMethods.buy(ws, roomID, willBuy);
-}
-
-function sendHoldMessage(ws, roomID) {
-  machiCoroClientMessageMethods.hold(ws, roomID);
-}
-
-function sendThrowCubeMessage(ws, roomID, cubeNumbs) {
-  machiCoroClientMessageMethods.throw(ws, roomID, cubeNumbs);
-}
-
-function sendSwapCardsMessage(ws, roomID, commandString) {
-  const commandStringSplit = commandString.split(" ");
-  if (commandString.length < 4) {
-    logMessage("error sendSwapCardsMessage: command lenght < 4");
-    return;
-  }
-
-  const secondUserID = commandStringSplit[1];
-  const firstUserCard = commandStringSplit[2];
-  const secondUserCasrd = commandStringSplit[3];
-  logMessage(`secondUserID ${secondUserID}`);
-  logMessage(`firstUserCard ${firstUserCard}`);
-  logMessage(`secondUserCasrd ${secondUserCasrd}`);
-  machiCoroClientMessageMethods.swap(ws, roomID, secondUserID, firstUserCard, secondUserCasrd);
-}
-
-function sendStealMessage(ws, roomID, secondUserID) {
-  machiCoroClientMessageMethods.steal(ws, roomID, secondUserID);
-}
-
-function sendAcceptPortBonusMessage(ws, roomID) {
-  machiCoroClientMessageMethods.acceptPortBonus(ws, roomID);
-}
-
-function sendRejectPortBonusMessage(ws, roomID) {
-  machiCoroClientMessageMethods.rejectPortBonus(ws, roomID);
-}
-
-function sendAcceptThrowMessage(ws, roomID) {
-  machiCoroClientMessageMethods.acceptThrow(ws, roomID);
-}
+import {
+  sendStartMessage,
+  sendBuyMessage,
+  sendHoldMessage,
+  sendThrowCubeMessage,
+  sendSwapCardsMessage,
+  sendStealMessage,
+  sendAcceptPortBonusMessage,
+  sendRejectPortBonusMessage,
+  sendAcceptThrowMessage,
+} from "./machiCoroClientMessages";
+import createBoard, { drawNewCard, hideStartGameButton, drawBoard } from "../../front/gameBoard";
+import clientPlayer from "../../front/clientPlayer";
 
 function printInfoAboutBuyAction() {
   return "it is your turn \n/buy name -> buy something;\n/hold - hold turn";
@@ -59,21 +23,27 @@ export function handlerServerMachiCoroResponse(jsonData) {
   const { method } = jsonData;
   switch (method) {
     case "gameStarted": {
+      createBoard();
+      hideStartGameButton();
       return "game was started";
     }
     case "startGameError": {
       return "error with game start";
     }
     case "userGameInfo": {
+      // playerNum = uuid
       const userGameInfo = `get Info about this user from server\n
       You are Player ${jsonData.playerNum}
       User Money:${jsonData.money}\n
       Cards: ${jsonData.cards}
       ${jsonData.turn === "you" ? printInfoAboutBuyAction() : "it is turn of ".concat(jsonData.turn)}`;
+
+      clientPlayer.getRegistrationData().cards = jsonData.cards;
+      clientPlayer.getRegistrationData().money = jsonData.money;
+      drawBoard();
       return userGameInfo;
     }
     case "throwCube": {
-      // const throwResult = "";
       logMessage("throwCubeResult handled");
       const point = jsonData.throwCubeResult;
       if (jsonData.turn === "you") {
@@ -85,6 +55,7 @@ export function handlerServerMachiCoroResponse(jsonData) {
     case "purchaseInfo": {
       const itIsYourTurn = jsonData.turn === "you";
       if (itIsYourTurn) {
+        drawNewCard(jsonData.buyResponse);
         return `It is Your turn.You buy ${jsonData.buyResponse}`;
       }
       return `It is turn of player${jsonData.turn}. Player${jsonData.turn} buy ${jsonData.buyResponse}`;
@@ -102,14 +73,35 @@ export function handlerServerMachiCoroResponse(jsonData) {
 
     case "allUsersInfo": {
       const result = jsonData.content;
-      const info = result
-        .reduce((acc, userInfo) => (
-          acc.concat(`Player${userInfo.index}\n\t`).concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`)
-        ), "");
+      console.log("4444444444444444444444444444444444444444");
+      console.log(clientPlayer.getInfoAboutUsersInRoomArray());
+      const clPlArray = clientPlayer.getInfoAboutUsersInRoomArray();
+      const info = result.reduce(
+        (acc, userInfo) => {
+          for (let i = 0; i < clPlArray.length; i += 1) {
+            if (clPlArray[i].id === userInfo.index) {
+              clPlArray[i].cards = userInfo.cards;
+              clPlArray[i].money = userInfo.money;
+              break;
+            }
+          }
+          return acc.concat(`Player${userInfo.index}\n\t`).concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`);
+        },
+        "",
+      );
       return info;
     }
 
     case "gameFinalStat": {
+      return jsonData.content;
+    }
+    case "machiCoroRadioRequest": {
+      return jsonData.content;
+    }
+    case "machiCoroPortRequest": {
+      return jsonData.content;
+    }
+    case "machiCoroPortRadioRequest": {
       return jsonData.content;
     }
 

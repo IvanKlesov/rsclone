@@ -1,14 +1,13 @@
 import logMessage from "./js/logger";
-import "./js/popup";
-import "./css/style.css";
-import "./css/popup.css";
-import "./css/shop.css";
+import "./js/front/popup";
+import "./css/main.css";
 import { clientMessageMethods } from "./server/messages/clientMessageMethods";
 import handleCliCommand, { handlerServerMachiCoroResponse } from "./js/machiCoroGame/front/machiCoroClientLogic";
 
 import createEl, { configurateButton, hideElement, unhideElement } from "./js/createEl";
 
-import initAuth from "./js/auth";
+import initAuth from "./js/front/auth";
+import clientPlayer from "./js/front/clientPlayer";
 
 // Log message to console
 logMessage("Welcome to Expack!");
@@ -19,9 +18,13 @@ if (typeof module.hot !== "undefined") {
 }
 
 const newGame = document.querySelector(".new-game");
+const gameContent = document.querySelector(".game-content");
 const sendBtn = document.getElementById("send");
 const chatRoomsBtn = document.getElementById("chatRoomsBtn");
+const chatNewRooms = document.querySelector(".chat-new-rooms");
+
 const getOutRoomBtn = document.getElementById("getOutRoomBtn");
+const navBtn = document.querySelector(".nav-btn");
 
 const messages = document.getElementById("messages");
 const messageBox = document.getElementById("messageBox");
@@ -36,6 +39,7 @@ const registrationData = {};
 let roomID;
 let infoAboutUsersInRoom;
 const roomUserImages = [];
+clientPlayer.setRoomUserImages(roomUserImages);
 // let ownRoomID;
 
 function getUserNameUsingUUID(UUID) {
@@ -57,6 +61,7 @@ function changeHttpUrlOnWs(url) {
 const HOST = changeHttpUrlOnWs(window.location.href);
 logMessage(HOST);
 const ws = new WebSocket(HOST);
+clientPlayer.setWs(ws);
 
 initAuth();
 
@@ -92,10 +97,11 @@ function configurateChatRoomButtons(rooms) {
     if (chatRoomsId.indexOf(id) === -1) {
       chatRoomsId.push(id);
       logMessage(room);
-      const button = configurateButton(name, "", id, chatRooms);
+      const button = configurateButton(name, "", id, chatNewRooms);
       button.addEventListener("click", () => {
         clientMessageMethods.setRoom(ws, id);
         hideElement(chatRooms);
+        gameContent.classList.remove("hidden");
       });
     }
   });
@@ -148,12 +154,12 @@ ws.onmessage = (event) => {
         registrationData.id = jsonData.id;
         registrationData.name = jsonData.name;
         registrationData.photoAddress = jsonData.photoAddress;
+        clientPlayer.setRegistrationData(registrationData);
+
         const img = new Image();
         img.src = registrationData.photoAddress;
-        /* img.width = 20;
-        img.height = 20; */
         roomUserImages[registrationData.id] = img;
-        console.log(img);
+
         break;
       }
       case "message": {
@@ -168,17 +174,17 @@ ws.onmessage = (event) => {
       }
       case "userRoomAccept": {
         roomID = jsonData.content;
+        clientPlayer.setRoomID(roomID);
         logMessage("roomID", roomID);
         logMessage("----------------------------------------------------");
         logMessage("----------------------------------------------------");
         logMessage("----------------------------------------------------");
         logMessage(jsonData.infoAboutOtherUsers);
         infoAboutUsersInRoom = jsonData.infoAboutOtherUsers;
+        clientPlayer.setInfoAboutUsersInRoomArray(infoAboutUsersInRoom);
         jsonData.infoAboutOtherUsers.forEach((user) => {
           const img = new Image();
           img.src = user.photoAddress;
-          /* img.width = 20;
-          img.height - 20; */
           roomUserImages[user.id] = img;
         });
         enterChat();
@@ -194,8 +200,6 @@ ws.onmessage = (event) => {
           };
           const img = new Image();
           img.src = newUser.photoAddress;
-          /* img.width = 20;
-          img.height = 20; */
           roomUserImages[newUser.id] = img;
           logMessage("----------------------------------------------------");
           logMessage("----------------------------------------------------");
@@ -215,6 +219,8 @@ ws.onmessage = (event) => {
       }
       case "getOutRoomAccept": {
         roomID = undefined;
+        clientPlayer.setRoomID(roomID);
+        navBtn.classList.remove("hidden");
         outChat();
         break;
       }
@@ -223,7 +229,10 @@ ws.onmessage = (event) => {
         // const name = jsonData.content.split("__id")[0];
         const id = jsonData.content.split("__id")[1];
         roomID = id;
+        clientPlayer.setRoomID(roomID);
         enterChat();
+        hideElement(chatRooms);
+        gameContent.classList.remove("hidden");
         break;
       }
       default: {
@@ -260,11 +269,13 @@ sendBtn.onclick = () => {
 chatRoomsBtn.onclick = () => {
   logMessage("chat rooms btn");
   clientMessageMethods.getRooms(ws);
+  navBtn.classList.add("hidden");
 };
 
 newGame.onclick = () => {
   logMessage("chat rooms btn");
   clientMessageMethods.getRooms(ws);
+  hideElement(chatRoomsBtn);
 };
 
 getOutRoomBtn.onclick = () => {
