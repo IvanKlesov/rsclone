@@ -39,7 +39,7 @@ module.exports = {
       {
         // Loads the javacript into html template provided.
         // Entry point is set below in HtmlWebPackPlugin in Plugins 
-        test: /\.html$/,
+        test: /\.ejs$/,
         use: [
           {
             loader: "html-loader",
@@ -49,7 +49,7 @@ module.exports = {
       },
       {
         // Loads images into CSS and Javascript files
-        test: /\.jpg$/,
+        test: /\.(png|svg|jpg|gif)$/,
         use: [{loader: "url-loader"}]
       },
       {
@@ -62,8 +62,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: "./src/html/index.html",
-      filename: "./index.html"
+      template: "./src/html/index.ejs",
+      filename: "./index.ejs"
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",

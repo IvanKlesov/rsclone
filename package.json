@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
+    "b": "webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
     "dev": "rd /s /q dist && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
     "prod": "rd /s /q dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
     "start": "node ./dist/server.js",
     "lint": "eslint ./**/*.js",
-    "lintf": "eslint --fix ./**/*.js"
+    "lintf": "eslint --fix ./**/*.js",
+    "heroku-postbuild": "webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js"
   },
   "repository": {
     "type": "git",
@@ -57,5 +58,8 @@
     "webpack-dev-middleware": "^4.0.4",
     "webpack-hot-middleware": "^2.25.0",
     "webpack-node-externals": "^2.5.2"
+  },
+  "engines": {
+    "node": "12.17.0"
   }
 }

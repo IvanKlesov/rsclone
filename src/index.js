@@ -40,7 +40,6 @@ let roomID;
 let infoAboutUsersInRoom;
 const roomUserImages = [];
 clientPlayer.setRoomUserImages(roomUserImages);
-// let ownRoomID;
 
 function getUserNameUsingUUID(UUID) {
   if (registrationData.id === UUID) {
