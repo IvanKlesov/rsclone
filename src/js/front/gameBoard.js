@@ -13,6 +13,7 @@ import {
   handLeftPlayer,
   handRightPlayer,
   handBottomPlayer,
+  basicHand,
   padding,
   opponentsUUID,
   swapCardsWrapper,
@@ -41,12 +42,6 @@ const backSwap = document.querySelector(".back-swap");
 
 const widthInfoPlayer = 100;
 const heightInfoPlayer = 140;
-
-const basicHand = [
-  /* cityHall, */
-  "bakery",
-  "wheatField",
-];
 
 function showFullCard(url) {
   fullCardWrapper.classList.remove("hidden");
@@ -249,7 +244,6 @@ function checkClickOnPlayersHand(x, y) {
 }
 
 export default function createBoard() {
-  console.log(clientPlayer.getInfoAboutUsersInRoomArray());
   opponentsUUID[0] = clientPlayer.getInfoAboutUsersInRoomArray()[0].id;
   if (clientPlayer.getInfoAboutUsersInRoomArray()[1]) {
     opponentsUUID[1] = clientPlayer.getInfoAboutUsersInRoomArray()[1].id;
@@ -301,7 +295,6 @@ export function drawNewCard(newCardName) {
   const widthCard = 50;
   const heightCard = 70;
 
-  console.log(handLeftPlayer, handBottomPlayer);
   const xBottomPlayer = Math.ceil(widthBoard * 0.1);
 
   let x = handBottomPlayer[handBottomPlayer.length - 1].left;

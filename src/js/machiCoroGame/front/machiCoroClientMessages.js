@@ -19,7 +19,7 @@ export function sendThrowCubeMessage(ws, roomID, cubeNumbs) {
 }
 export function sendSwapCardsMessageUsingUUID(ws, roomID, UUID, firstUserCard, secondUserCard) {
   machiCoroClientMessageMethods.swap(ws, roomID, UUID, firstUserCard, secondUserCard);
- }
+}
 export function sendSwapCardsMessage(ws, roomID, commandString) {
   const commandStringSplit = commandString.split(" ");
   if (commandString.length < 4) {

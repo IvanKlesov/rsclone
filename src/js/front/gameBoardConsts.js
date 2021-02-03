@@ -33,3 +33,9 @@ export const cardsCanExchanged = [
   "diner",
   "restaurant",
 ];
+
+export const basicHand = [
+  /* cityHall, */
+  "bakery",
+  "wheatField",
+];

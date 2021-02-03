@@ -43,7 +43,6 @@ clientPlayer.setRoomUserImages(roomUserImages);
 // let ownRoomID;
 
 function getUserNameUsingUUID(UUID) {
-  console.log(roomUserImages);
   if (registrationData.id === UUID) {
     return registrationData.name;
   }
@@ -74,7 +73,7 @@ function acceptMessege(newMessage, sender) {
   div.appendChild(img);
   const p = createEl("p", "", "", div);
   p.innerHTML = `   ${getUserNameUsingUUID(sender)}[${sender}]: ${newMessage}`;
-  // messages.appendChild(getUserPhotoUsingUUID(sender));
+
   messages.scrollTop = messages.scrollHeight;
 }
 
@@ -139,7 +138,7 @@ function isGameCliCommand(clientMessage) {
 
 ws.onopen = () => {
   logMessage("websocket start");
-  clientMessageMethods.registerUser(ws, userID, userName, userPhotoAdress);
+  clientMessageMethods.registerUser(ws, userID, userName, userPhotoAdress);// eslint-disable-line no-undef
 };
 
 ws.onmessage = (event) => {

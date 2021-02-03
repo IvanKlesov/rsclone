@@ -73,8 +73,6 @@ export function handlerServerMachiCoroResponse(jsonData) {
 
     case "allUsersInfo": {
       const result = jsonData.content;
-      console.log("4444444444444444444444444444444444444444");
-      console.log(clientPlayer.getInfoAboutUsersInRoomArray());
       const clPlArray = clientPlayer.getInfoAboutUsersInRoomArray();
       const info = result.reduce(
         (acc, userInfo) => {
@@ -85,7 +83,8 @@ export function handlerServerMachiCoroResponse(jsonData) {
               break;
             }
           }
-          return acc.concat(`Player${userInfo.index}\n\t`).concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`);
+          return acc.concat(`Player${userInfo.index}\n\t`)
+            .concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`);
         },
         "",
       );

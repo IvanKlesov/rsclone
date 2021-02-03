@@ -8,10 +8,10 @@ import {
   border,
   widthCards,
   heightCards,
+  basicHand,
 } from "./gameBoardConsts";
 import clientPlayer from "./clientPlayer";
 import { allCards } from "./allCards";
-import logMessage from "../logger";
 
 const swapPlayer1 = document.querySelector(".swap-player1");
 const swapPlayer2 = document.querySelector(".swap-player2");
@@ -143,7 +143,7 @@ function drawHandOpponents(idOpponent) {
       y += heightCards + padding;
     }
   }
-  console.log(activeCards);
+
   opponentCanvas.addEventListener("click", (event) => {
     const box = opponentCanvas.getBoundingClientRect();
 
