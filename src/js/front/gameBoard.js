@@ -39,6 +39,9 @@ const backStealPlayer = document.querySelector(".back-steal-player");
 const backSwapPlayer = document.querySelector(".back-swap-player");
 const backSwap = document.querySelector(".back-swap");
 
+const widthInfoPlayer = 100;
+const heightInfoPlayer = 140;
+
 const basicHand = [
   /* cityHall, */
   "bakery",
@@ -61,22 +64,24 @@ const wrapperBoard = document.querySelector(".game-board-wrapper");
 const board = document.querySelector(".game-board");
 const ctx = board.getContext("2d");
 
-export function drawBoard() {
+function clearPlayersHand() {
   handTopPlayer.lengh = 0;
   handLeftPlayer.legnth = 0;
   handRightPlayer.length = 0;
   handBottomPlayer.length = 0;
+}
 
-  const widthBoard = wrapperBoard.offsetWidth;
-  const heightBoard = wrapperBoard.offsetHeight;
-  const widthInfoPlayer = 100;
-  const heightInfoPlayer = 140;
+function playerHandFilling(hand, name, left, top, width, height) {
+  hand.push({
+    name,
+    left,
+    top,
+    width,
+    height,
+  });
+}
 
-  board.setAttribute("width", widthBoard);
-  board.setAttribute("height", heightBoard);
-
-  ctx.clearRect(0, 0, board.width, board.height);
-
+function drawTopPlayer(widthBoard) {
   // Игрок сверху
   const xTopPlayer = Math.ceil(widthBoard * 0.35);
   const firstOpponent = clientPlayer.getInfoAboutUsersInRoomArray()
@@ -101,17 +106,13 @@ export function drawBoard() {
     img.onload = function loadCardsTop() {
       ctx.drawImage(img, xTopPlayer + widthInfoPlayer + padding * k, 0, 100, 140);
     };
-    handTopPlayer.push({
-      name: allCards[firstUserCards[i]],
-      left: xTopPlayer + widthInfoPlayer + padding * k,
-      top: 0,
-      width: 100,
-      height: 140,
-    });
+    playerHandFilling(handTopPlayer, allCards[firstUserCards[i]],
+      xTopPlayer + widthInfoPlayer + padding * k, 0, 100, 140);
   }
+}
 
+function tryDrawLeftPlayer(widthBoard, heightBoard) {
   if (clientPlayer.getInfoAboutUsersInRoomArray().length >= 2) {
-    // игрок слева
     const xLeftPlayer = Math.ceil(widthBoard * 0.1);
     const yLeftPlayer = Math.ceil(heightBoard * 0.25);
     const secondOpponent = clientPlayer.getInfoAboutUsersInRoomArray()
@@ -136,18 +137,14 @@ export function drawBoard() {
       img.onload = function loadCardsLeft() {
         ctx.drawImage(img, xLeftPlayer + padding * k, yLeftPlayer + heightInfoPlayer + padding, 100, 140);
       };
-      handLeftPlayer.push({
-        name: allCards[secondUserCards[i]],
-        left: xLeftPlayer + padding * k,
-        top: yLeftPlayer + heightInfoPlayer + padding,
-        width: 100,
-        height: 140,
-      });
+      playerHandFilling(handLeftPlayer, allCards[secondUserCards[i]],
+        xLeftPlayer + padding * k, yLeftPlayer + heightInfoPlayer + padding, 100, 140);
     }
   }
+}
 
+function tryDrawRightPlayer(widthBoard, heightBoard) {
   if (clientPlayer.getInfoAboutUsersInRoomArray().length >= 3) {
-    // игрок справа
     const xRightPlayer = Math.ceil(widthBoard * 0.8);
     const yRightPlayer = Math.ceil(heightBoard * 0.25);
     const thirdOpponent = clientPlayer.getInfoAboutUsersInRoomArray()
@@ -172,17 +169,13 @@ export function drawBoard() {
       img.onload = function loadCardsRight() {
         ctx.drawImage(img, xRightPlayer - 300 + padding * k, yRightPlayer + heightInfoPlayer + padding, 100, 140);
       };
-      handRightPlayer.push({
-        name: allCards[thirdUserCards[i]],
-        left: xRightPlayer - 300 + padding * k,
-        top: yRightPlayer + heightInfoPlayer + padding,
-        width: 100,
-        height: 140,
-      });
+      playerHandFilling(handRightPlayer, allCards[thirdUserCards[i]],
+        xRightPlayer - 300 + padding * k, yRightPlayer + heightInfoPlayer + padding, 100, 140);
     }
   }
+}
 
-  // нижний игрок
+function drawBottomPlayer(widthBoard, heightBoard) {
   const xBottomPlayer = Math.ceil(widthBoard * 0.1);
   const yBottomPlayer = Math.ceil(heightBoard * 0.8);
   ctx.strokeRect(xBottomPlayer, yBottomPlayer, widthInfoPlayer, heightInfoPlayer + padding);
@@ -211,15 +204,48 @@ export function drawBoard() {
         y = yBottomPlayer + heightInfoPlayer / 2 + padding;
       }
       ctx.drawImage(img, xBottomPlayer + widthInfoPlayer + padding + (widthInfoPlayer / 2 + padding) * k, y, 50, 70);
-      handBottomPlayer.push({
-        name: allCards[yourHand[i]],
-        left: xBottomPlayer + widthInfoPlayer + padding + (widthInfoPlayer / 2 + padding) * k,
-        top: y,
-        width: 50,
-        height: 70,
-      });
+      playerHandFilling(handBottomPlayer, allCards[yourHand[i]],
+        xBottomPlayer + widthInfoPlayer + padding + (widthInfoPlayer / 2 + padding) * k,
+        y, 50, 70);
     };
   }
+}
+
+export function drawBoard() {
+  clearPlayersHand();
+
+  const widthBoard = wrapperBoard.offsetWidth;
+  const heightBoard = wrapperBoard.offsetHeight;
+
+  board.setAttribute("width", widthBoard);
+  board.setAttribute("height", heightBoard);
+
+  ctx.clearRect(0, 0, board.width, board.height);
+  drawTopPlayer(widthBoard);
+  tryDrawLeftPlayer(widthBoard, heightBoard);
+  tryDrawRightPlayer(widthBoard, heightBoard);
+  drawBottomPlayer(widthBoard, heightBoard);
+}
+
+function isClickOnPlayerHand(x, y, hand) {
+  for (let i = 0; i < hand.length; i += 1) {
+    const card = hand[i];
+    if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
+      showFullCard(card.name);
+      return true;
+    }
+  }
+  return false;
+}
+
+function checkClickOnPlayersHand(x, y) {
+  if (isClickOnPlayerHand(x, y, handBottomPlayer)
+    || isClickOnPlayerHand(x, y, handTopPlayer)
+    || isClickOnPlayerHand(x, y, handLeftPlayer)
+    || isClickOnPlayerHand(x, y, handRightPlayer)) {
+    return true;
+  }
+  return false;
 }
 
 export default function createBoard() {
@@ -241,30 +267,32 @@ export default function createBoard() {
     const x = event.clientX - box.left;
     const y = event.clientY - box.top;
 
-    handBottomPlayer.forEach((card) => {
-      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
-        showFullCard(card.name);
-      }
-    });
-
-    handTopPlayer.forEach((card) => {
-      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
-        showFullCard(card.name);
-      }
-    });
-
-    handLeftPlayer.forEach((card) => {
-      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
-        showFullCard(card.name);
-      }
-    });
-
-    handRightPlayer.forEach((card) => {
-      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
-        showFullCard(card.name);
-      }
-    });
+    checkClickOnPlayersHand(x, y);
   });
+}
+
+function tryActivateSpecialButtonsByNewCardName(newCardName) {
+  switch (newCardName) {
+    case "telecentre": {
+      stealMoney.classList.remove("hidden");
+      break;
+    }
+    case "port": {
+      portBonus.classList.remove("hidden");
+      break;
+    }
+    case "railwayStation": {
+      throwCubes2.classList.remove("hidden");
+      break;
+    }
+    case "businessCenter": {
+      swapCards.classList.remove("hidden");
+      break;
+    }
+    default: {
+      break;
+    }
+  }
 }
 
 export function drawNewCard(newCardName) {
@@ -282,53 +310,23 @@ export function drawNewCard(newCardName) {
 
   newImg.src = allCards[newCardName];
 
-  switch (newCardName) {
-    case "telecentre":
-      stealMoney.classList.remove("hidden");
-      break;
-    case "port":
-      portBonus.classList.remove("hidden");
-      break;
-    case "railwayStation":
-      throwCubes2.classList.remove("hidden");
-      break;
-    case "businessCenter":
-      swapCards.classList.remove("hidden");
-      break;
-    default:
-  }
+  tryActivateSpecialButtonsByNewCardName(newCardName);
 
   newImg.onload = function addCardsBottom() {
     if (x + padding + widthCard <= xBottomPlayer + 1200) {
-      handBottomPlayer.push({
-        name: newImg.src,
-        left: x + widthCard + padding,
-        top: y,
-        width: 50,
-        height: 70,
-      });
-
+      playerHandFilling(handBottomPlayer, newImg.src, x + widthCard + padding, y, 50, 70);
       ctx.drawImage(newImg, x + widthCard + padding, y, widthCard, heightCard);
     } else {
       x = xBottomPlayer + widthCard * 2 + padding;
       y = y + padding + heightCard;
-      handBottomPlayer.push({
-        name: newImg.src,
-        left: x,
-        top: y,
-        width: 50,
-        height: 70,
-      });
-
+      playerHandFilling(handBottomPlayer, newImg.src, x, y, 50, 70);
       ctx.drawImage(newImg, x, y, widthCard, heightCard);
     }
   };
 }
 
 startGame.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendStartMessage(ws, roomID);
+  sendStartMessage(clientPlayer.getWs(), clientPlayer.getRoomID());
 });
 
 export function hideStartGameButton() {
@@ -336,21 +334,15 @@ export function hideStartGameButton() {
 }
 
 holdTurn.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendHoldMessage(ws, roomID);
+  sendHoldMessage(clientPlayer.getWs(), clientPlayer.getRoomID());
 });
 
 throwCubes.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendThrowCubeMessage(ws, roomID, 1);
+  sendThrowCubeMessage(clientPlayer.getWs(), clientPlayer.getRoomID(), 1);
 });
 
 throwCubes2.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendThrowCubeMessage(ws, roomID, 2);
+  sendThrowCubeMessage(clientPlayer.getWs(), clientPlayer.getRoomID(), 2);
 });
 
 swapCards.addEventListener("click", () => {
@@ -370,25 +362,21 @@ stealMoney.addEventListener("click", () => {
   stealWrapper.classList.remove("hidden");
 });
 
-stealPlayer1.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendStealMessage(ws, roomID, opponentsUUID[0]);
+function steal(uuid) {
+  sendStealMessage(clientPlayer.getWs(), clientPlayer.getRoomID(), uuid);
   stealWrapper.classList.add("hidden");
+}
+
+stealPlayer1.addEventListener("click", () => {
+  steal(opponentsUUID[0]);
 });
 
 stealPlayer2.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendStealMessage(ws, roomID, opponentsUUID[1]);
-  stealWrapper.classList.add("hidden");
+  steal(opponentsUUID[1]);
 });
 
 stealPlayer3.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendStealMessage(ws, roomID, opponentsUUID[2]);
-  stealWrapper.classList.add("hidden");
+  steal(opponentsUUID[2]);
 });
 
 backStealPlayer.addEventListener("click", () => {
@@ -396,7 +384,5 @@ backStealPlayer.addEventListener("click", () => {
 });
 
 portBonus.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendAcceptPortBonusMessage(ws, roomID);
+  sendAcceptPortBonusMessage(clientPlayer.getWs(), clientPlayer.getRoomID());
 });
