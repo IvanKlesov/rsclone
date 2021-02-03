@@ -159,3 +159,21 @@ body {
 .cards-opponents {
   margin: 20px;
 }
+
+.btn-back-swap {
+  position: absolute;
+  top: 7%;
+  right: 7%;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  background-color: rgba(0, 172, 220, 1);
+  padding-top: 3px;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.btn-back-swap:hover {
+  border-color: rgba(218, 55, 58);
+}
