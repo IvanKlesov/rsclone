@@ -23,7 +23,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   text-align: center;
   margin: 0 auto;
   color: #ffffff;
@@ -56,6 +56,49 @@ body {
 
 .main-menu li:hover {
   color: rgba(218, 55, 58);
+}
+
+/* Footer */
+
+.footer-wrapper {
+  background-color: #e5c7ad;
+  padding: 20px 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+  align-items: center;
+  color: black;
+}
+
+.creators h4 {
+  font-size: 20px;
+  text-align: center;
+  color: black;
+  margin: 10px;
+}
+
+.creators h4 a {
+  text-decoration: none;
+  color: black;
+  transition: 0.3s;
+}
+
+.creators h4 a:hover {
+  color: white;
+}
+
+.footer-logo {
+  width: 200px;
+}
+
+.footer-logo a {
+  display: block;
+  cursor: pointer;
 }
 
 /* Cards */

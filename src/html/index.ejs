@@ -13,7 +13,7 @@
     <div class="hide" id = "auth-container">
       <% if(user){ %>
       <% } else{ %>
-        <a href="auth/google" class=""> 
+        <a href="auth/google" class="">
           <button id = "google-auth-btn">
             google
           </button>
@@ -33,7 +33,7 @@
           var userPhotoAdress = undefined;
         <%}%>
       </script>
-    
+
         <%if (user) {%>
           <%var name = user.displayName%>
           <%var pathToPhoto = user.photos[0].value%>
@@ -56,6 +56,22 @@
           <li class="rules">Правила Игры</li>
           <li class="settings">Настройки</li>
         </ul>
+        <div class="footer-wrapper">
+        <div class="footer">
+        <h4>
+          <a href="https://github.com/IvanKlesov">Ivan Klesov</a>
+        </h4>
+        <h4>
+            <a href="https://github.com/vetaniExist">Alexander Hurynovich</a>
+          </h4>
+        <div class="footer-logo">
+          <a href="https://rs.school/js/">
+            <img src="../assets/svg/rs-school-js.svg" />
+          </a>
+        </div>
+        <h4>2021 г.</h4>
+      </div>
+      </div>
       </div>
       <div class="all-cards hidden">
         <h2>Карты</h2>
