@@ -1,7 +1,7 @@
-import avatar from "../../assets/images/avatar.png";
-import bakery from "../../assets/images/startСards/bakery.png";
+// import avatar from "../../assets/images/avatar.png";
+// import bakery from "../../assets/images/startСards/bakery.png";
 import cityHall from "../../assets/images/startСards/cityHall.png";
-import wheatField from "../../assets/images/startСards/wheatField.png";
+// import wheatField from "../../assets/images/startСards/wheatField.png";
 /* import shirtAmusementPark from "../../assets/images/attractions/shirtAmusementPark.png";
 import shirtAirport from "../../assets/images/attractions/shirtAirport.png";
 import shirtPort from "../../assets/images/attractions/shirtPort.png";
