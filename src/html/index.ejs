@@ -24,6 +24,7 @@
       <% } %>
     </div>
     <div class="popup">
+
       <div class="auth-login">
       <script>
         <% if (user) {%>
@@ -362,6 +363,38 @@
         </div>
         <button class="btn-back-rules">Назад</button>
       </div>
+      <div class="settings-categorie-wrapper hidden">
+         <div class="settings-categorie">
+           <h2>Настройки</h2>
+          <div class="sound">
+            <p>Без звука</p>
+            <div class="sound-wrapper">
+            <div class="sound-item item-1">
+		            <input id="volumeOff" type="radio" name="radio" value="off">
+            		<label for="volumeOff">OFF</label>
+	          </div>
+	          <div class="sound-item item-2">
+		            <input id="volumeOn" type="radio" name="radio" value="on" checked>
+		              <label for="volumeOn">ON</label>
+ 	         </div>
+           </div>
+          </div>
+          <div class="volume-wrapper">
+           <p>Громкость</p>
+           <div class="volume">
+             <button class="btn-minus">-</button>
+             <div class="volume-control">
+               <span class="volume-low"></span>
+               <span class="volume-middle"></span>
+               <span class="volume-max"></span>
+              </div>
+             <button class="btn-plus">+</button>
+            </div>
+          </div>
+          <button class="btn-back-settings">Назад</button>
+         </div>
+       </div>
+
     </div>
     <div class="shop hidden">
       <button class="btn-back-shop">

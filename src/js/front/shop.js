@@ -1,5 +1,6 @@
 import clientPlayer from "./clientPlayer";
 import { sendBuyMessage } from "../machiCoroGame/front/machiCoroClientMessages";
+import { AudioSystem, allSounds } from "./audioSystem";
 
 let currentColor;
 const blueCards = [
@@ -212,6 +213,8 @@ export default function createShop(color) {
         const ws = clientPlayer.getWs();
         const roomID = clientPlayer.getRoomID();
         sendBuyMessage(ws, roomID, element.name);
+        const song = new AudioSystem(allSounds.click);
+        song.playAudio();
       }
     });
   });
