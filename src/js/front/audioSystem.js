@@ -16,6 +16,15 @@ export class AudioSystem {
     this.volumeOn = document.getElementById("volumeOn");
   }
 
+  volume() {
+    if (localStorage.getItem("Volume")) {
+      this.audio.volume = localStorage.getItem("Volume");
+    } else {
+      this.audio.volume = 0.4;
+      localStorage.setItem("Volume", 0.4);
+    }
+  }
+
   playAudio() {
     this.audio.play();
   }
@@ -32,9 +41,11 @@ export class AudioSystem {
     if (this.volumeMax.style.backgroundColor === "white") {
       this.volumeMax.style.backgroundColor = "#00acdc";
       this.audio.volume = 0.6;
+      localStorage.setItem("Volume", 0.6);
     } else if (this.volumeMiddle.style.backgroundColor === "white") {
       this.volumeMiddle.style.backgroundColor = "#00acdc";
       this.audio.volume = 0.1;
+      localStorage.setItem("Volume", 0.1);
     }
   }
 
@@ -42,9 +53,11 @@ export class AudioSystem {
     if (this.volumeMiddle.style.backgroundColor === "white") {
       this.volumeMax.style.backgroundColor = "white";
       this.audio.volume = 1;
+      localStorage.setItem("Volume", 1);
     } else if (this.volumeLow.style.backgroundColor === "white") {
       this.volumeMiddle.style.backgroundColor = "white";
       this.audio.volume = 0.6;
+      localStorage.setItem("Volume", 0.6);
     }
   }
 

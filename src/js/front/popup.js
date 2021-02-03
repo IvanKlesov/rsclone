@@ -37,6 +37,7 @@ const volumeOff = document.getElementById("volumeOff");
 const volumeOn = document.getElementById("volumeOn");
 
 const mainTheme = new AudioSystem(allSounds.mainTheme);
+mainTheme.volume();
 mainTheme.loopAudio();
 
 function openCategories(categorie) {
