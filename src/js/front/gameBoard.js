@@ -314,12 +314,12 @@ export function drawNewCard(newCardName) {
 
   newImg.onload = function addCardsBottom() {
     if (x + padding + widthCard <= xBottomPlayer + 1200) {
-      playerHandFilling(handBottomPlayer, newImg.src, x + widthCard + padding, y, 50, 70);
+      playerHandFilling(handBottomPlayer, newCardName, x + widthCard + padding, y, 50, 70);
       ctx.drawImage(newImg, x + widthCard + padding, y, widthCard, heightCard);
     } else {
       x = xBottomPlayer + widthCard * 2 + padding;
       y = y + padding + heightCard;
-      playerHandFilling(handBottomPlayer, newImg.src, x, y, 50, 70);
+      playerHandFilling(handBottomPlayer, newCardName, x, y, 50, 70);
       ctx.drawImage(newImg, x, y, widthCard, heightCard);
     }
   };

@@ -17,7 +17,9 @@ export function sendHoldMessage(ws, roomID) {
 export function sendThrowCubeMessage(ws, roomID, cubeNumbs) {
   machiCoroClientMessageMethods.throw(ws, roomID, cubeNumbs);
 }
-
+export function sendSwapCardsMessageUsingUUID(ws, roomID, UUID, firstUserCard, secondUserCard) {
+  machiCoroClientMessageMethods.swap(ws, roomID, UUID, firstUserCard, secondUserCard);
+ }
 export function sendSwapCardsMessage(ws, roomID, commandString) {
   const commandStringSplit = commandString.split(" ");
   if (commandString.length < 4) {
@@ -31,9 +33,6 @@ export function sendSwapCardsMessage(ws, roomID, commandString) {
   }
   const firstUserCard = commandStringSplit[2];
   const secondUserCasrd = commandStringSplit[3];
-  logMessage(`secondUserID ${secondUserID}`);
-  logMessage(`firstUserCard ${firstUserCard}`);
-  logMessage(`secondUserCasrd ${secondUserCasrd}`);
   machiCoroClientMessageMethods.swap(ws, roomID, opponentsUUID[secondUserID - 1], firstUserCard, secondUserCasrd);
 }
 

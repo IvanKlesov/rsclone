@@ -1,4 +1,4 @@
-import { sendSwapCardsMessage } from "../machiCoroGame/front/machiCoroClientMessages";
+import { sendSwapCardsMessageUsingUUID } from "../machiCoroGame/front/machiCoroClientMessages";
 import {
   padding,
   opponentsUUID,
@@ -11,6 +11,7 @@ import {
 } from "./gameBoardConsts";
 import clientPlayer from "./clientPlayer";
 import { allCards } from "./allCards";
+import logMessage from "../logger";
 
 const swapPlayer1 = document.querySelector(".swap-player1");
 const swapPlayer2 = document.querySelector(".swap-player2");
@@ -54,7 +55,7 @@ function swapYourCard(idOpponent, cardOpponent) {
     const img = new Image();
     img.src = allCards[cardsForSwap[j]];
     activeCards.push({
-      name: cardsForSwap[j].name,
+      name: cardsForSwap[j],
       left: x,
       top: y,
       width: 180,
@@ -83,8 +84,7 @@ function swapYourCard(idOpponent, cardOpponent) {
       ) {
         const ws = clientPlayer.getWs();
         const roomID = clientPlayer.getRoomID();
-        const commandString = `${idOpponent} ${card.name} ${cardOpponent}`;
-        sendSwapCardsMessage(ws, roomID, commandString);
+        sendSwapCardsMessageUsingUUID(ws, roomID, idOpponent, card.name, cardOpponent);
         swapCardsWrapper.classList.add("hidden");
       }
     });
