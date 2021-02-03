@@ -107,7 +107,7 @@ export class Room {
 
   removeAllUsers() {
     this.users.forEach((client) => {
-      serverMessageMethods.getOutRoomAccept(client);
+      serverMessageMethods.getOutRoomAccept(client.getWs());
     });
     this.users.lenght = 0;
   }
