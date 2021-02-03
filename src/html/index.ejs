@@ -18,10 +18,13 @@
             google
           </button>
         </a>
+        <button id = "back-google-auth-btn">
+          back
+        </button>
       <% } %>
     </div>
     <div class="popup">
-      <div class="/auth-login">
+      <div class="auth-login">
       <script>
         <% if (user) {%>
           var userID = <%- user.id %>;
@@ -46,7 +49,7 @@
           <img src= "../assets/svg/user_icon-icons.com_57997.svg" class = "user-icon" alt="user photo">
           <button id = "login">login</button>
         <%}%>
-        <h2><%- name %></h2>
+        <h2 class="auth-login-header"><%- name %></h2>
       </div>
       <div class="main-menu">
         <h2>Мачи Коро</h2>
@@ -56,6 +59,24 @@
           <li class="rules">Правила Игры</li>
           <li class="settings">Настройки</li>
         </ul>
+        <div class="footer-wrapper">
+        <div class="footer">
+        <div class="creators">
+          <h4>
+            <a href="https://github.com/IvanKlesov">Ivan Klesov</a>
+          </h4>
+          <h4>
+            <a href="https://github.com/vetaniExist">Alexander Hurynovich</a>
+          </h4>
+        </div>
+        <div class="footer-logo">
+          <a href="https://rs.school/js/">
+            <img src="../assets/svg/rs-school-js.svg" />
+          </a>
+        </div>
+        <h4>2021 г.</h4>
+      </div>
+      </div>
       </div>
       <div class="all-cards hidden">
         <h2>Карты</h2>
@@ -374,9 +395,12 @@
       <button class="back-to-menu">Главное меню</button>
     </div>
     <div id="chatRooms">
+      <div class="chatRooms-input">
       <input type="text" id="createRoomInput" class="hide" placeholder="Type your new room name here" />
       <button id="createRoomBtn" class="hide">Create room</button>
-      <br />
+      </div>
+      <div class="chat-new-rooms">
+      </div>
     </div>
     <div class="full-card-wrapper hidden">
       <div class="full-card">
@@ -408,7 +432,7 @@
       <div class="swap-cards-content">
         <h2 class="swap-header">Выберите карту оппонента</h2>
         <button class="back-swap">Назад</button>
-        
+
       </div>
     </div>
     <main class="game-content hidden">
