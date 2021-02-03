@@ -1,19 +1,31 @@
 import clientPlayer from "./clientPlayer";
+import { audioSystem, allSounds } from "./AudioSystem";
 import {
   sendStartMessage,
   sendHoldMessage,
   sendThrowCubeMessage,
-  sendSwapCardsMessage,
   sendStealMessage,
   sendAcceptPortBonusMessage,
 } from "../machiCoroGame/front/machiCoroClientMessages";
-
 import { allCards } from "./allCards";
-import { allSounds, playAudio } from "./allSounds";
 import avatar from "../../assets/images/avatar.png";
+import {
+  handTopPlayer,
+  handLeftPlayer,
+  handRightPlayer,
+  handBottomPlayer,
+  padding,
+  opponentsUUID,
+  swapCardsWrapper,
+  swapWrapper,
+} from "./gameBoardConsts";
+
+require("./gameBoardSwapCards");
 
 const fullCardWrapper = document.querySelector(".full-card-wrapper");
 const fullCard = document.querySelector(".full-card");
+const stealWrapper = document.querySelector(".steal-wrapper");
+
 const startGame = document.querySelector(".btn-start");
 const holdTurn = document.querySelector(".btn-hold");
 const throwCubes = document.querySelector(".btn-throw");
@@ -21,72 +33,21 @@ const throwCubes2 = document.querySelector(".btn-throw2");
 const swapCards = document.querySelector(".btn-swap");
 const stealMoney = document.querySelector(".btn-steal");
 const portBonus = document.querySelector(".btn-port-bonus");
-
-const audioClick = document.createElement("audio");
-audioClick.classList.add("audio-click");
-audioClick.src = allSounds[1];
-
-startGame.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendStartMessage(ws, roomID);
-});
-
-export function hideStartGameButton() {
-  startGame.classList.add("hidden");
-}
-
-holdTurn.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendHoldMessage(ws, roomID);
-});
-
-throwCubes.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendThrowCubeMessage(ws, roomID, 1);
-});
-
-throwCubes2.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendThrowCubeMessage(ws, roomID, 2);
-});
-
-swapCards.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendSwapCardsMessage(ws, roomID);
-});
-
-stealMoney.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendStealMessage(ws, roomID, "stealAccept");
-});
-
-portBonus.addEventListener("click", () => {
-  const ws = clientPlayer.getWs();
-  const roomID = clientPlayer.getRoomID();
-  sendAcceptPortBonusMessage(ws, roomID);
-});
+const stealPlayer1 = document.querySelector(".steal-player1");
+const stealPlayer2 = document.querySelector(".steal-player2");
+const stealPlayer3 = document.querySelector(".steal-player3");
+const backStealPlayer = document.querySelector(".back-steal-player");
+const backSwapPlayer = document.querySelector(".back-swap-player");
+const backSwap = document.querySelector(".back-swap");
 
 const basicHand = [
   /* cityHall, */
   "bakery",
   "wheatField",
-  /*   shirtPort,
-    shirtRailwayStation,
-    shirtShoppingCenter,
-    shirtAmusementPark,
-    shirtRadioTower,
-    shirtAirport, */
 ];
 
-const opponentsUUID = [];
-
 function showFullCard(url) {
+  fullCardWrapper.classList.remove("hidden");
   if (fullCard.children.length > 0) {
     fullCard.removeChild(fullCard.firstChild);
   }
@@ -100,11 +61,6 @@ function showFullCard(url) {
 const wrapperBoard = document.querySelector(".game-board-wrapper");
 const board = document.querySelector(".game-board");
 const ctx = board.getContext("2d");
-const handTopPlayer = [];
-const handLeftPlayer = [];
-const handRightPlayer = [];
-const handBottomPlayer = [];
-const padding = 20;
 
 export function drawBoard() {
   handTopPlayer.lengh = 0;
@@ -127,6 +83,7 @@ export function drawBoard() {
   const firstOpponent = clientPlayer
     .getInfoAboutUsersInRoomArray()
     .find((opponent) => opponent.id === opponentsUUID[0]);
+
   ctx.strokeRect(xTopPlayer, 0, widthInfoPlayer, heightInfoPlayer);
   const imgTopPlayer = new Image();
   imgTopPlayer.src = firstOpponent.photoAddress || avatar;
@@ -155,9 +112,6 @@ export function drawBoard() {
     });
   }
 
-  console.log("111111111111111111111111111111111111111111111");
-  console.log(clientPlayer.getInfoAboutUsersInRoomArray());
-
   if (clientPlayer.getInfoAboutUsersInRoomArray().length >= 2) {
     // игрок слева
     const xLeftPlayer = Math.ceil(widthBoard * 0.1);
@@ -165,6 +119,7 @@ export function drawBoard() {
     const secondOpponent = clientPlayer
       .getInfoAboutUsersInRoomArray()
       .find((opponent) => opponent.id === opponentsUUID[1]);
+
     ctx.strokeRect(xLeftPlayer, yLeftPlayer, widthInfoPlayer, heightInfoPlayer);
     const imgLeftPlayer = new Image();
     imgLeftPlayer.src = secondOpponent.photoAddress || avatar;
@@ -296,9 +251,32 @@ export default function createBoard() {
     handBottomPlayer.forEach((card) => {
       if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
         showFullCard(card.name);
-        console.log("33333333333333333333333333333333333333");
-        playAudio(audioClick);
-        fullCardWrapper.classList.remove("hidden");
+        const song = audioSystem.createAudio(allSounds[click]);
+        song = audioSystem.playAudio();
+      }
+    });
+
+    handTopPlayer.forEach((card) => {
+      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
+        showFullCard(card.name);
+        const song = audioSystem.createAudio(allSounds[click]);
+        song = audioSystem.playAudio();
+      }
+    });
+
+    handLeftPlayer.forEach((card) => {
+      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
+        showFullCard(card.name);
+        const song = audioSystem.createAudio(allSounds[click]);
+        song = audioSystem.playAudio();
+      }
+    });
+
+    handRightPlayer.forEach((card) => {
+      if (y > card.top && y < card.top + card.height && x > card.left && x < card.left + card.width) {
+        showFullCard(card.name);
+        const song = audioSystem.createAudio(allSounds[click]);
+        song = audioSystem.playAudio();
       }
     });
   });
@@ -310,6 +288,7 @@ export function drawNewCard(newCardName) {
   const widthCard = 50;
   const heightCard = 70;
 
+  console.log(handLeftPlayer, handBottomPlayer);
   const xBottomPlayer = Math.ceil(widthBoard * 0.1);
 
   let x = handBottomPlayer[handBottomPlayer.length - 1].left;
@@ -359,21 +338,80 @@ export function drawNewCard(newCardName) {
       ctx.drawImage(newImg, x, y, widthCard, heightCard);
     }
   };
-
-  /* board.addEventListener("click", (event) => {
-    const box = board.getBoundingClientRect();
-
-    const newX = event.clientX - box.left;
-    const newY = event.clientY - box.top;
-
-    if (
-      newY > handBottomPlayer[handBottomPlayer.length - 1].top
-      && newY < handBottomPlayer[handBottomPlayer.length - 1].top + handBottomPlayer[handBottomPlayer.length - 1].height
-      && newX > handBottomPlayer[handBottomPlayer.length - 1].left
-      && newX < handBottomPlayer[handBottomPlayer.length - 1].left + handBottomPlayer[handBottomPlayer.length - 1].width
-    ) {
-      showFullCard(handBottomPlayer[handBottomPlayer.length - 1].name);
-      fullCardWrapper.classList.remove("hidden");
-    }
-  }); */
 }
+
+startGame.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendStartMessage(ws, roomID);
+});
+
+export function hideStartGameButton() {
+  startGame.classList.add("hidden");
+}
+
+holdTurn.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendHoldMessage(ws, roomID);
+});
+
+throwCubes.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendThrowCubeMessage(ws, roomID, 1);
+});
+
+throwCubes2.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendThrowCubeMessage(ws, roomID, 2);
+});
+
+swapCards.addEventListener("click", () => {
+  swapWrapper.classList.remove("hidden");
+});
+
+backSwapPlayer.addEventListener("click", () => {
+  swapWrapper.classList.add("hidden");
+});
+
+backSwap.addEventListener("click", () => {
+  swapWrapper.classList.remove("hidden");
+  swapCardsWrapper.classList.add("hidden");
+});
+
+stealMoney.addEventListener("click", () => {
+  stealWrapper.classList.remove("hidden");
+});
+
+stealPlayer1.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendStealMessage(ws, roomID, opponentsUUID[0]);
+  stealWrapper.classList.add("hidden");
+});
+
+stealPlayer2.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendStealMessage(ws, roomID, opponentsUUID[1]);
+  stealWrapper.classList.add("hidden");
+});
+
+stealPlayer3.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendStealMessage(ws, roomID, opponentsUUID[2]);
+  stealWrapper.classList.add("hidden");
+});
+
+backStealPlayer.addEventListener("click", () => {
+  stealWrapper.classList.add("hidden");
+});
+
+portBonus.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendAcceptPortBonusMessage(ws, roomID);
+});
