@@ -21,6 +21,8 @@ const newGame = document.querySelector(".new-game");
 const gameContent = document.querySelector(".game-content");
 const sendBtn = document.getElementById("send");
 const chatRoomsBtn = document.getElementById("chatRoomsBtn");
+const chatNewRooms = document.querySelector(".chat-new-rooms");
+
 const getOutRoomBtn = document.getElementById("getOutRoomBtn");
 const navBtn = document.querySelector(".nav-btn");
 
@@ -95,7 +97,7 @@ function configurateChatRoomButtons(rooms) {
     if (chatRoomsId.indexOf(id) === -1) {
       chatRoomsId.push(id);
       logMessage(room);
-      const button = configurateButton(name, "", id, chatRooms);
+      const button = configurateButton(name, "", id, chatNewRooms);
       button.addEventListener("click", () => {
         clientMessageMethods.setRoom(ws, id);
         hideElement(chatRooms);
