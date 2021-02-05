@@ -50,7 +50,8 @@ body {
 .back-swap,
 .port-yes,
 .port-no,
-.back-port {
+.back-port,
+.btn-radiotower {
   width: 180px;
   height: 50px;
   padding: 10px;
@@ -84,7 +85,8 @@ body {
 .back-swap:hover,
 .port-yes:hover,
 .port-no:hover,
-.back-port:hover {
+.back-port:hover,
+.btn-radiotower:hover {
   background-color: rgba(218, 55, 58);
 }
 

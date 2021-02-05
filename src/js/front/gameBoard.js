@@ -7,6 +7,7 @@ import {
   sendStealMessage,
   sendAcceptPortBonusMessage,
   sendRejectPortBonusMessage,
+  sendAcceptThrowMessage,
 } from "../machiCoroGame/front/machiCoroClientMessages";
 import { allCards } from "./allCards";
 import avatar from "../../assets/images/avatar.png";
@@ -44,6 +45,7 @@ const backSwapPlayer = document.querySelector(".back-swap-player");
 const backSwap = document.querySelector(".back-swap");
 const portYes = document.querySelector(".port-yes");
 const portNo = document.querySelector(".port-no");
+const btnRadioTower = document.querySelector(".btn-radiotower");
 
 const basicHand = [
   /* cityHall, */
@@ -304,6 +306,9 @@ export function drawNewCard(newCardName) {
     case "telecentre":
       stealMoney.classList.remove("hidden");
       break;
+    case "radioTower":
+      btnRadioTower.classList.remove("hidden");
+      break;
     case "railwayStation":
       throwCubes2.classList.remove("hidden");
       break;
@@ -428,4 +433,10 @@ portNo.addEventListener("click", () => {
   const roomID = clientPlayer.getRoomID();
   sendRejectPortBonusMessage(ws, roomID);
   portWrapper.classList.add("hidden");
+});
+
+btnRadioTower.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendAcceptThrowMessage(ws, roomID);
 });
