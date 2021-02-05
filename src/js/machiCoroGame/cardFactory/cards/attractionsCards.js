@@ -89,7 +89,7 @@ export class ShoppingCenter extends AttractionsCard {
 
   attractionsCardEffect(user) {
     user.hasShoppingCenter = true;
-    const buildingsForWhichWeConsiderPayment = user.getAllUserCards().filter((card) => card.type === "cafe" || card.type === "shop");
-    user.updateUserMoney(buildingsForWhichWeConsiderPayment.length);
+    const buildingsForWhichWeConsiderPayment = user.getMachiCoroUser().getAllUserCards().filter((card) => card.type === "cafe" || card.type === "shop");
+    user.getMachiCoroUser().updateUserMoney(buildingsForWhichWeConsiderPayment.length);
   }
 }
