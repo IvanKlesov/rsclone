@@ -11,6 +11,9 @@ export const opponentsUUID = [];
 
 export const swapCardsWrapper = document.querySelector(".swap-cards-wrapper");
 export const swapWrapper = document.querySelector(".swap-wrapper");
+export const portWrapper = document.querySelector(".port-wrapper");
+export const backPort = document.querySelector(".back-port");
+export const portRadioText = document.querySelector("#portRadio-text");
 export const cardsCanExchanged = [
   "wheatField",
   "farm",

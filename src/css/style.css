@@ -140,7 +140,7 @@ p {
 
 #messages {
   width: 96%;
-  height: 120px;
+  height: 200px;
   background-color: #ffffff;
   overflow: auto;
   border: 1px solid black;
