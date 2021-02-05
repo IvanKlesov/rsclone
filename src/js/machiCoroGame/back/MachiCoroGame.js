@@ -204,14 +204,12 @@ export default class MachiCoroGame {
       return;
     }
 
-    // const randNum = this.generateRandNumbers(6);
-    const randNum = 6;
+    const randNum = this.generateRandNumbers(6);
     if (numberOfCubes === 2) {
       if (!this.isUserHaveCard(ws, this.userNumTurn, "railwayStation")) {
         return;
       }
-      // const randNum2 = this.generateRandNumbers(6);
-      const randNum2 = 6;
+      const randNum2 = this.generateRandNumbers(6);
       this.resOfCubesThrow = randNum + randNum2;
       machiCoroServerMessageMethods.sendResultOfThrowCube(this.users, this.userNumTurn, [randNum, randNum2]);
       if (randNum === randNum2 && this.isUserHaveCard(ws, this.userNumTurn, "amusementPark")) {
