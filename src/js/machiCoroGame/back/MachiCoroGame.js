@@ -202,7 +202,7 @@ export default class MachiCoroGame {
       return;
     }
 
-    const randNum = 6;//this.generateRandNumbers(6);
+    const randNum = this.generateRandNumbers(6);
     if (numberOfCubes === 2) {
       if (!this.isUserHaveCard(ws, this.userNumTurn, "railwayStation")) {
         return;
