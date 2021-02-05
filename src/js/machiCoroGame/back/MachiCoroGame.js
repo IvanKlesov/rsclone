@@ -220,7 +220,7 @@ export default class MachiCoroGame {
     }
 
     this.userThrowCube = true;
-    if (curActiveUser.getMachiCoroUser().hasPort) {
+    if (curActiveUser.getMachiCoroUser().hasPort && this.resOfCubesThrow >= 10) {
       this.userThrowRequestForPortBonus = true;
       if (curActiveUser.getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
         this.sendRequestForAcceptPortBonus(ws, "also you can rethrow cube(s)");
