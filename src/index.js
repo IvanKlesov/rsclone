@@ -37,7 +37,8 @@ const chatRoomsId = [];
 
 const registrationData = {};
 let roomID;
-let infoAboutUsersInRoom;
+let infoAboutUsersInRoom = [];
+clientPlayer.setInfoAboutUsersInRoomArray(infoAboutUsersInRoom);
 const roomUserImages = [];
 clientPlayer.setRoomUserImages(roomUserImages);
 
