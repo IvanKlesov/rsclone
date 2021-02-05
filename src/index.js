@@ -53,7 +53,9 @@ function getUserPhotoUsingUUID(UUID) {
 }
 
 function changeHttpUrlOnWs(url) {
-  return url.replace(/^http([s])?/, "ws$1");
+  const wsURL = url.replace(/^http([s])?/, "ws$1").split("/");
+  wsURL[wsURL.length - 1] = "";
+  return wsURL.join("");
 }
 
 const HOST = changeHttpUrlOnWs(window.location.href);

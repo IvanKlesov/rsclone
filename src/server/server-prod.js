@@ -53,6 +53,10 @@ const server = express()
     req.logout();
     res.redirect('/');
   })
+
+  .get('/*', (req, res) => {
+    res.redirect('/');
+  })
   
   .listen(PORT, () => logMessage(`Listening on ${PORT}`));
 
