@@ -48,7 +48,7 @@ const basicHand = [
 
 function showFullCard(url) {
   fullCardWrapper.classList.remove("hidden");
-  if (fullCard.children.length > 0) {
+  if (fullCard.children.length > 1) {
     fullCard.removeChild(fullCard.firstChild);
   }
   const image = document.createElement("img");

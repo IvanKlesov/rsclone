@@ -23,8 +23,8 @@ const server = express()
   .use(passport.initialize())
   .use(passport.session())
 
-  .set('views', path.join(DIST_DIR, ''))
-  .set('view engine', 'ejs')
+  .set("views", path.join(DIST_DIR, ""))
+  .set("view engine", "ejs")
 
   .get('/', (req, res) => {
     if (req.user) {
