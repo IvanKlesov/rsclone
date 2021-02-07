@@ -30,11 +30,11 @@ const redCards = [
   { name: "restaurant", url: "../assets/images/ordinaryBuildings/restaurant.png" },
 ];
 const purpleCards = [
-  { name: "businessCenter", url: "../assets/images/uniqueBuildings/businessCenter.png" },
-  { name: "stadium", url: "../assets/images/uniqueBuildings/stadium.png" },
-  { name: "telecentre", url: "../assets/images/uniqueBuildings/telecentre.png" },
-  { name: "publishingHouse", url: "../assets/images/uniqueBuildings/publishingHouse.png" },
-  { name: "tax", url: "../assets/images/uniqueBuildings/tax.png" },
+  { name: "businessCenter", url: "../assets/images/uniqueBuildings/businessCenter.jpg" },
+  { name: "stadium", url: "../assets/images/uniqueBuildings/stadium.jpg" },
+  { name: "telecentre", url: "../assets/images/uniqueBuildings/telecentre.jpg" },
+  { name: "publishingHouse", url: "../assets/images/uniqueBuildings/publishingHouse.jpg" },
+  { name: "tax", url: "../assets/images/uniqueBuildings/tax.jpg" },
 ];
 const attractionCards = [
   { name: "port", url: "../assets/images/attractions/port.jpg" },

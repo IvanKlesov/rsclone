@@ -1,13 +1,4 @@
 // import avatar from "../../assets/images/avatar.png";
-// import bakery from "../../assets/images/startСards/bakery.png";
-// import cityHall from "../../assets/images/startСards/cityHall.png";
-// import wheatField from "../../assets/images/startСards/wheatField.png";
-/* import shirtAmusementPark from "../../assets/images/attractions/shirtAmusementPark.jpg";
-import shirtAirport from "../../assets/images/attractions/shirtAirport.jpg";
-import shirtPort from "../../assets/images/attractions/shirtPort.jpg";
-import shirtRadioTower from "../../assets/images/attractions/shirtRadioTower.jpg";
-import shirtRailwayStation from "../../assets/images/attractions/shirtRailwayStation.jpg";
-import shirtShoppingCenter from "../../assets/images/attractions/shirtShoppingCenter.jpg"; */
 
 import wheatField2 from "../../assets/images/ordinaryBuildings/wheatField.png";
 import farm from "../../assets/images/ordinaryBuildings/farm.png";
@@ -32,11 +23,11 @@ import pizzeria from "../../assets/images/ordinaryBuildings/pizzeria.png";
 import diner from "../../assets/images/ordinaryBuildings/diner.png";
 import restaurant from "../../assets/images/ordinaryBuildings/restaurant.png";
 
-import businessCenter from "../../assets/images/uniqueBuildings/businessCenter.png";
-import stadium from "../../assets/images/uniqueBuildings/stadium.png";
-import telecentre from "../../assets/images/uniqueBuildings/telecentre.png";
-import publishingHouse from "../../assets/images/uniqueBuildings/publishingHouse.png";
-import tax from "../../assets/images/uniqueBuildings/tax.png";
+import businessCenter from "../../assets/images/uniqueBuildings/businessCenter.jpg";
+import stadium from "../../assets/images/uniqueBuildings/stadium.jpg";
+import telecentre from "../../assets/images/uniqueBuildings/telecentre.jpg";
+import publishingHouse from "../../assets/images/uniqueBuildings/publishingHouse.jpg";
+import tax from "../../assets/images/uniqueBuildings/tax.jpg";
 
 import port from "../../assets/images/attractions/port.jpg";
 import railwayStation from "../../assets/images/attractions/railwayStation.jpg";
@@ -47,8 +38,6 @@ import airport from "../../assets/images/attractions/airport.jpg";
 
 export const allCards = {
   // avatar,
-
-  // cityHall,
 
   wheatField: wheatField2,
   farm,
