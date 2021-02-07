@@ -1,27 +1,27 @@
 // import avatar from "../../assets/images/avatar.png";
 
-import wheatField2 from "../../assets/images/ordinaryBuildings/wheatField.png";
-import farm from "../../assets/images/ordinaryBuildings/farm.png";
-import flowerGarden from "../../assets/images/ordinaryBuildings/flowerGarden.png";
-import forest from "../../assets/images/ordinaryBuildings/forest.png";
-import longboat from "../../assets/images/ordinaryBuildings/longboat.png";
-import mine from "../../assets/images/ordinaryBuildings/mine.png";
-import appleOrchard from "../../assets/images/ordinaryBuildings/appleOrchard.png";
-import trawler from "../../assets/images/ordinaryBuildings/trawler.png";
+import wheatField2 from "../../assets/images/ordinaryBuildings/wheatField.jpg";
+import farm from "../../assets/images/ordinaryBuildings/farm.jpg";
+import flowerGarden from "../../assets/images/ordinaryBuildings/flowerGarden.jpg";
+import forest from "../../assets/images/ordinaryBuildings/forest.jpg";
+import longboat from "../../assets/images/ordinaryBuildings/longboat.jpg";
+import mine from "../../assets/images/ordinaryBuildings/mine.jpg";
+import appleOrchard from "../../assets/images/ordinaryBuildings/appleOrchard.jpg";
+import trawler from "../../assets/images/ordinaryBuildings/trawler.jpg";
 
-import bakery2 from "../../assets/images/ordinaryBuildings/bakery.png";
-import store from "../../assets/images/ordinaryBuildings/store.png";
-import flowerStore from "../../assets/images/ordinaryBuildings/flowerStore.png";
-import cheeseDairy from "../../assets/images/ordinaryBuildings/cheeseDairy.png";
-import furnitureFactory from "../../assets/images/ordinaryBuildings/furnitureFactory.png";
-import vegetableMarket from "../../assets/images/ordinaryBuildings/vegetableMarket.png";
-import groceryWarehouse from "../../assets/images/ordinaryBuildings/groceryWarehouse.png";
+import bakery2 from "../../assets/images/ordinaryBuildings/bakery.jpg";
+import store from "../../assets/images/ordinaryBuildings/store.jpg";
+import flowerStore from "../../assets/images/ordinaryBuildings/flowerStore.jpg";
+import cheeseDairy from "../../assets/images/ordinaryBuildings/cheeseDairy.jpg";
+import furnitureFactory from "../../assets/images/ordinaryBuildings/furnitureFactory.jpg";
+import vegetableMarket from "../../assets/images/ordinaryBuildings/vegetableMarket.jpg";
+import groceryWarehouse from "../../assets/images/ordinaryBuildings/groceryWarehouse.jpg";
 
-import sushiBar from "../../assets/images/ordinaryBuildings/sushiBar.png";
-import cafe from "../../assets/images/ordinaryBuildings/cafe.png";
-import pizzeria from "../../assets/images/ordinaryBuildings/pizzeria.png";
-import diner from "../../assets/images/ordinaryBuildings/diner.png";
-import restaurant from "../../assets/images/ordinaryBuildings/restaurant.png";
+import sushiBar from "../../assets/images/ordinaryBuildings/sushiBar.jpg";
+import cafe from "../../assets/images/ordinaryBuildings/cafe.jpg";
+import pizzeria from "../../assets/images/ordinaryBuildings/pizzeria.jpg";
+import diner from "../../assets/images/ordinaryBuildings/diner.jpg";
+import restaurant from "../../assets/images/ordinaryBuildings/restaurant.jpg";
 
 import businessCenter from "../../assets/images/uniqueBuildings/businessCenter.jpg";
 import stadium from "../../assets/images/uniqueBuildings/stadium.jpg";
