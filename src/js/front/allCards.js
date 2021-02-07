@@ -1,13 +1,13 @@
 // import avatar from "../../assets/images/avatar.png";
 // import bakery from "../../assets/images/startСards/bakery.png";
-import cityHall from "../../assets/images/startСards/cityHall.png";
+// import cityHall from "../../assets/images/startСards/cityHall.png";
 // import wheatField from "../../assets/images/startСards/wheatField.png";
-/* import shirtAmusementPark from "../../assets/images/attractions/shirtAmusementPark.png";
-import shirtAirport from "../../assets/images/attractions/shirtAirport.png";
-import shirtPort from "../../assets/images/attractions/shirtPort.png";
-import shirtRadioTower from "../../assets/images/attractions/shirtRadioTower.png";
-import shirtRailwayStation from "../../assets/images/attractions/shirtRailwayStation.png";
-import shirtShoppingCenter from "../../assets/images/attractions/shirtShoppingCenter.png"; */
+/* import shirtAmusementPark from "../../assets/images/attractions/shirtAmusementPark.jpg";
+import shirtAirport from "../../assets/images/attractions/shirtAirport.jpg";
+import shirtPort from "../../assets/images/attractions/shirtPort.jpg";
+import shirtRadioTower from "../../assets/images/attractions/shirtRadioTower.jpg";
+import shirtRailwayStation from "../../assets/images/attractions/shirtRailwayStation.jpg";
+import shirtShoppingCenter from "../../assets/images/attractions/shirtShoppingCenter.jpg"; */
 
 import wheatField2 from "../../assets/images/ordinaryBuildings/wheatField.png";
 import farm from "../../assets/images/ordinaryBuildings/farm.png";
@@ -38,17 +38,17 @@ import telecentre from "../../assets/images/uniqueBuildings/telecentre.png";
 import publishingHouse from "../../assets/images/uniqueBuildings/publishingHouse.png";
 import tax from "../../assets/images/uniqueBuildings/tax.png";
 
-import port from "../../assets/images/attractions/port.png";
-import railwayStation from "../../assets/images/attractions/railwayStation.png";
-import shoppingCenter from "../../assets/images/attractions/shoppingCenter.png";
-import amusementPark from "../../assets/images/attractions/amusementPark.png";
-import radioTower from "../../assets/images/attractions/radioTower.png";
-import airport from "../../assets/images/attractions/airport.png";
+import port from "../../assets/images/attractions/port.jpg";
+import railwayStation from "../../assets/images/attractions/railwayStation.jpg";
+import shoppingCenter from "../../assets/images/attractions/shoppingCenter.jpg";
+import amusementPark from "../../assets/images/attractions/amusementPark.jpg";
+import radioTower from "../../assets/images/attractions/radioTower.jpg";
+import airport from "../../assets/images/attractions/airport.jpg";
 
 export const allCards = {
   // avatar,
 
-  cityHall,
+  // cityHall,
 
   wheatField: wheatField2,
   farm,

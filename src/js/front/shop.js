@@ -37,12 +37,12 @@ const purpleCards = [
   { name: "tax", url: "../assets/images/uniqueBuildings/tax.png" },
 ];
 const attractionCards = [
-  { name: "port", url: "../assets/images/attractions/port.png" },
-  { name: "railwayStation", url: "../assets/images/attractions/railwayStation.png" },
-  { name: "shoppingCenter", url: "../assets/images/attractions/shoppingCenter.png" },
-  { name: "amusementPark", url: "../assets/images/attractions/amusementPark.png" },
-  { name: "radioTower", url: "../assets/images/attractions/radioTower.png" },
-  { name: "airport", url: "../assets/images/attractions/airport.png" },
+  { name: "port", url: "../assets/images/attractions/port.jpg" },
+  { name: "railwayStation", url: "../assets/images/attractions/railwayStation.jpg" },
+  { name: "shoppingCenter", url: "../assets/images/attractions/shoppingCenter.jpg" },
+  { name: "amusementPark", url: "../assets/images/attractions/amusementPark.jpg" },
+  { name: "radioTower", url: "../assets/images/attractions/radioTower.jpg" },
+  { name: "airport", url: "../assets/images/attractions/airport.jpg" },
 ];
 
 export default function createShop(color) {
