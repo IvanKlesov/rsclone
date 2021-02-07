@@ -1,5 +1,3 @@
-// import avatar from "../../assets/images/avatar.png";
-
 import wheatField2 from "../../assets/images/ordinaryBuildings/wheatField.jpg";
 import farm from "../../assets/images/ordinaryBuildings/farm.jpg";
 import flowerGarden from "../../assets/images/ordinaryBuildings/flowerGarden.jpg";

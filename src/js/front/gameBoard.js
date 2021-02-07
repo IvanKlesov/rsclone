@@ -10,7 +10,7 @@ import {
   sendAcceptThrowMessage,
 } from "../machiCoroGame/front/machiCoroClientMessages";
 import { allCards } from "./allCards";
-import avatar from "../../assets/images/avatar.png";
+import avatar from "../../assets/images/avatar.jpg";
 import {
   handTopPlayer,
   handLeftPlayer,
