@@ -4,45 +4,45 @@ import { AudioSystem, allSounds } from "./audioSystem";
 
 let currentColor;
 const blueCards = [
-  { name: "wheatField", url: "../assets/images/ordinaryBuildings/wheatField.png" },
-  { name: "farm", url: "../assets/images/ordinaryBuildings/farm.png" },
-  { name: "flowerGarden", url: "../assets/images/ordinaryBuildings/flowerGarden.png" },
-  { name: "forest", url: "../assets/images/ordinaryBuildings/forest.png" },
-  { name: "longboat", url: "../assets/images/ordinaryBuildings/longboat.png" },
-  { name: "mine", url: "../assets/images/ordinaryBuildings/mine.png" },
-  { name: "appleOrchard", url: "../assets/images/ordinaryBuildings/appleOrchard.png" },
-  { name: "trawler", url: "../assets/images/ordinaryBuildings/trawler.png" },
+  { name: "wheatField", url: "../assets/images/ordinaryBuildings/wheatField.jpg" },
+  { name: "farm", url: "../assets/images/ordinaryBuildings/farm.jpg" },
+  { name: "flowerGarden", url: "../assets/images/ordinaryBuildings/flowerGarden.jpg" },
+  { name: "forest", url: "../assets/images/ordinaryBuildings/forest.jpg" },
+  { name: "longboat", url: "../assets/images/ordinaryBuildings/longboat.jpg" },
+  { name: "mine", url: "../assets/images/ordinaryBuildings/mine.jpg" },
+  { name: "appleOrchard", url: "../assets/images/ordinaryBuildings/appleOrchard.jpg" },
+  { name: "trawler", url: "../assets/images/ordinaryBuildings/trawler.jpg" },
 ];
 const greenCards = [
-  { name: "bakery", url: "../assets/images/ordinaryBuildings/bakery.png" },
-  { name: "store", url: "../assets/images/ordinaryBuildings/store.png" },
-  { name: "flowerStore", url: "../assets/images/ordinaryBuildings/flowerStore.png" },
-  { name: "cheeseDairy", url: "../assets/images/ordinaryBuildings/cheeseDairy.png" },
-  { name: "furnitureFactory", url: "../assets/images/ordinaryBuildings/furnitureFactory.png" },
-  { name: "vegetableMarket", url: "../assets/images/ordinaryBuildings/vegetableMarket.png" },
-  { name: "groceryWarehouse", url: "../assets/images/ordinaryBuildings/groceryWarehouse.png" },
+  { name: "bakery", url: "../assets/images/ordinaryBuildings/bakery.jpg" },
+  { name: "store", url: "../assets/images/ordinaryBuildings/store.jpg" },
+  { name: "flowerStore", url: "../assets/images/ordinaryBuildings/flowerStore.jpg" },
+  { name: "cheeseDairy", url: "../assets/images/ordinaryBuildings/cheeseDairy.jpg" },
+  { name: "furnitureFactory", url: "../assets/images/ordinaryBuildings/furnitureFactory.jpg" },
+  { name: "vegetableMarket", url: "../assets/images/ordinaryBuildings/vegetableMarket.jpg" },
+  { name: "groceryWarehouse", url: "../assets/images/ordinaryBuildings/groceryWarehouse.jpg" },
 ];
 const redCards = [
-  { name: "sushiBar", url: "../assets/images/ordinaryBuildings/sushiBar.png" },
-  { name: "cafe", url: "../assets/images/ordinaryBuildings/cafe.png" },
-  { name: "pizzeria", url: "../assets/images/ordinaryBuildings/pizzeria.png" },
-  { name: "diner", url: "../assets/images/ordinaryBuildings/diner.png" },
-  { name: "restaurant", url: "../assets/images/ordinaryBuildings/restaurant.png" },
+  { name: "sushiBar", url: "../assets/images/ordinaryBuildings/sushiBar.jpg" },
+  { name: "cafe", url: "../assets/images/ordinaryBuildings/cafe.jpg" },
+  { name: "pizzeria", url: "../assets/images/ordinaryBuildings/pizzeria.jpg" },
+  { name: "diner", url: "../assets/images/ordinaryBuildings/diner.jpg" },
+  { name: "restaurant", url: "../assets/images/ordinaryBuildings/restaurant.jpg" },
 ];
 const purpleCards = [
-  { name: "businessCenter", url: "../assets/images/uniqueBuildings/businessCenter.png" },
-  { name: "stadium", url: "../assets/images/uniqueBuildings/stadium.png" },
-  { name: "telecentre", url: "../assets/images/uniqueBuildings/telecentre.png" },
-  { name: "publishingHouse", url: "../assets/images/uniqueBuildings/publishingHouse.png" },
-  { name: "tax", url: "../assets/images/uniqueBuildings/tax.png" },
+  { name: "businessCenter", url: "../assets/images/uniqueBuildings/businessCenter.jpg" },
+  { name: "stadium", url: "../assets/images/uniqueBuildings/stadium.jpg" },
+  { name: "telecentre", url: "../assets/images/uniqueBuildings/telecentre.jpg" },
+  { name: "publishingHouse", url: "../assets/images/uniqueBuildings/publishingHouse.jpg" },
+  { name: "tax", url: "../assets/images/uniqueBuildings/tax.jpg" },
 ];
 const attractionCards = [
-  { name: "port", url: "../assets/images/attractions/port.png" },
-  { name: "railwayStation", url: "../assets/images/attractions/railwayStation.png" },
-  { name: "shoppingCenter", url: "../assets/images/attractions/shoppingCenter.png" },
-  { name: "amusementPark", url: "../assets/images/attractions/amusementPark.png" },
-  { name: "radioTower", url: "../assets/images/attractions/radioTower.png" },
-  { name: "airport", url: "../assets/images/attractions/airport.png" },
+  { name: "port", url: "../assets/images/attractions/port.jpg" },
+  { name: "railwayStation", url: "../assets/images/attractions/railwayStation.jpg" },
+  { name: "shoppingCenter", url: "../assets/images/attractions/shoppingCenter.jpg" },
+  { name: "amusementPark", url: "../assets/images/attractions/amusementPark.jpg" },
+  { name: "radioTower", url: "../assets/images/attractions/radioTower.jpg" },
+  { name: "airport", url: "../assets/images/attractions/airport.jpg" },
 ];
 
 export default function createShop(color) {
