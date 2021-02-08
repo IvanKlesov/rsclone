@@ -11,6 +11,7 @@
     "start": "node ./dist/server.js",
     "lint": "eslint ./**/*.js",
     "lintf": "eslint --fix ./**/*.js",
+    "lintp": "eslint",
     "heroku-postbuild": "webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js"
   },
   "repository": {
