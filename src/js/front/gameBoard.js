@@ -6,6 +6,8 @@ import {
   sendThrowCubeMessage,
   sendStealMessage,
   sendAcceptPortBonusMessage,
+  sendRejectPortBonusMessage,
+  sendAcceptThrowMessage,
 } from "../machiCoroGame/front/machiCoroClientMessages";
 import { allCards } from "./allCards";
 import avatar from "../../assets/images/avatar.png";
@@ -18,6 +20,9 @@ import {
   opponentsUUID,
   swapCardsWrapper,
   swapWrapper,
+  portWrapper,
+  backPort,
+  portRadioText,
 } from "./gameBoardConsts";
 
 require("./gameBoardSwapCards");
@@ -32,13 +37,15 @@ const throwCubes = document.querySelector(".btn-throw");
 const throwCubes2 = document.querySelector(".btn-throw2");
 const swapCards = document.querySelector(".btn-swap");
 const stealMoney = document.querySelector(".btn-steal");
-const portBonus = document.querySelector(".btn-port-bonus");
 const stealPlayer1 = document.querySelector(".steal-player1");
 const stealPlayer2 = document.querySelector(".steal-player2");
 const stealPlayer3 = document.querySelector(".steal-player3");
 const backStealPlayer = document.querySelector(".back-steal-player");
 const backSwapPlayer = document.querySelector(".back-swap-player");
 const backSwap = document.querySelector(".back-swap");
+const portYes = document.querySelector(".port-yes");
+const portNo = document.querySelector(".port-no");
+const btnRadioTower = document.querySelector(".btn-radiotower");
 
 const basicHand = [
   /* cityHall, */
@@ -48,7 +55,7 @@ const basicHand = [
 
 function showFullCard(url) {
   fullCardWrapper.classList.remove("hidden");
-  if (fullCard.children.length > 0) {
+  if (fullCard.children.length > 1) {
     fullCard.removeChild(fullCard.firstChild);
   }
   const image = document.createElement("img");
@@ -299,8 +306,8 @@ export function drawNewCard(newCardName) {
     case "telecentre":
       stealMoney.classList.remove("hidden");
       break;
-    case "port":
-      portBonus.classList.remove("hidden");
+    case "radioTower":
+      btnRadioTower.classList.remove("hidden");
       break;
     case "railwayStation":
       throwCubes2.classList.remove("hidden");
@@ -408,8 +415,28 @@ backStealPlayer.addEventListener("click", () => {
   stealWrapper.classList.add("hidden");
 });
 
-portBonus.addEventListener("click", () => {
+backPort.addEventListener("click", () => {
+  portWrapper.classList.add("hidden");
+  portRadioText.classList.add("hidden");
+  backPort.classList.add("hidden");
+});
+
+portYes.addEventListener("click", () => {
   const ws = clientPlayer.getWs();
   const roomID = clientPlayer.getRoomID();
   sendAcceptPortBonusMessage(ws, roomID);
+  portWrapper.classList.add("hidden");
+});
+
+portNo.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendRejectPortBonusMessage(ws, roomID);
+  portWrapper.classList.add("hidden");
+});
+
+btnRadioTower.addEventListener("click", () => {
+  const ws = clientPlayer.getWs();
+  const roomID = clientPlayer.getRoomID();
+  sendAcceptThrowMessage(ws, roomID);
 });

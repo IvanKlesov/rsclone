@@ -12,6 +12,7 @@ import {
 } from "./machiCoroClientMessages";
 import createBoard, { drawNewCard, hideStartGameButton, drawBoard } from "../../front/gameBoard";
 import clientPlayer from "../../front/clientPlayer";
+import { unhidePortWrapper, unhidePortRadioWrapper } from "../../front/gameBoardUtils";
 
 function printInfoAboutBuyAction() {
   return "it is your turn \n/buy name -> buy something;\n/hold - hold turn";
@@ -74,20 +75,18 @@ export function handlerServerMachiCoroResponse(jsonData) {
     case "allUsersInfo": {
       const result = jsonData.content;
       const clPlArray = clientPlayer.getInfoAboutUsersInRoomArray();
-      const info = result.reduce(
-        (acc, userInfo) => {
-          for (let i = 0; i < clPlArray.length; i += 1) {
-            if (clPlArray[i].id === userInfo.index) {
-              clPlArray[i].cards = userInfo.cards;
-              clPlArray[i].money = userInfo.money;
-              break;
-            }
+      const info = result.reduce((acc, userInfo) => {
+        for (let i = 0; i < clPlArray.length; i += 1) {
+          if (clPlArray[i].id === userInfo.index) {
+            clPlArray[i].cards = userInfo.cards;
+            clPlArray[i].money = userInfo.money;
+            break;
           }
-          return acc.concat(`Player${userInfo.index}\n\t`)
-            .concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`);
-        },
-        "",
-      );
+        }
+        return acc
+          .concat(`Player${userInfo.index}\n\t`)
+          .concat(`cards:${userInfo.cards}\n\tmoney: ${userInfo.money}\n\n`);
+      }, "");
       return info;
     }
 
@@ -98,9 +97,11 @@ export function handlerServerMachiCoroResponse(jsonData) {
       return jsonData.content;
     }
     case "machiCoroPortRequest": {
+      unhidePortWrapper();
       return jsonData.content;
     }
     case "machiCoroPortRadioRequest": {
+      unhidePortRadioWrapper();
       return jsonData.content;
     }
 

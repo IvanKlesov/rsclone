@@ -47,7 +47,11 @@ body {
 .swap-player2,
 .swap-player3,
 .back-swap-player,
-.back-swap {
+.back-swap,
+.port-yes,
+.port-no,
+.back-port,
+.btn-radiotower {
   width: 180px;
   height: 50px;
   padding: 10px;
@@ -78,7 +82,11 @@ body {
 .swap-player2:hover,
 .swap-player3:hover,
 .back-swap-player:hover,
-.back-swap:hover {
+.back-swap:hover,
+.port-yes:hover,
+.port-no:hover,
+.back-port:hover,
+.btn-radiotower:hover {
   background-color: rgba(218, 55, 58);
 }
 
@@ -89,7 +97,8 @@ body {
 .full-card-wrapper,
 .steal-wrapper,
 .swap-wrapper,
-.swap-cards-wrapper {
+.swap-cards-wrapper,
+.port-wrapper {
   position: fixed;
   width: 100%;
   height: 100%;
@@ -101,7 +110,8 @@ body {
 
 .full-card,
 .steal-content,
-.swap-content {
+.swap-content,
+.port-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -115,6 +125,11 @@ body {
   border: 7px solid #ffffff;
   border-radius: 20px;
   color: #ffffff;
+}
+
+.port-content {
+  left: 25%;
+  width: 50%;
 }
 
 .full-card-btn {
@@ -148,13 +163,18 @@ body {
   overflow-x: hidden;
 }
 
-.swap-cards-content h2 {
+.swap-cards-content h2,
+.port-content h2 {
   font-size: 56px;
   font-weight: bold;
   color: #ffffff;
   text-transform: uppercase;
   margin: 10px auto;
   text-align: center;
+}
+
+.port-content h2 {
+  font-size: 32px;
 }
 
 .cards-opponents {

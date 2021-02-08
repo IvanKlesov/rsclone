@@ -23,8 +23,8 @@ const server = express()
   .use(passport.initialize())
   .use(passport.session())
 
-  .set('views', path.join(DIST_DIR, ''))
-  .set('view engine', 'ejs')
+  .set("views", path.join(DIST_DIR, ""))
+  .set("view engine", "ejs")
 
   .get('/', (req, res) => {
     if (req.user) {
@@ -51,6 +51,10 @@ const server = express()
   .get('/logout', (req, res) => {
     req.session = null;
     req.logout();
+    res.redirect('/');
+  })
+
+  .get('/*', (req, res) => {
     res.redirect('/');
   })
   
