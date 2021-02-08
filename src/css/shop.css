@@ -1,0 +1,211 @@
+.shop {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-family: "Oswald", sans-serif;
+  transition: 0.3s linear;
+  z-index: 5;
+}
+
+.shop-content {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  background-color: rgba(0, 172, 220, 1);
+  border: 7px solid #ffffff;
+  border-radius: 20px;
+  overflow-y: Auto;
+  overflow-x: hidden;
+}
+
+.shop-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.shop-blue,
+.shop-green,
+.shop-red,
+.shop-purple,
+.shop-attractions {
+  width: 320px;
+  height: 60px;
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  font-size: 24px;
+  color: #ffffff;
+  transition: 0.3s linear;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+.shop-blue {
+  background-color: #1766a4;
+}
+
+.shop-blue:hover {
+  background-color: #ffffff;
+  color: #1766a4;
+}
+
+.shop-green {
+  background-color: #437830;
+}
+
+.shop-green:hover {
+  background-color: #ffffff;
+  color: #437830;
+}
+
+.shop-red {
+  background-color: rgba(218, 55, 58);
+}
+
+.shop-red:hover {
+  background-color: #ffffff;
+  color: rgba(218, 55, 58);
+}
+
+.shop-purple {
+  background-color: #762775;
+}
+
+.shop-purple:hover {
+  background-color: #ffffff;
+  color: #762775;
+}
+
+.shop-attractions {
+  background-color: #ad5222;
+}
+
+.shop-attractions:hover {
+  background-color: #ffffff;
+  color: #ad5222;
+}
+
+.btn-back-shop {
+  position: absolute;
+  top: 7%;
+  right: 7%;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  background-color: rgba(0, 172, 220, 1);
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.btn-back-shop:hover {
+  border-color: rgba(218, 55, 58);
+}
+
+.btn-back-shop img {
+  text-align: center;
+  vertical-align: middle;
+  padding: 1px;
+}
+
+.shop-content h2 {
+  font-size: 56px;
+  font-weight: bold;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 10px auto;
+  text-align: center;
+}
+
+.btn-shop {
+  width: 180px;
+  height: 50px;
+  padding: 10px;
+  margin: 20px auto;
+  border: none;
+  border-radius: 20px;
+  border: 3px solid #ffffff;
+  color: #ffffff;
+  background-color: #00acdc;
+  font-family: "Oswald", sans-serif;
+  font-size: 20px;
+  transition: 0.3s linear;
+  cursor: pointer;
+}
+
+.btn-shop:hover {
+  background-color: rgba(218, 55, 58);
+}
+
+.canvas-shop {
+  margin: 20px;
+}
+
+/* Media */
+
+@media (max-width: 1500px) {
+  .btn-back-shop {
+    top: 6%;
+    right: 6%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .btn-back-shop {
+    top: 5.5%;
+    right: 5.5%;
+  }
+
+  .shop-blue,
+  .shop-green,
+  .shop-red,
+  .shop-purple,
+  .shop-attractions {
+    width: 240px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 900px) {
+  .btn-back-shop {
+    top: 4.5%;
+    right: 4.5%;
+  }
+
+  .shop-blue,
+  .shop-green,
+  .shop-red,
+  .shop-purple,
+  .shop-attractions {
+    width: 200px;
+    font-size: 16px;
+    margin: 10px;
+  }
+
+  .shop-button {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .canvas-shop {
+    margin: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .btn-back-shop {
+    top: 3.5%;
+    right: 3.5%;
+  }
+
+  .shop-content h2 {
+    font-size: 34px;
+  }
+}
