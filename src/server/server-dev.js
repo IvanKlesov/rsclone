@@ -65,10 +65,10 @@ const server = express()
     res.redirect("/");
   })
 
-  .get('/*', (req, res) => {
-    res.redirect('/');
+  .get("/*", (req, res) => {
+    res.redirect("/");
   })
-  
+
   .listen(PORT, () => logMessage(`Listening on ${PORT}`));
 
 const wss = new WebSocketServer(server);
