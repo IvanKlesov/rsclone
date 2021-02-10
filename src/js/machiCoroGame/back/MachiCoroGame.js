@@ -230,7 +230,7 @@ export default class MachiCoroGame {
     } else if (curActiveUser.getMachiCoroUser().hasRadioTower && !this.userReThrowCubesRequest) {
       machiCoroServerMessageMethods.sendRequestForRadioBonusAccept(ws);
     } else {
-      this.reduceExpensesAndIncome(curActiveUser, randNum);
+      this.reduceExpensesAndIncome(curActiveUser, this.resOfCubesThrow);
       return randNum;
     }
   }
