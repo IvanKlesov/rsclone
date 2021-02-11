@@ -23,6 +23,11 @@ import {
   portWrapper,
   backPort,
   portRadioText,
+  startGame,
+  throwCubes2,
+  swapCards,
+  stealMoney,
+  btnRadioTower,
 } from "./gameBoardConsts";
 
 require("./gameBoardSwapCards");
@@ -31,12 +36,8 @@ const fullCardWrapper = document.querySelector(".full-card-wrapper");
 const fullCard = document.querySelector(".full-card");
 const stealWrapper = document.querySelector(".steal-wrapper");
 
-const startGame = document.querySelector(".btn-start");
 const holdTurn = document.querySelector(".btn-hold");
 const throwCubes = document.querySelector(".btn-throw");
-const throwCubes2 = document.querySelector(".btn-throw2");
-const swapCards = document.querySelector(".btn-swap");
-const stealMoney = document.querySelector(".btn-steal");
 const stealPlayer1 = document.querySelector(".steal-player1");
 const stealPlayer2 = document.querySelector(".steal-player2");
 const stealPlayer3 = document.querySelector(".steal-player3");
@@ -45,7 +46,6 @@ const backSwapPlayer = document.querySelector(".back-swap-player");
 const backSwap = document.querySelector(".back-swap");
 const portYes = document.querySelector(".port-yes");
 const portNo = document.querySelector(".port-no");
-const btnRadioTower = document.querySelector(".btn-radiotower");
 
 const basicHand = [
   /* cityHall, */
@@ -69,6 +69,10 @@ const wrapperBoard = document.querySelector(".game-board-wrapper");
 const board = document.querySelector(".game-board");
 const ctx = board.getContext("2d");
 
+export function clearBoard() {
+  ctx.clearRect(0, 0, board.width, board.height);
+}
+
 export function drawBoard() {
   handTopPlayer.lengh = 0;
   handLeftPlayer.legnth = 0;
@@ -83,10 +87,10 @@ export function drawBoard() {
   board.setAttribute("width", widthBoard);
   board.setAttribute("height", heightBoard);
 
-  ctx.clearRect(0, 0, board.width, board.height);
+  clearBoard();
 
   // Игрок сверху
-  const xTopPlayer = Math.ceil(widthBoard * 0.35);
+  const xTopPlayer = Math.ceil(widthBoard * 0.25);
   const firstOpponent = clientPlayer
     .getInfoAboutUsersInRoomArray()
     .find((opponent) => opponent.id === opponentsUUID[0]);
@@ -101,7 +105,7 @@ export function drawBoard() {
   ctx.fillText("Player 1", xTopPlayer + 10, heightInfoPlayer - 25);
   ctx.fillText(`Coin: ${firstOpponent.money || 3}`, xTopPlayer + 10, heightInfoPlayer - 5);
 
-  ctx.strokeRect(xTopPlayer + widthInfoPlayer + padding, 0, 400, 140);
+  ctx.strokeRect(xTopPlayer + widthInfoPlayer + padding, 0, 800, 140);
 
   const firstUserCards = firstOpponent.cards || basicHand;
   for (let i = 0, k = 1; i < firstUserCards.length; i += 1, k += 1) {
@@ -137,7 +141,7 @@ export function drawBoard() {
     ctx.fillText("Player 2", xLeftPlayer + 10, yLeftPlayer + heightInfoPlayer - 25);
     ctx.fillText(`Coin: ${secondOpponent.money || 3}`, xLeftPlayer + 10, yLeftPlayer + heightInfoPlayer - 5);
 
-    ctx.strokeRect(xLeftPlayer, yLeftPlayer + heightInfoPlayer + padding, 400, 140);
+    ctx.strokeRect(xLeftPlayer, yLeftPlayer + heightInfoPlayer + padding, 600, 140);
 
     const secondUserCards = secondOpponent.cards ? secondOpponent.cards : basicHand;
     for (let i = 0, k = 0; i < secondUserCards.length; i += 1, k += 1) {
@@ -174,18 +178,18 @@ export function drawBoard() {
     ctx.fillText("Player 3", xRightPlayer + 10, yRightPlayer + heightInfoPlayer - 25);
     ctx.fillText(`Coin: ${thirdOpponent.money || 3}`, xRightPlayer + 10, yRightPlayer + heightInfoPlayer - 5);
 
-    ctx.strokeRect(xRightPlayer - 300, yRightPlayer + heightInfoPlayer + padding, 400, 140);
+    ctx.strokeRect(xRightPlayer - 500, yRightPlayer + heightInfoPlayer + padding, 600, 140);
 
     const thirdUserCards = thirdOpponent.cards ? thirdOpponent.cards : basicHand;
     for (let i = 0, k = 0; i < thirdUserCards.length; i += 1, k += 1) {
       const img = new Image();
       img.src = allCards[thirdUserCards[i]];
       img.onload = function loadCardsRight() {
-        ctx.drawImage(img, xRightPlayer - 300 + padding * k, yRightPlayer + heightInfoPlayer + padding, 100, 140);
+        ctx.drawImage(img, xRightPlayer - 500 + padding * k, yRightPlayer + heightInfoPlayer + padding, 100, 140);
       };
       handRightPlayer.push({
         name: allCards[thirdUserCards[i]],
-        left: xRightPlayer - 300 + padding * k,
+        left: xRightPlayer - 500 + padding * k,
         top: yRightPlayer + heightInfoPlayer + padding,
         width: 100,
         height: 140,
@@ -195,7 +199,7 @@ export function drawBoard() {
 
   // нижний игрок
   const xBottomPlayer = Math.ceil(widthBoard * 0.1);
-  const yBottomPlayer = Math.ceil(heightBoard * 0.8);
+  let yBottomPlayer = Math.ceil(heightBoard * 0.8);
   ctx.strokeRect(xBottomPlayer, yBottomPlayer, widthInfoPlayer, heightInfoPlayer + padding);
   const imgBottomPlayer = new Image();
   imgBottomPlayer.src = clientPlayer.getRegistrationData().photoAddress || avatar;
@@ -222,7 +226,8 @@ export function drawBoard() {
         y = yBottomPlayer;
       } else {
         k = 0;
-        y = yBottomPlayer + heightInfoPlayer / 2 + padding;
+        yBottomPlayer = yBottomPlayer + heightInfoPlayer / 2 + padding;
+        y = yBottomPlayer;
       }
       ctx.drawImage(img, xBottomPlayer + widthInfoPlayer + padding + (widthInfoPlayer / 2 + padding) * k, y, 50, 70);
       handBottomPlayer.push({
@@ -319,7 +324,7 @@ export function drawNewCard(newCardName) {
   }
 
   newImg.onload = function addCardsBottom() {
-    if (x + padding + widthCard <= xBottomPlayer + 1200) {
+    if (x + padding + widthCard <= xBottomPlayer + 1320) {
       handBottomPlayer.push({
         name: newImg.src,
         left: x + widthCard + padding,
