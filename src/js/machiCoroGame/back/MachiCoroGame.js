@@ -38,6 +38,7 @@ export default class MachiCoroGame {
           this.gameWasEndIn = new Date();
         }
         machiCoroServerMessageMethods.sendError(this.users[0].getWs(), "You last player.Game is Over");
+        machiCoroServerMessageMethods.sendGameIsOverMessage(this.users, this.users[0]);
         machiCoroServerMessageMethods.sendGameFinalStat(this.users, this.gameWasStartIn, this.gameWasEndIn);
       }
     } else {
