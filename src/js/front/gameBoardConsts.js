@@ -12,8 +12,15 @@ export const opponentsUUID = [];
 export const swapCardsWrapper = document.querySelector(".swap-cards-wrapper");
 export const swapWrapper = document.querySelector(".swap-wrapper");
 export const portWrapper = document.querySelector(".port-wrapper");
+export const victoryWrapper = document.querySelector(".victory-wrapper");
+export const loseWrapper = document.querySelector(".lose-wrapper");
 export const backPort = document.querySelector(".back-port");
 export const portRadioText = document.querySelector("#portRadio-text");
+export const startGame = document.querySelector(".btn-start");
+export const throwCubes2 = document.querySelector(".btn-throw2");
+export const swapCards = document.querySelector(".btn-swap");
+export const stealMoney = document.querySelector(".btn-steal");
+export const btnRadioTower = document.querySelector(".btn-radiotower");
 export const cardsCanExchanged = [
   "wheatField",
   "farm",

@@ -4,7 +4,7 @@ import getDateDifferenceInTime from "../../../time";
 export const machiCoroServerMessageMethods = {};
 
 const messageToWinner = {
-  method: "machiCoroError",
+  method: "machiCoroWin",
   content: "You are game winner",
 };
 
@@ -12,11 +12,13 @@ const RADIO_BONUS_MESSAGE = "You have card radiTower.You can rethrow cubes."
   .concat("To rethrow send /throw. To accept current result")
   .concat(" send /acceptThrow command");
 
-const PORT_BONUS_MESSAGE = "You have card port.You can get 2 throw point bonus."
-  .concat("Send /acceptPortBonus or /rejectPortBonus command");
+const PORT_BONUS_MESSAGE = "You have card port.You can get 2 throw point bonus.".concat(
+  "Send /acceptPortBonus or /rejectPortBonus command",
+);
 
-const PORT_RADIO_BONUS_MESSAGE = "You have card radiTower.You can rethrow cubes. To rethrow send /throw."
-  .concat("To accept current result send /acceptThrow command.Also you can rethrow cube(s)");
+const PORT_RADIO_BONUS_MESSAGE = "You have card radiTower.You can rethrow cubes. To rethrow send /throw.".concat(
+  "To accept current result send /acceptThrow command.Also you can rethrow cube(s)",
+);
 
 // users = array of User objects
 machiCoroServerMessageMethods.gameStarted = (users, webSocket, webSocketOpetState) => {
@@ -45,7 +47,7 @@ machiCoroServerMessageMethods.gameStarted = (users, webSocket, webSocketOpetStat
 // refactor = > curActiveUser change to curActiveUserIndex
 machiCoroServerMessageMethods.sendUserGameInfo = (users, curActiveUser) => {
   // const curActiveUserIndex = users.findIndex((user) => user === curActiveUser);
-  const curActiveUserIndex = curActiveUser.getUserID();//= users.find((user) => user === curActiveUser).getUserID();
+  const curActiveUserIndex = curActiveUser.getUserID(); //= users.find((user) => user === curActiveUser).getUserID();
   users.forEach((user, index) => {
     const userWs = user.getWs();
     const userGameData = user.getGameInfo();
@@ -112,11 +114,12 @@ machiCoroServerMessageMethods.sendPurchaseInfo = (users, curActiveUserIndex, buy
   });
 };
 
-machiCoroServerMessageMethods.swapAccept = (users, activeUserID, secondUserID, firstUserCardName, secondUserCardName) => {
+machiCoroServerMessageMethods.swapAccept = ( users, activeUserID, secondUserID, firstUserCardName, secondUserCardName) => {
   const message = {
     method: "swapAccept",
-    content: `player${users[activeUserID].getUserID()} swap ${firstUserCardName}`
-      .concat(`with player${users[secondUserID].getUserID()} ${secondUserCardName}`),
+    content: `player${users[activeUserID].getUserID()} swap ${firstUserCardName}`.concat(
+      `with player${users[secondUserID].getUserID()} ${secondUserCardName}`,
+    ),
   };
 
   const messageToActiveUser = {
@@ -195,7 +198,7 @@ machiCoroServerMessageMethods.sendGameIsOverMessage = (users, winner) => {
   logMessage("winner index: ", indexOfWinner);
 
   const messageToLosser = {
-    method: "machiCoroError",
+    method: "machiCoroLose",
     content: `You loose this game. Player ${winner.getUserID()} win this game`,
   };
 
@@ -210,8 +213,9 @@ machiCoroServerMessageMethods.sendGameIsOverMessage = (users, winner) => {
 
 machiCoroServerMessageMethods.sendGameFinalStat = (users, gameStartObj, gameEndObj) => {
   const timeDiff = getDateDifferenceInTime(gameStartObj, gameEndObj);
-  const timeMessage = `Game lasted ${timeDiff.hours} hours : ${timeDiff.minutes}`
-    .concat(`minutes: ${timeDiff.seconds} seconds.`);
+  const timeMessage = `Game lasted ${timeDiff.hours} hours : ${timeDiff.minutes}`.concat(
+    `minutes: ${timeDiff.seconds} seconds.`,
+  );
   const message = {
     method: "gameFinalStat",
   };

@@ -12,7 +12,12 @@ import {
 } from "./machiCoroClientMessages";
 import createBoard, { drawNewCard, hideStartGameButton, drawBoard } from "../../front/gameBoard";
 import clientPlayer from "../../front/clientPlayer";
-import { unhidePortWrapper, unhidePortRadioWrapper } from "../../front/gameBoardUtils";
+import {
+  unhidePortWrapper,
+  unhidePortRadioWrapper,
+  unhideVictoryWrapper,
+  unhideLoseWrapper,
+} from "../../front/gameBoardUtils";
 
 function printInfoAboutBuyAction() {
   return "it is your turn \n/buy name -> buy something;\n/hold - hold turn";
@@ -91,6 +96,14 @@ export function handlerServerMachiCoroResponse(jsonData) {
     }
 
     case "gameFinalStat": {
+      return jsonData.content;
+    }
+    case "machiCoroWin": {
+      unhideVictoryWrapper();
+      return jsonData.content;
+    }
+    case "machiCoroLose": {
+      unhideLoseWrapper();
       return jsonData.content;
     }
     case "machiCoroRadioRequest": {

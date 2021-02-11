@@ -98,7 +98,9 @@ body {
 .steal-wrapper,
 .swap-wrapper,
 .swap-cards-wrapper,
-.port-wrapper {
+.port-wrapper,
+.victory-wrapper,
+.lose-wrapper {
   position: fixed;
   width: 100%;
   height: 100%;
@@ -111,7 +113,9 @@ body {
 .full-card,
 .steal-content,
 .swap-content,
-.port-content {
+.port-content,
+.victory-content,
+.lose-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -127,7 +131,9 @@ body {
   color: #ffffff;
 }
 
-.port-content {
+.port-content,
+.victory-content,
+.lose-content {
   left: 25%;
   width: 50%;
 }
@@ -164,7 +170,9 @@ body {
 }
 
 .swap-cards-content h2,
-.port-content h2 {
+.port-content h2,
+.victory-content h2,
+.lose-content h2 {
   font-size: 56px;
   font-weight: bold;
   color: #ffffff;
