@@ -140,7 +140,6 @@ function isGameCliCommand(clientMessage) {
 
 ws.onopen = () => {
   logMessage("websocket start");
-  clientMessageMethods.registerUser(ws, userID, userName, userPhotoAdress);// eslint-disable-line no-undef
 };
 
 ws.onmessage = (event) => {
@@ -176,11 +175,6 @@ ws.onmessage = (event) => {
       case "userRoomAccept": {
         roomID = jsonData.content;
         clientPlayer.setRoomID(roomID);
-        logMessage("roomID", roomID);
-        logMessage("----------------------------------------------------");
-        logMessage("----------------------------------------------------");
-        logMessage("----------------------------------------------------");
-        logMessage(jsonData.infoAboutOtherUsers);
         infoAboutUsersInRoom = jsonData.infoAboutOtherUsers;
         clientPlayer.setInfoAboutUsersInRoomArray(infoAboutUsersInRoom);
         jsonData.infoAboutOtherUsers.forEach((user) => {
@@ -202,15 +196,7 @@ ws.onmessage = (event) => {
           const img = new Image();
           img.src = newUser.photoAddress;
           roomUserImages[newUser.id] = img;
-          logMessage("----------------------------------------------------");
-          logMessage("----------------------------------------------------");
-          logMessage("----------------------------------------------------");
-          logMessage(newUser);
           infoAboutUsersInRoom.push(newUser);
-          logMessage("----------------------------------------------------");
-          logMessage("----------------------------------------------------");
-          logMessage("----------------------------------------------------");
-          logMessage(infoAboutUsersInRoom);
         }
         break;
       }

@@ -5,6 +5,7 @@ import { serverMessageMethods } from "./messages/serverMessageMethods";
 import { machiCoroHandler } from "../js/machiCoroGame/back/handlers/machiCoroHandler";
 import logMessage from "../js/logger";
 
+const cookie = require('cookie');
 const intervalValueForPing = 5000;
 
 function heartbeat(ws) {
@@ -59,19 +60,6 @@ export class WebSocketServer {
           const curRoom = this.findRoomLinkByRoomID(jsonData.roomID);
           const curUser = this.findCurrentUserByWebsocket(ws);
           serverMessageMethods.sendMessage(curRoom, curUser, jsonData, WebSocket.OPEN);
-          break;
-        }
-        case "registerUser": {
-          logMessage("find registerUser command");
-          const curUser = this.findCurrentUserByWebsocket(ws);
-          if (jsonData.userID) {
-            curUser.setOauthID(jsonData.userID);
-          }
-          curUser.setUserName(jsonData.userName);
-          if (jsonData.userPhotoAdress) {
-            curUser.setUserPhotoAdress(jsonData.userPhotoAdress);
-          }
-          serverMessageMethods.registrationAccept(curUser);
           break;
         }
         case "getRooms": {
@@ -137,10 +125,24 @@ export class WebSocketServer {
   }
 
   initWssConectionHandler() {
-    this.wss.on("connection", (ws) => {
+    this.wss.on("connection", (ws, request) => {
       logMessage("new user");
+      const cookies = cookie.parse(request.headers.cookie);
       heartbeat(ws);
-      this.users.push(new User(ws));
+
+      const newUser = new User(ws);
+
+      if (cookies["userUUID"]) {
+        newUser.setOauthID(cookies["userUUID"]);
+      }
+      newUser.setUserName(cookies["userName"] || "anonym");
+      if (cookies["userPhotoAdress"]) {
+        newUser.setUserPhotoAdress(cookies["userPhotoAdress"]);
+      }
+
+      this.users.push(newUser);
+      serverMessageMethods.registrationAccept(newUser);
+
       ws.on("message", (data) => {
         heartbeat(ws);
         this.parseRequestFromClient(data, ws);

@@ -19,6 +19,18 @@ logMessage(HTML_FILE);
 
 const PORT = process.env.PORT || 3000;
 
+function restoreCookie(res) {
+  res.cookie("userUUID", "");
+  res.cookie("userName", "");
+  res.cookie("userPhotoAdress", "");
+}
+
+function storeCookie(req, res) {
+  res.cookie("userUUID", req.user.id);
+  res.cookie("userName", req.user.displayName);
+  res.cookie("userPhotoAdress", req.user.photos[0].value);
+}
+
 const server = express()
   .use(webpackDevMiddleware(compiler, {
     publicPath: config.output.publicPath,
@@ -40,11 +52,14 @@ const server = express()
 
   .get("/", (req, res) => {
     if (req.user) {
-      console.log(req.user);
+      storeCookie(req, res);
+
       res.render("index", {
         user: req.user,
       });
     } else {
+      restoreCookie(res);
+
       res.render("index", {
         user: undefined,
       });

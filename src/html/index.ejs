@@ -26,18 +26,6 @@
     <div class="popup">
 
       <div class="auth-login">
-      <script>
-        <% if (user) {%>
-          var userID = <%- user.id %>;
-          var userName = '<%- user.displayName %>';
-          var userPhotoAdress = '<%- user.photos[0].value %>';
-        <%} else {%>
-          var userID = undefined;
-          var userName = "anonym";
-          var userPhotoAdress = undefined;
-        <%}%>
-      </script>
-
         <%if (user) {%>
           <%var name = user.displayName%>
           <%var pathToPhoto = user.photos[0].value%>
